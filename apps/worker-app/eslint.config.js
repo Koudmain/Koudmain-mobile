@@ -1,0 +1,18 @@
+// https://docs.expo.dev/guides/using-eslint/
+const { defineConfig } = require('eslint/config');
+const expoConfig = require('eslint-config-expo/flat');
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+
+module.exports = defineConfig([
+  expoConfig,
+  eslintPluginPrettierRecommended,
+  {
+    ignores: ['dist/*', 'mobile-client/src/components/ui/*', 'node_modules/*'],
+  },
+  {
+    rules: {
+      'react/no-unescaped-entities': 'off',
+      'import/no-unresolved': ['error', { ignore: ['expo-secure-store'] }],
+    },
+  },
+]);

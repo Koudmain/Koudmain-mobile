@@ -16,7 +16,7 @@ Nous utilisons exclusivement **pnpm**.
 ### Ajouter une dépendance à une App spécifique (ex: Employer)
 
 ```bash
-pnpm add <nom-du-package> --filter employer-apps
+pnpm add <nom-du-package> --filter employer-app
 ```
 
 ### Ajouter une dépendance commune à tout le projet (ex: lodash)
