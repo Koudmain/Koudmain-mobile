@@ -1,0 +1,49 @@
+# Dépendances
+node_modules
+**/node_modules
+
+# Cache Turborepo
+.turbo
+**/.turbo
+
+# Cache Expo & Metro
+.expo
+**/.expo
+**/dist
+**/.metro-cache
+
+# Environnement
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Tests
+coverage
+**/__tests__
+**/*.test.ts
+**/*.spec.ts
+
+# Android / iOS
+android
+ios
+**/android
+**/ios

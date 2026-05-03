@@ -87,4 +87,8 @@ pnpm employer -- --clear
 - `pnpm worker` : Lancer l'app Worker.
 - `pnpm build` : Build via Turbo.
 
+## Info
+You need to install all dependencies if you do not want pre-commit failed. Run :
+`pnpm install`
+
 ---
