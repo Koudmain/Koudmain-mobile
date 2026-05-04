@@ -18,6 +18,7 @@
     "clean": "rm -rf .expo dist node_modules/.cache"
   },
   "dependencies": {
+    "@koudmain/ui": "workspace:*",
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
     "@expo/html-elements": "^55.0.3",

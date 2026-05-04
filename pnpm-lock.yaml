@@ -35,6 +35,9 @@ importers:
       '@gluestack/ui-next-adapter':
         specifier: ^3.0.3
         version: 3.0.3
+      '@koudmain/ui':
+        specifier: workspace:*
+        version: link:../../packages/koudmain-ui
       '@legendapp/motion':
         specifier: ^2.5.3
         version: 2.5.3(nativewind@4.2.3(react-native-reanimated@4.1.7(react-native-worklets@0.5.1(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native-safe-area-context@5.6.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native-svg@15.15.4(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4)(tailwindcss@3.4.19(yaml@2.8.4)))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4)
@@ -201,6 +204,9 @@ importers:
       '@gluestack/ui-next-adapter':
         specifier: ^3.0.3
         version: 3.0.3
+      '@koudmain/ui':
+        specifier: workspace:*
+        version: link:../../packages/koudmain-ui
       '@legendapp/motion':
         specifier: ^2.5.3
         version: 2.5.3(nativewind@4.2.3(react-native-reanimated@4.1.7(react-native-worklets@0.5.1(@babel/core@7.29.0)(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native-safe-area-context@5.6.2(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native-svg@15.15.4(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4)(tailwindcss@3.4.19(yaml@2.8.4)))(react-native@0.81.6(@babel/core@7.29.0)(@types/react@19.1.0)(react@19.1.4))(react@19.1.4)
