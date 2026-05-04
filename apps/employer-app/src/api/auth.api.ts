@@ -9,7 +9,7 @@ export const authService = {
   login: async (email: string, password: string) => {
     return apiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
-      body: { email, password, targetApp: 'worker' },
+      body: { email, password, targetApp: 'employer' },
     });
   },
 
