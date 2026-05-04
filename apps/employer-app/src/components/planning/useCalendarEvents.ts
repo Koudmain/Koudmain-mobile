@@ -1,0 +1,111 @@
+import { useState, useRef, useEffect } from 'react';
+import { planningService } from '@/api/planning.api';
+
+const parseLocalDate = (dateStr: string): Date => {
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    throw new Error(`Invalid date format: "${dateStr}". Expected YYYY-MM-DD`);
+  }
+
+  const [, yearStr, monthStr, dayStr] = match;
+  return new Date(parseInt(yearStr, 10), parseInt(monthStr, 10) - 1, parseInt(dayStr, 10));
+};
+
+export const useCalendarEvents = (session: any, currentMonthStr: string) => {
+  const [events, setEvents] = useState<any[]>([]);
+  const loadedMonths = useRef<Set<string>>(new Set());
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      if (!session) return;
+      const currentDate = parseLocalDate(currentMonthStr);
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1;
+
+      const targetMonths = [
+        new Date(year, month - 2, 1), // M-1
+        new Date(year, month - 1, 1), // M
+        new Date(year, month, 1), // M+1
+      ];
+
+      const missingMonths = targetMonths.filter((d) => {
+        const key = `${d.getFullYear()}-${d.getMonth() + 1}`;
+        return !loadedMonths.current.has(key);
+      });
+
+      const minAllowedTime = new Date(year, month - 3, 1).getTime(); // display_month - 2
+      const maxAllowedTime = new Date(year, month + 2, 0).getTime(); // display_month + 2
+
+      const updateCacheLimits = () => {
+        targetMonths.forEach((d) =>
+          loadedMonths.current.add(`${d.getFullYear()}-${d.getMonth() + 1}`),
+        );
+        for (const key of Array.from(loadedMonths.current)) {
+          const [y, m] = key.split('-');
+          const dTime = new Date(parseInt(y, 10), parseInt(m, 10) - 1, 1).getTime();
+          if (dTime < minAllowedTime || dTime > maxAllowedTime) {
+            loadedMonths.current.delete(key);
+          }
+        }
+      };
+
+      if (missingMonths.length === 0) {
+        updateCacheLimits();
+        setEvents((prevEvents) =>
+          prevEvents.filter((evt) => {
+            if (!evt.startingDate) return false;
+            const eventTime = new Date(evt.startingDate).getTime();
+            return eventTime >= minAllowedTime && eventTime <= maxAllowedTime;
+          }),
+        );
+        return;
+      }
+
+      const minMissDate = new Date(Math.min(...missingMonths.map((d) => d.getTime())));
+      const maxMissDate = new Date(Math.max(...missingMonths.map((d) => d.getTime())));
+
+      const fetchStartDate = new Date(minMissDate.getFullYear(), minMissDate.getMonth(), 1);
+      const fetchEndDate = new Date(maxMissDate.getFullYear(), maxMissDate.getMonth() + 1, 0);
+
+      try {
+        const response =
+          loadedMonths.current.size === 0
+            ? await planningService.getPlanning(session)
+            : await planningService.getPlanning(session, fetchStartDate, fetchEndDate);
+
+        let fetchedEvents: any[] = [];
+        if (Array.isArray(response)) {
+          fetchedEvents = response;
+        } else if (response && Array.isArray((response as any).data)) {
+          fetchedEvents = (response as any).data;
+        } else if (response) {
+          fetchedEvents = response as any;
+        }
+
+        updateCacheLimits();
+
+        setEvents((prevEvents) => {
+          const allEvents = [...prevEvents, ...fetchedEvents];
+          const uniqueEventsMap = new Map();
+          allEvents.forEach((evt) => {
+            const key = evt.publicationId
+              ? `${evt.publicationId}-${evt.startingDate}`
+              : JSON.stringify(evt);
+            uniqueEventsMap.set(key, evt);
+          });
+
+          return Array.from(uniqueEventsMap.values()).filter((evt) => {
+            if (!evt.startingDate) return false;
+            const eventTime = new Date(evt.startingDate).getTime();
+            return eventTime >= minAllowedTime && eventTime <= maxAllowedTime;
+          });
+        });
+      } catch (error) {
+        console.error('Failed to fetch planning data', error);
+      }
+    };
+    fetchEvents();
+  }, [currentMonthStr, session]);
+
+  return { events };
+};

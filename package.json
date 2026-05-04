@@ -1,31 +1,33 @@
 {
   "name": "koudmain-mobile",
   "private": true,
+  "version": "1.0.0",
+  "packageManager": "pnpm@10.33.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "employer": "pnpm --filter employer-apps dev",
-    "worker": "pnpm --filter worker-apps dev",
-    "lint": "turbo lint",
-    "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules apps/*/.expo"
+    "dev": "turbo run expo-go --parallel",
+    "dev:worker": "turbo run expo-go --filter=@koudmain/worker",
+    "dev:employer": "turbo run expo-go --filter=@koudmain/employer",
+    "worker": "pnpm --filter=@koudmain/worker start",
+    "employer": "pnpm --filter=@koudmain/employer start",
+    "build": "turbo run build",
+    "build:worker": "turbo run build --filter=@koudmain/worker",
+    "build:employer": "turbo run build --filter=@koudmain/employer",
+    "lint:check": "turbo run lint:check",
+    "lint:fix": "turbo run lint:fix",
+    "format:check": "turbo run format:check",
+    "format:fix": "turbo run format:fix",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
-    "prettier": "^3.7.4",
-    "turbo": "^2.9.6",
-    "typescript": "5.9.2"
+    "turbo": "^2.5.4"
   },
-  "packageManager": "pnpm@9.0.0",
   "engines": {
-    "node": ">=18"
-  },
-  "dependencies": {
-    "nativewind": "^4.2.3",
-    "tailwindcss": "^3.4.17"
-  },
-  "pnpm": {
-    "overrides": {
-      "react": "19.1.0",
-      "react-dom": "19.1.0"
-    }
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
   }
 }
