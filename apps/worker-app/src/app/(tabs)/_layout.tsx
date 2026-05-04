@@ -1,10 +1,8 @@
 import { Tabs } from 'expo-router';
 import { FontAwesome6, Feather } from '@expo/vector-icons';
-import { TabBarIcon, ICON_DIMENSIONS } from '@/components/navigation/TabBarIcon';
-import { TabBarGradient } from '@/components/navigation/TabBarGradient';
+import { TabBarIcon, ICON_DIMENSIONS, TabBarHitBox, TabBarGradient } from '@koudmain/ui';
 import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
-import { TabBarHitBox } from '@/components/navigation/TabBarHitBox';
 import { useSidebar } from '@/context/SidebarContext';
 import { PlusIcon } from '@/svg/PlusIcon';
 
