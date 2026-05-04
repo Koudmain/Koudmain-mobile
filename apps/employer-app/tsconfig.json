@@ -6,7 +6,12 @@
     "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*", "./*"],
-      "tailwind.config": ["./tailwind.config.js"],
+      "tailwind.config": [
+        "./tailwind.config.js"
+      ],
+      "@koudmain/ui": [
+        "../../packages/koudmain-ui/src"
+      ]
     },
     "jsx": "react-native",
   },

@@ -5,12 +5,12 @@
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": [
-        "./src/*",
-        "./*"
-      ],
+      "@/*": ["./src/*", "./*"],
       "tailwind.config": [
         "./tailwind.config.js"
+      ],
+      "@koudmain/ui": [
+        "../../packages/koudmain-ui/src"
       ]
     },
     "jsx": "react-native"
