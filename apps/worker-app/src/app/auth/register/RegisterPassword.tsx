@@ -5,8 +5,7 @@ import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
 import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
 import Button from '@/components/ui/Button';
-import AuthTop from '@/components/auth/AuthTop';
-import PasswordChecker, { isPasswordValid } from '@/components/auth/PasswordChecker';
+import { AuthTop, PasswordChecker, isPasswordValid } from '@koudmain/ui';
 
 import { router, useLocalSearchParams } from 'expo-router';
 

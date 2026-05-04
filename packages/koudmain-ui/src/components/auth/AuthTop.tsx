@@ -6,7 +6,7 @@ type AuthTopProps = {
   title: string;
 };
 
-export default function AuthTop({ title }: AuthTopProps) {
+export function AuthTop({ title }: AuthTopProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 

@@ -38,7 +38,7 @@ function Criterion({ isValid, label }: { isValid: boolean; label: string }) {
   );
 }
 
-export default function PasswordChecker({ password, className = '' }: PasswordCheckerProps) {
+export function PasswordChecker({ password, className = '' }: PasswordCheckerProps) {
   const criteria = getPasswordCriteria(password);
 
   return (
