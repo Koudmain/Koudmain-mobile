@@ -13,6 +13,8 @@
     "dev:employer": "turbo run expo-go --filter=@koudmain/employer",
     "worker": "pnpm --filter=@koudmain/worker start",
     "employer": "pnpm --filter=@koudmain/employer start",
+    "worker-go": "pnpm --filter=@koudmain/worker expo-go",
+    "employer-go": "pnpm --filter=@koudmain/employer expo-go",
     "build": "turbo run build",
     "build:worker": "turbo run build --filter=@koudmain/worker",
     "build:employer": "turbo run build --filter=@koudmain/employer",
