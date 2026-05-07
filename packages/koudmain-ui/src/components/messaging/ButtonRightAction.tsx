@@ -3,7 +3,7 @@ import Reanimated, { SharedValue, useAnimatedStyle, interpolate } from 'react-na
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import { Conversation } from '@/types/conversation';
 
-const ButtonRightAction = ({
+export function ButtonRightAction ({
   prog,
   conversation,
   onMore,
@@ -19,7 +19,7 @@ const ButtonRightAction = ({
   onArchive?: (id: number) => void;
   closeSwipe: () => void;
   isDark: boolean;
-}) => {
+}) {
   const totalWidth = 225;
 
   const stylePlus = useAnimatedStyle(() => ({
@@ -35,7 +35,7 @@ const ButtonRightAction = ({
   }));
 
   return (
-    <View style={{ width: totalWidth, flexDirection: 'row', overflow: 'hidden' }}>
+    <View className="flex-row overflow-hidden" style={{ width: totalWidth }}>
       <Reanimated.View style={[{ width: 75 }, stylePlus]}>
         <TouchableOpacity
           className="flex-1 bg-neutral-200 dark:bg-neutral-800 items-center justify-center"
@@ -74,5 +74,3 @@ const ButtonRightAction = ({
     </View>
   );
 };
-
-export default ButtonRightAction;

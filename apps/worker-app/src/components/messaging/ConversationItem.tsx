@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, useColorScheme } from 'react-nativ
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { cnFusion } from '@/utils/cnFusion';
 import { Conversation } from '@/types/conversation';
-import ButtonRightAction from './ButtonRightAction';
+import { ButtonRightAction } from '@koudmain/ui';
 
 interface ConversationItemProps {
   conversation: Conversation;
