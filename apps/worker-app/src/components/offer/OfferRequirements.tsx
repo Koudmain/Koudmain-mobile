@@ -28,9 +28,9 @@ export function OfferRequirements({
           <View key={index} className="flex-row items-center gap-x-4">
             <View className="w-10 items-center justify-center">
               {req.iconType === 'outfit' ? (
-                <FontAwesome5 name="user-tie" size={28} color={colors?.secondary.DEFAULT} />
+                <FontAwesome5 name="user-tie" size={28} color={colors.secondary.DEFAULT} />
               ) : (
-                <Ionicons name="language" size={32} color={colors?.secondary.DEFAULT} />
+                <Ionicons name="language" size={32} color={colors.secondary.DEFAULT} />
               )}
             </View>
             <Text className="text-base text-primary dark:text-white flex-1">{req.text}</Text>

@@ -57,7 +57,7 @@ export default function MessageInput({
             onPress={handleSend}
             className="bg-secondary w-12 h-8 rounded-[15] items-center justify-center shadow-sm"
           >
-            <Feather name="send" size={22} color={colors?.primary.content} />
+            <Feather name="send" size={22} color={colors.primary.content} />
           </TouchableOpacity>
         )}
       </View>

@@ -32,8 +32,8 @@ const FilterChip = ({
   const bgColor = isActive ? 'bg-secondary-50' : 'bg-transparent';
   const textColor = isActive ? 'text-primary' : 'text-primary-disabled';
 
-  const activeIconColor = colors?.secondary.DEFAULT;
-  const inactiveIconColor = isDark ? colors?.primary.content : colors?.primary.DEFAULT;
+  const activeIconColor = colors.secondary.DEFAULT;
+  const inactiveIconColor = isDark ? colors.primary.content : colors.primary.DEFAULT;
   const currentColor = isActive ? activeIconColor : inactiveIconColor;
 
   return (
@@ -54,7 +54,7 @@ const FilterChip = ({
 
       {isActive && (
         <View className="ml-1">
-          <Entypo name="cross" size={18} color={colors?.primary.disabled} />
+          <Entypo name="cross" size={18} color={colors.primary.disabled} />
         </View>
       )}
     </TouchableOpacity>

@@ -19,7 +19,7 @@ export function OfferSkills({ skills, sectionTitle = 'Compétences' }: OfferSkil
           <CompetenceCard
             key={index}
             comp={skill}
-            accentColor={colors?.secondary.DEFAULT}
+            accentColor={colors.secondary.DEFAULT}
             size="lg"
           />
         ))}

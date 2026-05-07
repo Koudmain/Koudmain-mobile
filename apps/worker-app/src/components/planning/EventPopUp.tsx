@@ -159,8 +159,8 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
                           width: '100%',
                           marginBottom: 16,
                           backgroundColor: isDark
-                            ? colors?.background.dark
-                            : colors?.background.light,
+                            ? colors.background.dark
+                            : colors.background.light,
                         }}
                       >
                         <PlanningCard

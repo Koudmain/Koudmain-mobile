@@ -63,7 +63,7 @@ export default function OffreEmploiCard({
                 {city} - {zip}
               </Text>
               <View className="flex-row items-center ml-4">
-                <MaterialIcons name="star" size={18} color={colors?.secondary.DEFAULT} />
+                <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />
                 <Text className="text-xs text-gray-500 dark:text-white/80 ml-1">
                   {rate} ({number_rate})
                 </Text>
@@ -76,7 +76,7 @@ export default function OffreEmploiCard({
           <MaterialIcons
             name={wishlist ? 'favorite' : 'favorite-border'}
             size={24}
-            color={wishlist ? colors?.utils.heart : colors?.primary.disabled}
+            color={wishlist ? colors.utils.heart : colors.primary.disabled}
           />
         </View>
       </View>
@@ -85,20 +85,20 @@ export default function OffreEmploiCard({
         <Heading className="text-3xl font-bold mt-4 mb-1">{title}</Heading>
 
         <View className="flex-row items-center mt-2 mb-4">
-          <MaterialCommunityIcons name="account-cash" size={18} color={colors?.secondary.DEFAULT} />
+          <MaterialCommunityIcons name="account-cash" size={18} color={colors.secondary.DEFAULT} />
           <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{wage}€ /h</Text>
         </View>
         <View className="flex-row items-center mb-4 gap-4">
           <View className="flex-row items-center mt-2 mb-4">
-            <Feather name="calendar" size={18} color={colors?.secondary.DEFAULT} />
+            <Feather name="calendar" size={18} color={colors.secondary.DEFAULT} />
             <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{date}</Text>
           </View>
           <View className="flex-row items-center mt-2 mb-4">
-            <FontAwesome5 name="hourglass-half" size={18} color={colors?.secondary.DEFAULT} />
+            <FontAwesome5 name="hourglass-half" size={18} color={colors.secondary.DEFAULT} />
             <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{begin}</Text>
           </View>
           <View className="flex-row items-center mt-2 mb-4">
-            <AntDesign name="clock-circle" size={18} color={colors?.secondary.DEFAULT} />
+            <AntDesign name="clock-circle" size={18} color={colors.secondary.DEFAULT} />
             <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{duration}</Text>
           </View>
         </View>

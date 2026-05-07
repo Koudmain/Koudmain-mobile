@@ -50,7 +50,7 @@ export default function PlanningCard({
             <Image source={image_profile} className="w-14 h-14 rounded-full mr-3" />
           ) : (
             <View className="w-14 h-14 rounded-full mr-3 bg-gray-300 items-center justify-center">
-              <FontAwesome5 name="user" size={30} color={colors?.typography.white} />
+              <FontAwesome5 name="user" size={30} color={colors.typography.white} />
             </View>
           )}
           <View className="flex-1">
@@ -65,7 +65,7 @@ export default function PlanningCard({
                 {city} - {zip}
               </Text>
               <View className="flex-row items-center ml-4">
-                <MaterialIcons name="star" size={18} color={colors?.secondary.DEFAULT} />
+                <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />
                 <Text className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                   {rate} ({number_rate})
                 </Text>
@@ -78,7 +78,7 @@ export default function PlanningCard({
                 <Feather
                   name="check"
                   size={16}
-                  color={isDark ? colors?.typography.white : colors?.success.DEFAULT}
+                  color={isDark ? colors.typography.white : colors.success.DEFAULT}
                 />
               </View>
             ) : (
@@ -86,7 +86,7 @@ export default function PlanningCard({
                 <FontAwesome5
                   name="hourglass-half"
                   size={12}
-                  color={isDark ? colors?.typography.white : colors?.warning.DEFAULT}
+                  color={isDark ? colors.typography.white : colors.warning.DEFAULT}
                 />
               </View>
             )}
@@ -101,12 +101,12 @@ export default function PlanningCard({
         </Heading>
 
         <View className="flex-row items-center mt-2 mb-2">
-          <FontAwesome6 name="money-bill-1-wave" size={24} color={colors?.primary.disabled} />
+          <FontAwesome6 name="money-bill-1-wave" size={24} color={colors.primary.disabled} />
           <Text className="text-md ml-3 text-gray-500 dark:text-gray-400">{wage}€ /h</Text>
         </View>
 
         <View className="flex-row items-center mt-2 mb-2">
-          <MaterialCommunityIcons name="clock" size={24} color={colors?.secondary.DEFAULT} />
+          <MaterialCommunityIcons name="clock" size={24} color={colors.secondary.DEFAULT} />
           <Text className="text-md ml-3 text-gray-500 dark:text-gray-400">
             {begin} - {end}
           </Text>

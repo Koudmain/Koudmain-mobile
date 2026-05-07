@@ -1,8 +1,10 @@
 import { Tabs } from 'expo-router';
 import { FontAwesome6, Feather } from '@expo/vector-icons';
-import { TabBarIcon, ICON_DIMENSIONS, TabBarHitBox, TabBarGradient } from '@koudmain/ui';
+import { TabBarIcon, ICON_DIMENSIONS } from '@/components/navigation/TabBarIcon';
+import { TabBarGradient } from '@/components/navigation/TabBarGradient';
 import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
+import { TabBarHitBox } from '@/components/navigation/TabBarHitBox';
 import { useSidebar } from '@/context/SidebarContext';
 
 const TABS_CONFIG = [
@@ -39,8 +41,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors?.secondary.DEFAULT,
-        tabBarInactiveTintColor: isDark ? colors?.primary.content : colors?.primary.DEFAULT,
+        tabBarActiveTintColor: colors.secondary.DEFAULT,
+        tabBarInactiveTintColor: isDark ? colors.primary.content : colors.primary.DEFAULT,
         tabBarShowLabel: false,
         headerShown: false,
         tabBarBackground: () => <TabBarGradient />,
