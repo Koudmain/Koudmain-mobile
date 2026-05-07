@@ -129,6 +129,11 @@ module.exports = {
           hearth: '#E02424',
           star: '#FBBF24',
         },
+        map : {
+          marker: '#FF5A5F',
+          markerSelected: '#2ecc71',
+          stroke: '#333',
+        },
 
         // Neutral colors
         neutral: {
