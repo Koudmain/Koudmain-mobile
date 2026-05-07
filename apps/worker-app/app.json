@@ -40,6 +40,13 @@
           }
         }
       ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAllowPermissionDescription": "Permettre à Koudmain d'accéder à votre position pour vous proposer des missions à proximité.",
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ],
       "expo-font",
       "expo-secure-store"
     ],
