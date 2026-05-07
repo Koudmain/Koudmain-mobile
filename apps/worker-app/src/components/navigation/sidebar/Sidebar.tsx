@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable, Dimensions, ScrollView, useColorScheme } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -6,7 +6,6 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
 import { useSidebar } from '@/context/SidebarContext';
 import { Text } from '@/components/ui/text';
 import { UserHeader } from './UserHeader';
@@ -16,6 +15,7 @@ import { Href, useRouter } from 'expo-router';
 import { ThemeToggle } from '@/components/tools/ThemeToggle';
 
 import { useSession } from '@/context/SessionContext';
+import { scheduleOnRN } from 'react-native-worklets';
 
 const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = width * 0.65;
@@ -55,10 +55,12 @@ export function Sidebar() {
   }));
 
   const menuItems = [
-    { label: 'Mon établissement', path: '/my-company' },
+    { label: 'Mon porte-monnaie', path: '/YourOffers' },
+    { label: 'Mes candidatures', path: '/applications' },
     { label: 'Paramètre du Compte', path: '/Settings' },
     { label: 'Mes documents', path: '/contracts' },
     { label: 'Notifications', path: '/notifications' },
+    { label: 'Mes favoris', path: '/YourOffers' },
   ];
 
   const handleItemPress = (path: string | null) => {
@@ -85,10 +87,10 @@ export function Sidebar() {
         style={[{ width: SIDEBAR_WIDTH }, animatedMenuSyle]}
         className="h-full rounded-l-[20] bg-white dark:bg-primary ml-auto p-1 pt-16 shadow-2xl"
       >
-        <ScrollView bounces={false} contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView bounces={false} contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 12 }}>
           <UserHeader />
 
-          <View className="flex-1 py-2 px-4">
+          <View className="flex-1 py-2">
             {menuItems.map((item, index) => (
               <Pressable
                 key={index}
@@ -102,13 +104,13 @@ export function Sidebar() {
             ))}
           </View>
 
-          <View className="mt-auto pt-6 px-4 border-t border-primary-disabled">
+          <View className="mt-auto pt-6 border-t border-primary-disabled">
             <ThemeToggle />
             <Pressable onPress={close} className="py-4 flex-row items-center active:opacity-70">
               <Feather
                 name="help-circle"
                 size={20}
-                color={isDark ? colors.primary.disabled : colors.primary.hover}
+                color={isDark ? colors?.primary.disabled : colors?.primary.hover}
               />
               <Text className="text-primary-hover dark:text-primary-disabled font-medium ml-3">
                 Centre d&apos;aide
@@ -122,7 +124,7 @@ export function Sidebar() {
               }}
               className="py-4 mb-2 flex-row items-center active:opacity-70"
             >
-              <Feather name="log-out" size={20} color={colors.error.DEFAULT} />
+              <Feather name="log-out" size={20} color={colors?.error.DEFAULT} />
               <Text className="text-error font-bold ml-3">Déconnexion</Text>
             </Pressable>
           </View>

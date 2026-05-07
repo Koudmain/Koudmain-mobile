@@ -24,7 +24,7 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
           onPress={() => router.back()}
           className="w-10 h-10 items-center justify-center rounded-full"
         >
-          <Feather name="arrow-left" size={28} color={colors.primary.content} />
+          <Feather name="arrow-left" size={28} color={colors?.primary.content} />
         </Pressable>
         <Pressable
           onPress={() => {
@@ -35,7 +35,7 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
           <FontAwesome6
             name="heart"
             size={28}
-            color={isFavorite ? 'red' : colors.primary.content}
+            color={isFavorite ? 'red' : colors?.primary.content}
             solid={isFavorite}
           />
         </Pressable>
@@ -46,7 +46,7 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
           <Image source={logoSource} className="w-full h-full rounded-full" resizeMode="cover" />
         ) : (
           <View className="w-full h-full bg-gray-200 rounded-full items-center justify-center">
-            <FontAwesome6 name="hat-chef" size={32} color={colors.primary.DEFAULT} />
+            <FontAwesome6 name="hat-chef" size={32} color={colors?.primary.DEFAULT} />
           </View>
         )}
       </View>

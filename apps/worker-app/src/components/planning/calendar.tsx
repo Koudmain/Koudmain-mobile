@@ -118,19 +118,19 @@ export default function CalendarComponent() {
           height: calendarHeight,
           borderRadius: 22,
           paddingVertical: 16,
-          backgroundColor: isDark ? colors.background.dark : colors.background.light,
+          backgroundColor: isDark ? colors?.background.dark : colors?.background.light,
         }}
         theme={{
-          calendarBackground: isDark ? colors.background.dark : colors.background.light,
-          dayTextColor: isDark ? colors.typography.white : colors.typography.black,
-          monthTextColor: isDark ? colors.typography.white : colors.typography.black,
-          textSectionTitleColor: isDark ? colors.typography.white : colors.typography.black,
+          calendarBackground: isDark ? colors?.background.dark : colors?.background.light,
+          dayTextColor: isDark ? colors?.typography.white : colors?.typography.black,
+          monthTextColor: isDark ? colors?.typography.white : colors?.typography.black,
+          textSectionTitleColor: isDark ? colors?.typography.white : colors?.typography.black,
           textDayFontSize: 18,
           textMonthFontWeight: 'bold',
-          todayTextColor: colors.secondary.DEFAULT,
-          arrowColor: colors.secondary.DEFAULT,
-          selectedDayBackgroundColor: colors.secondary.DEFAULT,
-          selectedDayTextColor: colors.typography.white,
+          todayTextColor: colors?.secondary.DEFAULT,
+          arrowColor: colors?.secondary.DEFAULT,
+          selectedDayBackgroundColor: colors?.secondary.DEFAULT,
+          selectedDayTextColor: colors?.typography.white,
           'stylesheet.calendar.main': {
             week: {
               marginTop: 0,
@@ -171,7 +171,7 @@ export default function CalendarComponent() {
           ...markedDatesList.reduce(
             (acc, date) => ({
               ...acc,
-              [date]: { marked: true, dotColor: colors.secondary.DEFAULT },
+              [date]: { marked: true, dotColor: colors?.secondary.DEFAULT },
             }),
             {},
           ),

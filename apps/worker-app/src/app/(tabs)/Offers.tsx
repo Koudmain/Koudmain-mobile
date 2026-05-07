@@ -57,7 +57,7 @@ export default function Offers() {
               borderRadius: 24,
               width: '100%',
               marginBottom: 16,
-              backgroundColor: isDark ? colors.background.dark : colors.background.light,
+              backgroundColor: isDark ? colors?.background.dark : colors?.background.light,
             }}
           >
             <OffreEmploiCard

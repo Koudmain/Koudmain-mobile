@@ -44,7 +44,7 @@ export default function ChatScreen() {
             headerBackVisible: false,
             headerShadowVisible: true,
             headerStyle: {
-              backgroundColor: isDark ? colors.primary.DEFAULT : colors.primary.content,
+              backgroundColor: isDark ? colors?.primary.DEFAULT : colors?.primary.content,
             },
           }}
         />

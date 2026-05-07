@@ -42,7 +42,7 @@ function HeaderProfileSettings({
                 className="w-full h-full"
               />
             ) : (
-              <Feather name="user" size={48} color={colors.primary.hover} />
+              <Feather name="user" size={48} color={colors?.primary.hover} />
             )}
           </View>
 

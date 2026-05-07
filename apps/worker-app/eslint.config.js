@@ -7,12 +7,6 @@ module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettierRecommended,
   {
-    ignores: ['dist/*', 'mobile-client/src/components/ui/*', 'node_modules/*'],
-  },
-  {
-    rules: {
-      'react/no-unescaped-entities': 'off',
-      'import/no-unresolved': ['error', { ignore: ['expo-secure-store'] }],
-    },
+    ignores: ['dist/*'],
   },
 ]);

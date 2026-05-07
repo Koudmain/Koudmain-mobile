@@ -1,19 +1,16 @@
 import { useCallback, useMemo, useState } from 'react';
-import { SectionList, Text, View, FlatList, Pressable } from 'react-native';
+import { SectionList, Text, View, Pressable } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 
 import SearchBar from '@/components/tools/SearchBar';
 import { normalizeText } from '@/utils/text';
 import { MOCK_CONVERSATIONS } from '@/constants/fakeConversations';
-import { MOCK_PUBLICATIONS } from '@/constants/fakePubliConv';
 import ConversationItem from '@/components/messaging/ConversationItem';
 import SectionHeader from '@/components/messaging/SectionsHeader';
-import PublicationStoryItem from '@/components/messaging/PublicationStoryItem';
 
 export default function Messaging() {
   const [searchText, setSearchText] = useState('');
   const [openRowId, setOpenRowId] = useState<number | null>(null);
-  const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -38,10 +35,6 @@ export default function Messaging() {
     const tokens = cleanQuery.length > 0 ? cleanQuery.split(/\s+/) : [];
 
     const filtered = MOCK_CONVERSATIONS.filter((conv) => {
-      if (selectedPubId && conv.publication_id !== selectedPubId) {
-        return false;
-      }
-
       const searchableText = normalizeText(`${conv.other_user_name} ${conv.last_message_content}`);
       return tokens.every((token) => searchableText.includes(token));
     });
@@ -57,7 +50,7 @@ export default function Messaging() {
       result.push({ title: '', data: others, icon: '' });
     }
     return result;
-  }, [searchText, selectedPubId]);
+  }, [searchText]);
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
@@ -77,24 +70,6 @@ export default function Messaging() {
 
       <SectionList
         sections={sections}
-        ListHeaderComponent={
-          <View className="py-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-primary">
-            <FlatList
-              horizontal
-              data={MOCK_PUBLICATIONS}
-              keyExtractor={(item) => item.id.toString()}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingHorizontal: 20 }}
-              renderItem={({ item }) => (
-                <PublicationStoryItem
-                  item={item}
-                  isActive={selectedPubId === item.id}
-                  onPress={() => setSelectedPubId(selectedPubId === item.id ? null : item.id)}
-                />
-              )}
-            />
-          </View>
-        }
         keyExtractor={(item) => item.id.toString()}
         stickySectionHeadersEnabled={false}
         onScrollBeginDrag={closeAll}
@@ -120,9 +95,7 @@ export default function Messaging() {
         ListEmptyComponent={
           <View className="items-center mt-20 px-10">
             <Text className="text-neutral-500 text-center">
-              {selectedPubId
-                ? 'Aucun message pour cette mission.'
-                : 'Aucune conversation correspondante.'}
+              Aucune conversation correspondante.
             </Text>
           </View>
         }

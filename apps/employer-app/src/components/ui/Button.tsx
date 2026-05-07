@@ -21,11 +21,14 @@ type ButtonProps = TouchableOpacityProps & {
 };
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-secondary items-center rounded-lg py-2 px-4',
+  primary:
+    'bg-secondary items-center rounded-lg py-2 px-4',
   secondary:
     'bg-white dark:bg-primary border border-secondary-400 items-center rounded-lg py-2 px-4',
-  outline: 'border border-primary dark:border-white items-center rounded-lg py-2 px-4',
-  muted: 'bg-secondary-300 items-center rounded-lg py-2 px-4',
+  outline:
+    'border border-primary dark:border-white items-center rounded-lg py-2 px-4',
+  muted:
+    'bg-secondary-300 items-center rounded-lg py-2 px-4',
 };
 
 const textVariantStyles: Record<ButtonVariant, string> = {
@@ -58,7 +61,12 @@ export default function Button({
 
   return (
     <TouchableOpacity
-      className={[baseStyle, sizingOverride, 'flex-row items-center justify-center', className]
+      className={[
+        baseStyle,
+        sizingOverride,
+        'flex-row items-center justify-center',
+        className,
+      ]
         .filter(Boolean)
         .join(' ')}
       {...props}

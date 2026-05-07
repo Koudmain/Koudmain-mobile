@@ -1,25 +1,7 @@
 type ApiFetchOptions = Omit<RequestInit, 'body'> & {
   token?: string | null;
   body?: unknown;
-  skipAuthRefresh?: boolean;
 };
-
-type RefreshHandlers = {
-  getRefreshToken: () => Promise<string | null>;
-  onAuthRefreshed: (tokens: { accessToken: string; refreshToken: string }) => Promise<void> | void;
-  onAuthExpired?: () => Promise<void> | void;
-};
-
-class ApiError extends Error {
-  constructor(
-    message: string,
-    public status: number,
-    public data: unknown,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
 
 const RAW_API_HOST = process.env.EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME;
 
@@ -41,12 +23,6 @@ function transformIpBackendUrl(hostOrUrl?: string): string {
 }
 
 const API_URL = transformIpBackendUrl(RAW_API_HOST);
-let refreshHandlers: RefreshHandlers | null = null;
-let refreshPromise: Promise<string | null> | null = null;
-
-export function configureAuthRefresh(handlers: RefreshHandlers | null): void {
-  refreshHandlers = handlers;
-}
 
 function buildApiUrl(endpoint: string): string {
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
@@ -59,106 +35,40 @@ function buildApiUrl(endpoint: string): string {
 
 export async function apiFetch<T>(
   endpoint: string,
-  { token, headers, body, skipAuthRefresh = false, ...rest }: ApiFetchOptions = {},
+  { token, headers, body, ...rest }: ApiFetchOptions = {},
 ): Promise<T> {
-  async function executeRequest(authToken: string | null | undefined): Promise<T> {
-    const requestHeaders = new Headers(headers);
-    const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
+  const requestHeaders = new Headers(headers);
+  const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
 
-    if (authToken) requestHeaders.set('Authorization', `Bearer ${authToken}`);
-    if (!isFormData && body != null && !requestHeaders.has('Content-Type')) {
-      requestHeaders.set('Content-Type', 'application/json');
-    }
+  if (token) requestHeaders.set('Authorization', `Bearer ${token}`);
+  if (!isFormData && body != null && !requestHeaders.has('Content-Type')) {
+    requestHeaders.set('Content-Type', 'application/json');
+  }
+  console.log(`API Request: ${rest.method || 'GET'} ${buildApiUrl(endpoint)}`);
+  if (body) {
+    console.log('Request Body:', body);
+  }
+  const response = await fetch(buildApiUrl(endpoint), {
+    ...rest,
+    headers: requestHeaders,
+    body:
+      body == null || isFormData || typeof body === 'string'
+        ? (body as BodyInit | null | undefined)
+        : JSON.stringify(body),
+  });
+  console.log(`API Response Status: ${response.status} ${response.statusText}`);
+  const isJson = response.headers.get('content-type')?.includes('application/json');
+  const data = isJson
+    ? await response.json().catch(() => null)
+    : await response.text().catch(() => null);
 
-    const response = await fetch(buildApiUrl(endpoint), {
-      ...rest,
-      headers: requestHeaders,
-      body:
-        body == null || isFormData || typeof body === 'string'
-          ? (body as BodyInit | null | undefined)
-          : JSON.stringify(body),
-    });
-
-    const isJson = response.headers.get('content-type')?.includes('application/json');
-    const data = isJson
-      ? await response.json().catch(() => null)
-      : await response.text().catch(() => null);
-
-    if (!response.ok) {
-      const message =
-        typeof data === 'object' && data && 'message' in data
-          ? String((data as { message: unknown }).message)
-          : `Request failed (${response.status})`;
-      throw new ApiError(message, response.status, data);
-    }
-
-    return data as T;
+  if (!response.ok) {
+    const message =
+      typeof data === 'object' && data && 'message' in data
+        ? String((data as { message: unknown }).message)
+        : `Request failed (${response.status})`;
+    throw new Error(message);
   }
 
-  const canRefresh =
-    !skipAuthRefresh &&
-    !!token &&
-    !endpoint.includes('/auth/login') &&
-    !endpoint.includes('/auth/refresh') &&
-    !endpoint.includes('/auth/logout');
-
-  try {
-    return await executeRequest(token);
-  } catch (error) {
-    if (!(error instanceof ApiError) || error.status !== 401 || !canRefresh) {
-      throw error;
-    }
-
-    const refreshedAccessToken = await refreshAccessToken();
-    if (!refreshedAccessToken) {
-      throw error;
-    }
-
-    return executeRequest(refreshedAccessToken);
-  }
-}
-
-async function refreshAccessToken(): Promise<string | null> {
-  if (!refreshHandlers) {
-    return null;
-  }
-
-  if (!refreshPromise) {
-    const handlers = refreshHandlers;
-
-    refreshPromise = (async () => {
-      const refreshToken = await handlers.getRefreshToken();
-      if (!refreshToken) {
-        await handlers.onAuthExpired?.();
-        return null;
-      }
-
-      const response = await fetch(buildApiUrl('/auth/refresh'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken }),
-      });
-
-      const rawData = await response.json().catch(() => null);
-      const data = rawData as { access_token?: unknown; refresh_token?: unknown } | null;
-
-      if (!response.ok || !data?.access_token || !data?.refresh_token) {
-        await handlers.onAuthExpired?.();
-        return null;
-      }
-
-      const accessToken = String(data.access_token);
-      const newRefreshToken = String(data.refresh_token);
-      await handlers.onAuthRefreshed({
-        accessToken,
-        refreshToken: newRefreshToken,
-      });
-
-      return accessToken;
-    })().finally(() => {
-      refreshPromise = null;
-    });
-  }
-
-  return refreshPromise;
+  return data as T;
 }

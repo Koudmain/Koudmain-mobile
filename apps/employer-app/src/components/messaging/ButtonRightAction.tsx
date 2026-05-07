@@ -35,7 +35,7 @@ const ButtonRightAction = ({
   }));
 
   return (
-    <View style={{ width: totalWidth, flexDirection: 'row', overflow: 'hidden' }}>
+    <View className="flex-row overflow-hidden" style={{ width: totalWidth }}>
       <Reanimated.View style={[{ width: 75 }, stylePlus]}>
         <TouchableOpacity
           className="flex-1 bg-neutral-200 dark:bg-neutral-800 items-center justify-center"

@@ -29,7 +29,7 @@ export function TabBarIcon({
   color,
   isLarge,
 }: TabBarIconProps) {
-  const isActive = color === colors.secondary.DEFAULT;
+  const isActive = color === colors?.secondary.DEFAULT;
   const dimensions = isLarge ? ICON_DIMENSIONS.large : ICON_DIMENSIONS.small;
 
   return (

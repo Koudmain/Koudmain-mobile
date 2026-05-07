@@ -4,30 +4,14 @@ import { TabBarIcon, ICON_DIMENSIONS, TabBarHitBox, TabBarGradient } from '@koud
 import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
 import { useSidebar } from '@/context/SidebarContext';
+import { PlusIcon } from '@/svg/PlusIcon';
 
 const TABS_CONFIG = [
-  {
-    name: 'Offers',
-    IconLibrary: FontAwesome6,
-    iconName: 'newspaper',
-    label: 'offers',
-    isLarge: false,
-  },
-  {
-    name: 'Planning',
-    IconLibrary: Feather,
-    iconName: 'calendar',
-    label: 'planning',
-    isLarge: false,
-  },
-  {
-    name: 'Messaging',
-    IconLibrary: FontAwesome6,
-    iconName: 'message',
-    label: 'messaging',
-    isLarge: false,
-  },
-  { name: 'Profile', IconLibrary: Feather, iconName: 'menu', label: 'Menu', isLarge: false },
+  { name: 'index', IconLibrary: FontAwesome6, iconName: 'newspaper', label: 'Accueil' },
+  { name: 'Planning', IconLibrary: Feather, iconName: 'calendar', label: 'Planning' },
+  { name: 'CreatePost', SvgComponent: PlusIcon, label: 'Publier', isLarge: true },
+  { name: 'Messaging', IconLibrary: FontAwesome6, iconName: 'message', label: 'Messages' },
+  { name: 'Profile', IconLibrary: Feather, iconName: 'menu', label: 'Menu' },
 ];
 
 export default function TabLayout() {
@@ -39,8 +23,8 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.secondary.DEFAULT,
-        tabBarInactiveTintColor: isDark ? colors.primary.content : colors.primary.DEFAULT,
+        tabBarActiveTintColor: colors?.secondary.DEFAULT,
+        tabBarInactiveTintColor: isDark ? colors?.primary.content : colors?.primary.DEFAULT,
         tabBarShowLabel: false,
         headerShown: false,
         tabBarBackground: () => <TabBarGradient />,
@@ -77,6 +61,7 @@ export default function TabLayout() {
                 <TabBarIcon
                   IconLibrary={tab.IconLibrary}
                   iconName={tab.iconName}
+                  SvgComponent={tab.SvgComponent}
                   color={color}
                   isLarge={tab.isLarge}
                 />

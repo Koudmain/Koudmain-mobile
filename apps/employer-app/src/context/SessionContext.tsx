@@ -2,11 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { userService } from '@/api/user.api';
 import { authService } from '@/api/auth.api';
+import { companiesService } from '@/api/companies.api';
 import { User } from '@/types/user';
-import { configureAuthRefresh } from '@/utils/api';
-
-const ACCESS_TOKEN_KEY = 'session';
-const REFRESH_TOKEN_KEY = 'refresh_token';
+import { Companies } from '@/types/companies';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
@@ -15,12 +13,15 @@ interface AuthContextType {
     password: string,
     firstName: string,
     lastName: string,
-    is_worker_active: boolean,
+    is_employer_active: boolean,
   ) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;
   user: User | null;
+  companies: Companies[] | [];
+  activeCompanyId: string | null;
+  changeCompany: (id: string) => Promise<void>;
   refreshUser: () => Promise<void>;
 }
 
@@ -37,49 +38,53 @@ export function useSession() {
 export function SessionProvider({ children }: React.PropsWithChildren) {
   const [session, setSession] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [companies, setCompanies] = useState<Companies[]>([]);
+
+  const [activeCompanyId, setActiveCompanyId] = useState<string | null>(null);
+
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    configureAuthRefresh({
-      getRefreshToken: async () => SecureStore.getItemAsync(REFRESH_TOKEN_KEY),
-      onAuthRefreshed: async ({ accessToken, refreshToken }) => {
-        await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, accessToken);
-        await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-        setSession(accessToken);
-      },
-      onAuthExpired: async () => {
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        setSession(null);
-        setUser(null);
-      },
-    });
+  const loadInitialData = async (token: string) => {
+    try {
+      const [userData, companiesData] = await Promise.all([
+        userService.getMe(token),
+        companiesService.getMyCompanies(token),
+      ]);
 
-    return () => {
-      configureAuthRefresh(null);
-    };
-  }, []);
+      setUser(userData);
+      setCompanies(companiesData);
+
+      const savedCompanyId = await SecureStore.getItemAsync('selected_company_id');
+
+      if (savedCompanyId) {
+        setActiveCompanyId(savedCompanyId);
+      } else if (companiesData.length > 0) {
+        const defaultId = companiesData[0].id.toString();
+        setActiveCompanyId(defaultId);
+        await SecureStore.setItemAsync('selected_company_id', defaultId);
+      }
+    } catch (e) {
+      console.error('Erreur lors du chargement des données initiales:', e);
+      refreshUser();
+    }
+  };
+
+  const changeCompany = async (id: string) => {
+    setActiveCompanyId(id);
+    await SecureStore.setItemAsync('selected_company_id', id);
+  };
 
   useEffect(() => {
     async function loadStorageData() {
       try {
-        const token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
-        const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
-
-        if (token && refreshToken) {
+        const token = await SecureStore.getItemAsync('session');
+        if (token) {
           setSession(token);
-          const userData = await userService.getMe(token);
-          setUser(userData);
-        } else {
-          await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-          await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+          await loadInitialData(token);
         }
       } catch (e) {
         console.error('Session obsolète ou invalide, nettoyage...', e);
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        setSession(null);
-        setUser(null);
+        signOut();
       } finally {
         setIsLoading(false);
       }
@@ -93,6 +98,7 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
       const userData = await userService.getMe(session);
       setUser(userData);
     } catch (e) {
+      signOut();
       console.error('Erreur refresh user:', e);
     }
   };
@@ -100,18 +106,17 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
   const register = async (
     email: string,
     password: string,
-    first_name: string,
-    last_name: string,
-    is_worker_active: boolean,
+    firstName: string,
+    lastName: string,
+    is_employer_active: boolean,
   ) => {
     try {
       await authService.register({
-        first_name,
-        last_name,
         email,
         password,
-        is_worker_active,
-        is_employer_active: false,
+        first_name: firstName,
+        last_name: lastName,
+        is_employer_active,
       });
       return true;
     } catch (error) {
@@ -122,24 +127,27 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      loadInitialData;
       const response = await authService.login(email, password);
 
       if (!response?.access_token || typeof response.access_token !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
       }
-      if (!response?.refresh_token || typeof response.refresh_token !== 'string') {
-        throw new Error("Le serveur n'a pas renvoyé de refresh token valide.");
-      }
 
       const token = response.access_token;
-      const refreshToken = response.refresh_token;
 
-      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
-      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+      await SecureStore.setItemAsync('session', token);
       setSession(token);
 
-      const userData = await userService.getMe(token);
+      const [userData, companiesData] = await Promise.all([
+        userService.getMe(token),
+        companiesService.getMyCompanies(token),
+      ]);
       setUser(userData);
+      setCompanies(companiesData);
+      const defaultId = companiesData[0].id.toString();
+      setActiveCompanyId(defaultId);
+      await SecureStore.setItemAsync('selected_company_id', defaultId);
     } catch (error: any) {
       console.error('Erreur de connexion détaillée:', error.message);
       throw error;
@@ -147,22 +155,27 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
   };
 
   const signOut = async () => {
-    try {
-      if (session) {
-        await authService.logout(session);
-      }
-      await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-      await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-      setSession(null);
-      setUser(null);
-    } catch (error) {
-      console.error('Erreur logout API:', error);
-    }
+    await SecureStore.deleteItemAsync('session');
+    setSession(null);
+    setUser(null);
+    setCompanies([]);
+    setActiveCompanyId(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{ register, signIn, signOut, session, user, isLoading, refreshUser }}
+      value={{
+        register,
+        signIn,
+        signOut,
+        session,
+        user,
+        companies,
+        activeCompanyId,
+        isLoading,
+        changeCompany,
+        refreshUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

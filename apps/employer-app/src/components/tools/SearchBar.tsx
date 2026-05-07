@@ -26,7 +26,7 @@ const SearchBar = ({ className, value, placeholder, onChangeText, onFocus }: Sea
       <EvilIcons
         name="search"
         size={24}
-        color={isDark ? colors.primary.disabled : colors.primary.hover}
+        color={isDark ? colors?.primary.disabled : colors?.primary.hover}
       />
       <Input
         variant="outline"

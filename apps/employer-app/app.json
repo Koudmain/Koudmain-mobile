@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "koudmain",
-    "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -40,8 +39,7 @@
           }
         }
       ],
-      "expo-font",
-      "expo-secure-store"
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

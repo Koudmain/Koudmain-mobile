@@ -31,8 +31,8 @@ export default function CustomDay({ props, cellHeight, isDark }: CustomDayProps)
         onLongPress={props.onLongPress ?? (() => {})}
         theme={{
           ...rest.theme,
-          dayTextColor: isDark ? colors.typography.white : colors.typography.black,
-          textDisabledColor: isDark ? colors.typography.darkGray : colors.typography.gray,
+          dayTextColor: isDark ? colors?.typography.white : colors?.typography.black,
+          textDisabledColor: isDark ? colors?.typography.darkGray : colors?.typography.gray,
         }}
       />
     </View>

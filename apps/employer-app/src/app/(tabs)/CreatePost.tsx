@@ -145,22 +145,22 @@ export default function CreatePost() {
                   calendarHeaderFormat={'MMMM YYYY'}
                   calendarHeaderPosition={'above'}
                   calendarHeaderStyle={{
-                    color: colors.primary.DEFAULT,
+                    color: colors?.primary.DEFAULT,
                     fontFamily: 'Inter',
                   }}
                   dateNumberStyle={{
-                    color: colors.primary.DEFAULT,
+                    color: colors?.primary.DEFAULT,
                     fontSize: 24,
                     fontFamily: 'Inter',
                     fontWeight: 'bold',
                   }}
                   dateNameStyle={{
-                    color: colors.grey,
+                    color: colors?.grey,
                     fontFamily: 'Inter',
                     fontSize: 12,
                   }}
                   highlightDateNameStyle={{
-                    color: colors.black,
+                    color: colors?.black,
                     fontSize: 12,
                     fontFamily: 'Inter',
                   }}
@@ -168,7 +168,7 @@ export default function CreatePost() {
                     color: 'white',
                     fontSize: 24,
                     fontFamily: 'Inter',
-                    backgroundColor: colors.secondary.DEFAULT,
+                    backgroundColor: colors?.secondary.DEFAULT,
                     borderRadius: 5,
                     paddingHorizontal: 3,
                     overflow: 'hidden',
@@ -245,7 +245,7 @@ export default function CreatePost() {
                   step={0.5}
                   value={duration}
                   onValueChange={(value) => setDuration(value)}
-                  thumbTintColor={colors.secondary.DEFAULT}
+                  thumbTintColor={colors?.secondary.DEFAULT}
                 />
               </View>
             </VStack>
@@ -313,8 +313,8 @@ export default function CreatePost() {
                   size="md"
                   isDisabled={false}
                   trackColor={{
-                    false: colors.primary.DEFAULT,
-                    true: colors.secondary.DEFAULT,
+                    false: colors?.primary.DEFAULT,
+                    true: colors?.secondary.DEFAULT,
                   }}
                   thumbColor="#fafafa"
                   ios_backgroundColor="#d4d4d4"
@@ -333,8 +333,8 @@ export default function CreatePost() {
                   size="md"
                   isDisabled={false}
                   trackColor={{
-                    false: colors.primary.DEFAULT,
-                    true: colors.secondary.DEFAULT,
+                    false: colors?.primary.DEFAULT,
+                    true: colors?.secondary.DEFAULT,
                   }}
                   thumbColor="#fafafa"
                   ios_backgroundColor="#d4d4d4"

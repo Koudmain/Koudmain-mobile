@@ -7,7 +7,7 @@ export default function ChatLayout() {
       screenOptions={{
         headerShown: true,
         headerBackTitle: 'Retour',
-        headerTintColor: colors.primary.DEFAULT,
+        headerTintColor: colors?.primary.DEFAULT,
         headerTitleAlign: 'left',
       }}
     />

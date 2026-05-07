@@ -5,7 +5,7 @@ import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
 import { VStack } from '@/components/ui/vstack';
 import { FormControl } from '@/components/ui/form-control';
 import Button from '@/components/ui/Button';
-import { AuthTop } from "@koudmain/ui";
+import { AuthTop } from '@koudmain/ui';
 
 import { router } from 'expo-router';
 

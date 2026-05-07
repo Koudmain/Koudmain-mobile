@@ -49,7 +49,7 @@ export default function YourOffers() {
           <Feather
             name="arrow-left"
             size={28}
-            color={isDark ? colors.primary.content : colors.primary.DEFAULT}
+            color={isDark ? colors?.primary.content : colors?.primary.DEFAULT}
           />
         </Pressable>
         <Text className="dark:text-primary-content text-4xl font-bold px-6">Vos Favoris</Text>
@@ -68,7 +68,7 @@ export default function YourOffers() {
               borderRadius: 24,
               width: '100%',
               marginBottom: 16,
-              backgroundColor: isDark ? colors.background.dark : colors.background.light,
+              backgroundColor: isDark ? colors?.background.dark : colors?.background.light,
             }}
           >
             <OffreEmploiCard

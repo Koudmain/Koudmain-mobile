@@ -1,13 +1,13 @@
-const baseConfig = require("../../packages/koudmain-ui/tailwind.config.js");
+const baseConfig = require('../../packages/koudmain-ui/tailwind.config.js');
 
 module.exports = {
-  presets: [require("nativewind/preset"), baseConfig],
+  presets: [require('nativewind/preset'), baseConfig],
   content: [
-    "./App.{js,jsx,ts,tsx}",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "../../packages/koudmain-ui/src/**/*.{ts,tsx}",
+    './App.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    '../../packages/koudmain-ui/src/**/*.{ts,tsx}',
   ],
-    theme: {
+  theme: {
     extend: {},
   },
   plugins: [],
