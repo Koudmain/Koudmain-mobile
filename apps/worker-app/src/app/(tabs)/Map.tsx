@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { View, StyleSheet, Dimensions, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { MapIcon } from '@/svg/MapIcon';
+import { DynamicMarker } from '@/svg/DynamicMarker';
+import ListPublication from '@/components/map/ListPublication';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.8;
@@ -13,6 +14,7 @@ interface Publication {
   lat: number;
   lng: number;
   description: string;
+  jobCount: number;
 }
 
 const BELLECOUR_REGION = {
@@ -22,34 +24,32 @@ const BELLECOUR_REGION = {
   longitudeDelta: 0.015,
 };
 
-const FAKE_PUBLICATIONS: Publication[] = [
-  {
-    id: '1',
-    title: 'Le Petit Bouchon',
-    lat: 45.7585,
-    lng: 4.834,
-    description: 'Extra en cuisine !',
-  },
-  {
-    id: '2',
-    title: 'Brasserie Bellecour',
-    lat: 45.756,
-    lng: 4.83,
-    description: 'Cherche serveur.',
-  },
-  {
-    id: '3',
-    title: 'Café des Artistes',
-    lat: 45.76,
-    lng: 4.828,
-    description: 'Aide cuisine 12h-15h.',
-  },
-  { id: '4', title: 'L’Atelier du Quai', lat: 45.755, lng: 4.835, description: 'Plongeur urgent.' },
-];
+const generateFakeData = (): Publication[] => {
+  const names = ['Bouchon', 'Bistro', 'Brasserie', 'Café', 'Resto', "L'Atelier", 'Chez'];
+  const suffixes = ['des Gones', 'du Rhône', 'de Lyon', 'Bellecour', 'Lumière', 'Vieux Lyon'];
+
+  return Array.from({ length: 20 }).map((_, i) => {
+    const randomLat = 45.7578 + (Math.random() - 0.5) * 0.012;
+    const randomLng = 4.8321 + (Math.random() - 0.5) * 0.012;
+    const randomCount = Math.floor(Math.random() * 8) + 1;
+
+    return {
+      id: String(i + 1),
+      title: `${names[i % names.length]} ${suffixes[i % suffixes.length]} #${i + 1}`,
+      lat: randomLat,
+      lng: randomLng,
+      description: `Besoin de ${randomCount} personne(s) pour un service.`,
+      jobCount: randomCount,
+    };
+  });
+};
+
+const FAKE_PUBLICATIONS = generateFakeData();
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(FAKE_PUBLICATIONS[0].id);
 
   const centerMapOnMarker = (lat: number, lng: number) => {
     mapRef.current?.animateToRegion(
@@ -72,51 +72,49 @@ export default function MapScreen() {
     }
   };
 
+  const handleMarkerPress = (pub: Publication, index: number) => {
+    setSelectedId(pub.id);
+    centerMapOnMarker(pub.lat, pub.lng);
+    flatListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+      viewPosition: 0.5,
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <MapView ref={mapRef} style={styles.map} initialRegion={BELLECOUR_REGION}>
-        {FAKE_PUBLICATIONS.map((pub) => (
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        initialRegion={BELLECOUR_REGION}
+        showsPointsOfInterest={false}
+      >
+        {FAKE_PUBLICATIONS.map((pub, index) => (
           <Marker
             key={pub.id}
             coordinate={{ latitude: pub.lat, longitude: pub.lng }}
-            onPress={() => {
-              setSelectedId(pub.id);
-              centerMapOnMarker(pub.lat, pub.lng);
-            }}
+            onPress={() => handleMarkerPress(pub, index)}
             tracksViewChanges={false}
           >
-            <MapIcon
+            <DynamicMarker
+              multiple={pub.jobCount > 1}
+              isSelected={selectedId === pub.id}
               width={40}
               height={40}
-              pinStrokeColor={selectedId === pub.id ? '#2ecc71' : '#FF5A5F'}
-              mapStrokeColor="#333"
             />
           </Marker>
         ))}
       </MapView>
 
-      <FlatList
-        data={FAKE_PUBLICATIONS}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id}
-        snapToInterval={CARD_WIDTH + SPACING}
-        decelerationRate="fast"
-        onMomentumScrollEnd={onScroll}
-        contentContainerStyle={styles.listContent}
-        style={styles.list}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={[
-              styles.card,
-              selectedId === item.id && { borderColor: '#2ecc71', borderWidth: 2 },
-            ]}
-          >
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
-          </TouchableOpacity>
-        )}
+      <ListPublication
+        flatListRef={flatListRef}
+        publications={FAKE_PUBLICATIONS}
+        selectedId={selectedId}
+        cardWidth={CARD_WIDTH}
+        spacing={SPACING}
+        onScroll={onScroll}
+        className="absolute bottom-[70]"
       />
     </View>
   );
@@ -129,34 +127,5 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
-  },
-  list: {
-    position: 'absolute',
-    bottom: 100,
-  },
-  listContent: {
-    paddingHorizontal: 20,
-  },
-  card: {
-    width: CARD_WIDTH,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 16,
-    marginRight: SPACING,
-    // Ombre iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    // Ombre Android
-    elevation: 5,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  description: {
-    color: '#666',
   },
 });

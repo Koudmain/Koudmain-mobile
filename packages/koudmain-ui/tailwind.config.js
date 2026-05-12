@@ -80,6 +80,7 @@ module.exports = {
           active: 'hsl(0, 0%, 15%)',
           focus: 'hsl(0, 0%, 19%, 0.4)',
           disabled: 'hsl(0, 0%, 60%)',
+          light: 'hsl(0, 0%, 85%)',
           content: '#FFFFFF',
         },
 
@@ -130,8 +131,7 @@ module.exports = {
           star: '#FBBF24',
         },
         map : {
-          marker: '#FF5A5F',
-          markerSelected: '#2ecc71',
+          selected: '#2ecc71',
           stroke: '#333',
         },
 
