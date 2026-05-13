@@ -12,7 +12,7 @@ const SectionHeader = ({ title, icon }: { title: string; icon: string }) => {
           name={icon as any}
           size={18}
           className="mr-2 text-primary-500"
-          color={colors?.primary.disabled}
+          color={colors.primary.disabled}
         />
       )}
       <Text className="text-sm font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">

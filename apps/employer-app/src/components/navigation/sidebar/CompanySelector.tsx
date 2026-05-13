@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSession } from '@/context/SessionContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { colors } from '@/app/(tabs)/CreatePost';
+import { colors } from "@/constants/theme";
 import { useRouter } from 'expo-router';
 
 export function CompanySelector() {
@@ -52,7 +52,7 @@ export function CompanySelector() {
         <AntDesign
           name="down"
           size={12}
-          color={isDark ? colors?.primary.content : colors?.primary.DEFAULT}
+          color={isDark ? colors.primary.content : colors.primary.DEFAULT}
         />
       </TouchableOpacity>
 
@@ -98,7 +98,7 @@ export function CompanySelector() {
                   <AntDesign
                     name="plus-circle"
                     size={16}
-                    color={isDark ? '#fff' : colors?.primary.DEFAULT}
+                    color={isDark ? '#fff' : colors.primary.DEFAULT}
                   />
                   <Text className="text-center font-bold ml-2 text-primary dark:text-white">
                     Ajouter une entreprise

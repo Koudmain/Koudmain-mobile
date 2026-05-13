@@ -37,7 +37,7 @@ export const ThemeToggle = () => {
           <Feather
             name={isDark ? 'moon' : 'sun'}
             size={18}
-            color={isDark ? colors?.assets.moon : colors?.assets.sun}
+            color={isDark ? colors.assets.moon : colors.assets.sun}
           />
         </Animated.View>
       </View>

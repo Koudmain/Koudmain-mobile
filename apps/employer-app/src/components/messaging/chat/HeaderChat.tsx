@@ -22,7 +22,7 @@ export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChat
           <Ionicons
             name="chevron-back"
             size={28}
-            color={isDark ? colors?.primary.content : colors?.primary.DEFAULT}
+            color={isDark ? colors.primary.content : colors.primary.DEFAULT}
           />
         </TouchableOpacity>
 
@@ -52,7 +52,7 @@ export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChat
       </View>
 
       <TouchableOpacity className="p-2">
-        <Ionicons name="ellipsis-vertical" size={20} color={colors?.primary.disabled} />
+        <Ionicons name="ellipsis-vertical" size={20} color={colors.primary.disabled} />
       </TouchableOpacity>
     </View>
   );

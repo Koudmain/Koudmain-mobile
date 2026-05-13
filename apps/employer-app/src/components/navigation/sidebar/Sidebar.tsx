@@ -108,7 +108,7 @@ export function Sidebar() {
               <Feather
                 name="help-circle"
                 size={20}
-                color={isDark ? colors?.primary.disabled : colors?.primary.hover}
+                color={isDark ? colors.primary.disabled : colors.primary.hover}
               />
               <Text className="text-primary-hover dark:text-primary-disabled font-medium ml-3">
                 Centre d&apos;aide
@@ -122,7 +122,7 @@ export function Sidebar() {
               }}
               className="py-4 mb-2 flex-row items-center active:opacity-70"
             >
-              <Feather name="log-out" size={20} color={colors?.error.DEFAULT} />
+              <Feather name="log-out" size={20} color={colors.error.DEFAULT} />
               <Text className="text-error font-bold ml-3">Déconnexion</Text>
             </Pressable>
           </View>

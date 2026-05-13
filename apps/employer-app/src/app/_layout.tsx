@@ -9,9 +9,19 @@ import { StatusBar } from 'expo-status-bar';
 import { useTheme, ThemeProvider } from '@/context/ThemeContext';
 import { SessionProvider, useSession } from '@/context/SessionContext';
 import { SplashScreenController } from '@/splash';
+import { useEffect } from 'react';
+import { socketService } from '@/services/socket.service';
 
 function RootNavigator() {
   const { session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      socketService.connect(session);
+    } else {
+      socketService.disconnect();
+    }
+  }, [session]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

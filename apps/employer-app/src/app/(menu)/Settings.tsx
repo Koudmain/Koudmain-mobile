@@ -121,7 +121,7 @@ export default function SettingsScreen() {
             <Divider className="bg-gray-200 dark:bg-primary-hover mx-4" />
 
             <TouchableOpacity onPress={signOut} className="flex-row items-center p-4">
-              <Feather name="log-out" size={20} color={colors?.error.DEFAULT} />
+              <Feather name="log-out" size={20} color={colors.error.DEFAULT} />
               <Text className="text-error font-semibold ml-3">Déconnexion</Text>
             </TouchableOpacity>
           </VStack>
@@ -145,14 +145,14 @@ const SettingsItem = ({
       <Feather
         name={iconName}
         size={20}
-        color={isDark ? colors?.primary.content : colors?.primary.DEFAULT}
+        color={isDark ? colors.primary.content : colors.primary.DEFAULT}
       />
       <Text className="text-primary dark:text-white font-medium ml-3">{title}</Text>
     </HStack>
     <Entypo
       name="chevron-right"
       size={18}
-      color={isDark ? colors?.primary.content : colors?.primary.DEFAULT}
+      color={isDark ? colors.primary.content : colors.primary.DEFAULT}
     />
   </TouchableOpacity>
 );

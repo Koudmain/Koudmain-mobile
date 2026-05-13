@@ -1,24 +1,71 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, useColorScheme, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import { MOCK_CONVERSATIONS } from '@/constants/fakeConversations';
 import { HeaderChat } from '@/components/messaging/chat/HeaderChat';
 import { colors } from '@/constants/theme';
-import { MOCK_MESSAGES } from '@/constants/fakeMessages';
 import MessageBubble from '@/components/messaging/chat/MessageBubble';
 import MessageInput from '@/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useChatStore } from '@/store/useChatStore';
+import { useSession } from '@/context/SessionContext';
+import { chatService } from '@/api/chat.api';
+import { IMessage } from '@/types/message';
+import { IConversation } from '@/types/conversation';
 
 export default function ChatScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const conversationId = Number(id);
+  const { session, activeCompanyId } = useSession();
+
+  const messages = useChatStore((state) => state.messages);
+  const setMessages = useChatStore((state) => state.setMessages);
+  const [conversation, setConversation] = React.useState<IConversation | null>(null);
 
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const currentChatMessages = messages
+    .filter((m) => m.conversation_id === conversationId)
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-  const conversation = MOCK_CONVERSATIONS.find((c) => c.id === Number(id));
+  useEffect(() => {
+    if (session && conversationId) {
+      chatService
+        .getMessages(session, conversationId)
+        .then((history) => {
+          setMessages(history);
+        })
+        .catch((err) => console.error("Erreur lors de la récupération de l'historique:", err));
+      chatService
+        .getOneCompanyConversation(session, conversationId)
+        .then((conv) => {
+          setConversation(conv);
+        })
+        .catch((err) => console.error('Erreur lors de la récupération de la conversation:', err));
+    }
+  }, [session, conversationId, setMessages, setConversation]);
 
-  const handleSend = (text: string) => {
-    console.log('Envoi du message :', text);
+  const handleSend = async (text: string) => {
+    if (!session || !conversationId || !text.trim()) return;
+
+    const tempId = Date.now();
+    const optimisticMessage: IMessage = {
+      id: tempId,
+      conversation_id: conversationId,
+      sender_id: Number(activeCompanyId),
+      content_text: text,
+      created_at: new Date().toISOString(),
+      message_type: 'text',
+      type: 'MESSAGE',
+      isOptimistic: true,
+    };
+
+    useChatStore.getState().addMessage(optimisticMessage);
+
+    try {
+      await chatService.sendMessage(session, conversationId, text);
+    } catch (err) {
+      console.error("Erreur d'envoi réel:", err);
+    }
   };
 
   if (!conversation) {
@@ -36,15 +83,17 @@ export default function ChatScreen() {
           options={{
             headerTitle: () => (
               <HeaderChat
-                userName={conversation.other_user_name}
-                publicationTitle={conversation.publication_title}
+                userName={
+                  conversation.worker?.user.first_name + ' ' + conversation.worker?.user.last_name
+                }
+                publicationTitle={conversation.publication?.title}
               />
             ),
             headerTitleAlign: 'left',
             headerBackVisible: false,
             headerShadowVisible: true,
             headerStyle: {
-              backgroundColor: isDark ? colors?.primary.DEFAULT : colors?.primary.content,
+              backgroundColor: isDark ? colors.primary.DEFAULT : colors.primary.content,
             },
           }}
         />
@@ -55,15 +104,17 @@ export default function ChatScreen() {
           keyboardVerticalOffset={Platform.OS === 'ios' ? 125 : 0}
         >
           <FlatList
-            data={MOCK_MESSAGES}
-            renderItem={({ item }) => <MessageBubble message={item} />}
-            keyExtractor={(item) => item.id}
+            data={currentChatMessages}
+            renderItem={({ item }) => (
+              <MessageBubble message={item} isMe={item.sender_id === Number(activeCompanyId)} />
+            )}
+            keyExtractor={(item) => item.id.toString()}
             inverted
             contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16 }}
           />
 
           <View className="w-full mb-2 items-center bg-white dark:bg-primary border-transparent">
-            <MessageInput onSend={(text: string) => handleSend(text)} />
+            <MessageInput onSend={handleSend} />
           </View>
         </KeyboardAvoidingView>
       </View>

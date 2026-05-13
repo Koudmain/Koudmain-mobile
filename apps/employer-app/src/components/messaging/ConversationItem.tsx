@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { cnFusion } from '@/utils/cnFusion';
-import { Conversation } from '@/types/conversation';
+import { IConversation } from '@/types/conversation';
 import ButtonRightAction from './ButtonRightAction';
 
 interface ConversationItemProps {
-  conversation: Conversation;
+  conversation: IConversation;
   isOpen: boolean;
   onSwipeOpen: () => void;
   onPress: (id: number) => void;
@@ -26,17 +26,14 @@ const ConversationItem = ({
   onMore,
   className,
 }: ConversationItemProps) => {
-  const {
-    other_user_name,
-    other_user_avatar,
-    last_message_content,
-    last_message_time,
-    unread_count,
-  } = conversation;
-  const hasUnread = unread_count > 0;
-
+  const hasUnread = false; // Placeholder, replace with future unread logic
+  const unread_count = 0; // Placeholder, replace with future unread count
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+
+  const urlImg =
+    conversation.worker.user.profile_picture_url ||
+    'https://www.cuisine-essentiel.fr/images/2020/10/avatar-neutre.png';
 
   useEffect(() => {
     if (!isOpen) {
@@ -81,7 +78,9 @@ const ConversationItem = ({
       >
         <View className="relative">
           <Image
-            source={{ uri: other_user_avatar }}
+            source={{
+              uri: urlImg,
+            }}
             className="w-14 h-14 rounded-full bg-neutral-200"
           />
         </View>
@@ -95,7 +94,7 @@ const ConversationItem = ({
               )}
               numberOfLines={1}
             >
-              {other_user_name}
+              {conversation.worker.user.first_name} {conversation.worker.user.last_name}
             </Text>
             <Text
               className={cnFusion(
@@ -103,7 +102,7 @@ const ConversationItem = ({
                 hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
               )}
             >
-              {last_message_time}
+              {conversation.last_message[0]?.created_at}
             </Text>
           </View>
 
@@ -115,7 +114,7 @@ const ConversationItem = ({
               )}
               numberOfLines={1}
             >
-              {last_message_content}
+              {conversation.last_message[0]?.content_text}
             </Text>
             {hasUnread && (
               <View className="bg-primary-500 min-w-[20px] h-5 px-1.5 rounded-full items-center justify-center">
