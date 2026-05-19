@@ -24,10 +24,10 @@ class ApiError extends Error {
 const RAW_API_HOST = process.env.EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME;
 
 function transformIpBackendUrl(hostOrUrl?: string): string {
-  if (!hostOrUrl) return 'http://192.168.1.40:3000';
+  if (!hostOrUrl) return 'http://localhost:3000';
 
   const trimmed = hostOrUrl.trim().replace(/\/$/, '');
-  if (!trimmed) return 'http://192.168.1.40:3000';
+  if (!trimmed) return 'http://localhost:3000';
 
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     return trimmed;
@@ -69,6 +69,13 @@ export async function apiFetch<T>(
     if (!isFormData && body != null && !requestHeaders.has('Content-Type')) {
       requestHeaders.set('Content-Type', 'application/json');
     }
+
+    console.log('API Request:', {
+      url: buildApiUrl(endpoint),
+      method: rest.method || 'GET',
+      headers: Object.fromEntries(requestHeaders.entries()),
+      body: isFormData ? '[FormData]' : body,
+    });
 
     const response = await fetch(buildApiUrl(endpoint), {
       ...rest,
