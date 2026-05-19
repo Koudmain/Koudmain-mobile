@@ -125,6 +125,10 @@ module.exports = {
           moon: '#3f3f46',
           sun: '#f59e0b',
         },
+        utils: {
+          star: '#F59E0B',
+          heart: '#E11D48',
+        },
 
         // Neutral colors
         neutral: {
