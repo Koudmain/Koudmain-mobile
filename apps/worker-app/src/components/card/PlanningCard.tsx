@@ -62,7 +62,7 @@ export default function PlanningCard({
             </Heading>
             <View className="flex-row items-center mt-1">
               <Text className="text-xs text-gray-500 dark:text-gray-400">
-                {city} - {zip}
+                {city} ({zip})
               </Text>
               <View className="flex-row items-center ml-4">
                 <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />

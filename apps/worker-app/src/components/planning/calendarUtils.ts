@@ -27,6 +27,9 @@ export const formatDayEvents = (events: any[], dateString: string) => {
         status: item.applicationStatus?.toLowerCase() === 'accepted' ? 'accepted' : 'pending',
         rate: parseFloat(item.companyRating),
         number_rate: parseInt(item.companyRatingCount, 10),
+        city: item.city || 'Unknown City',
+        zip: item.zip || '00000',
+        image_profile: item.companyLogo || null,
       };
     });
 };
