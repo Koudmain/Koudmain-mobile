@@ -198,6 +198,7 @@ export default function MapScreen() {
               key={pub.id}
               coordinate={{ latitude: pub.latitude, longitude: pub.longitude }}
               onPress={() => handleMarkerPress(pub, index)}
+              tracksViewChanges={tracksView}
             >
               <Image source={markerImage} style={{ width: 40, height: 40 }} resizeMode="contain" />
             </Marker>
