@@ -150,12 +150,13 @@
 //   clusterText: { color: '#ffffff', fontWeight: 'bold', fontSize: 12 },
 // });
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-// 1. CORRECTION DE L'IMPORT ICI : On prend le vrai package standard
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import ClusterMarker from '@/components/map/ClusterMarker';
 import { getCluster } from '@/components/map/clustersUtils';
+import { useSession } from '@/context/SessionContext';
+import { apiFetch } from '@/utils/api';
 
 const Style = StyleSheet.create({
   container: {
@@ -169,23 +170,45 @@ const Style = StyleSheet.create({
   },
 });
 
-const INITIAL_POSITION = {
-  latitude: 41.924447,
-  longitude: -87.687339,
-  latitudeDelta: 1,
-  longitudeDelta: 1,
+const BELLECOUR_REGION = {
+  latitude: 45.7578,
+  longitude: 4.8321,
+  latitudeDelta: 0.015,
+  longitudeDelta: 0.015,
 };
 
-const COORDS = [
-  { lat: 42, lon: -87 },
-  { lat: 42.1, lon: -87 },
-  { lat: 42.2, lon: -87 },
-  { lat: 42.3, lon: -87 },
-  { lat: 42.4, lon: -87 },
-];
-
 export default function MapScreen() {
-  const [region, setRegion] = useState(INITIAL_POSITION);
+  const [region, setRegion] = useState(BELLECOUR_REGION);
+
+  const [addresses, setAddresses] = useState<any[]>([]); // <--- State pour stocker les adresses de l'API
+  const { session } = useSession(); // À remplacer par ton vrai hook de session (ex: useSession())
+
+  // Ta fonction de fetch adaptée
+  const fetchAddresses = useCallback(
+    async (currentRegion: typeof BELLECOUR_REGION) => {
+      const min_lat = currentRegion.latitude - currentRegion.latitudeDelta / 2;
+      const max_lat = currentRegion.latitude + currentRegion.latitudeDelta / 2;
+      const min_lng = currentRegion.longitude - currentRegion.longitudeDelta / 2;
+      const max_lng = currentRegion.longitude + currentRegion.longitudeDelta / 2;
+
+      try {
+        // Remplacer apiFetch par ta vraie fonction d'appel API
+        const data = await apiFetch<any[]>(
+          `/address/map?min_lat=${min_lat}&max_lat=${max_lat}&min_lng=${min_lng}&max_lng=${max_lng}`,
+          { method: 'GET', token: session },
+        );
+        setAddresses(data ?? []);
+      } catch (e) {
+        console.error('Erreur lors de la récupération des adresses :', e);
+      }
+    },
+    [session],
+  );
+
+  const handleRegionChangeComplete = (newRegion: typeof BELLECOUR_REGION) => {
+    setRegion(newRegion); // Met à jour la région pour le supercluster
+    fetchAddresses(newRegion); // Déclenche l'appel API pour la nouvelle zone
+  };
 
   const renderMarker = (marker, index) => {
     const key = index + marker.geometry.coordinates[0];
@@ -216,9 +239,9 @@ export default function MapScreen() {
     );
   };
 
-  const allCoords = COORDS.map((c) => ({
+  const allCoords = addresses.map((c) => ({
     geometry: {
-      coordinates: [c.lon, c.lat],
+      coordinates: [c.longitude, c.latitude],
     },
   }));
 
@@ -232,10 +255,10 @@ export default function MapScreen() {
         loadingIndicatorColor={'#ffbbbb'}
         loadingBackgroundColor={'#ffbbbb'}
         // CORRECTION ICI : On utilise initialRegion au lieu de region
-        initialRegion={INITIAL_POSITION}
+        initialRegion={BELLECOUR_REGION}
         // onRegionChangeComplete met à jour l'état pour recalculer supercluster,
         // mais ne force plus graphiquement la carte à bouger
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        onRegionChangeComplete={handleRegionChangeComplete}
       >
         {cluster.markers.map((marker, index) => renderMarker(marker, index))}
       </MapView>
