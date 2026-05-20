@@ -1,174 +1,19 @@
-// import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
-// import { View, StyleSheet, Image, Text } from 'react-native';
-// import { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-// import MapView from 'react-native-map-clustering';
-// import { apiFetch } from '@/utils/api';
-// import { useSession } from '@/context/SessionContext';
-// import MapMarker from '@/components/map/MapMarker';
-// const customMarkerImage = require('@/assets/images/google_maps_pin.png');
-
-// // 1. On isole UNIQUEMENT le rendu graphique de l'image pour bloquer les fuites mémoire d'iOS
-// // On nomme clairement la fonction interne (ici MarkerImageComponent)
-// const StaticMarkerImage = React.memo(function MarkerImageComponent() {
-//   return (
-//     <Image source={customMarkerImage} style={{ width: 32, height: 32 }} resizeMode="contain" />
-//   );
-// });
-
-// const BELLECOUR_REGION = {
-//   latitude: 45.7578,
-//   longitude: 4.8321,
-//   latitudeDelta: 0.015,
-//   longitudeDelta: 0.015,
-// };
-
-// export default function MapScreen() {
-//   const mapRef = useRef(null);
-//   const lastRegionRef = useRef(BELLECOUR_REGION);
-//   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
-//   const { session } = useSession();
-//   const [addresses, setAddresses] = useState<any[]>([]);
-
-//   useEffect(() => {
-//     return () => {
-//       if (debounceTimer.current) clearTimeout(debounceTimer.current);
-//     };
-//   }, []);
-
-//   const fetchAddresses = useCallback(
-//     async (region: any) => {
-//       const min_lat = region.latitude - region.latitudeDelta / 2;
-//       const max_lat = region.latitude + region.latitudeDelta / 2;
-//       const min_lng = region.longitude - region.longitudeDelta / 2;
-//       const max_lng = region.longitude + region.longitudeDelta / 2;
-
-//       try {
-//         const data = await apiFetch<any[]>(
-//           `/address/map?min_lat=${min_lat}&max_lat=${max_lat}&min_lng=${min_lng}&max_lng=${max_lng}`,
-//           { method: 'GET', token: session },
-//         );
-//         setAddresses(data ?? []);
-//       } catch (e) {
-//         console.error(e);
-//       }
-//     },
-//     [session],
-//   );
-
-//   const handleRegionChangeComplete = useCallback(
-//     (region: any) => {
-//       if (debounceTimer.current) clearTimeout(debounceTimer.current);
-//       debounceTimer.current = setTimeout(() => {
-//         const prev = lastRegionRef.current;
-//         const positionChanged =
-//           Math.abs(prev.latitude - region.latitude) > prev.latitudeDelta * 0.2 ||
-//           Math.abs(prev.longitude - region.longitude) > prev.longitudeDelta * 0.2;
-//         const zoomChanged =
-//           Math.abs(prev.latitudeDelta - region.latitudeDelta) > prev.latitudeDelta * 0.2;
-
-//         if (positionChanged || zoomChanged) {
-//           lastRegionRef.current = region;
-//           fetchAddresses(region);
-//         }
-//       }, 400);
-//     },
-//     [fetchAddresses],
-//   );
-
-//   const markers = useMemo(
-//     () =>
-//       addresses.map((addr) => (
-//         <Marker
-//           key={addr.id}
-//           identifier={String(addr.id)}
-//           coordinate={{
-//             latitude: Number(addr.latitude),
-//             longitude: Number(addr.longitude),
-//           }}
-//           // Indispensable pour éviter que Google Maps iOS passe son temps à redessiner les pins stables
-//           tracksViewChanges={false}
-//         >
-//           <StaticMarkerImage />
-//         </Marker>
-//       )),
-//     [addresses],
-//   );
-
-//   return (
-//     <View style={styles.container}>
-//       <MapView
-//         ref={mapRef}
-//         provider={PROVIDER_GOOGLE}
-//         style={styles.map}
-//         initialRegion={BELLECOUR_REGION}
-//         onRegionChangeComplete={handleRegionChangeComplete}
-//         rotateEnabled={false}
-//         pitchEnabled={false}
-//         preserveClusterPressBehavior={true}
-//         tracksViewChanges={false}
-//         removeClippedSubviews={false} // SURTOUT PAS à true sur iOS avec Google Maps
-//         renderCluster={(cluster) => {
-//           // Si tu veux customiser ou forcer le rafraîchissement des clusters natifs
-//           const { id, pointCount, coordinate } = cluster;
-//           return (
-//             <Marker
-//               key={`cluster-${id}`}
-//               coordinate={coordinate}
-//               identifier={`cluster-${id}`}
-//               tracksViewChanges={false}
-//             >
-//               <View style={styles.clusterView}>
-//                 <Text style={styles.clusterText}>{pointCount}</Text>
-//               </View>
-//             </Marker>
-//           );
-//         }}
-//         // react-native-map-clustering gère le clustering automatiquement
-//         clusterColor="#007AFF"
-//         clusterTextColor="#ffffff"
-//         radius={50}
-//         extent={512}
-//         animationEnabled={false} // évite les animations qui consomment de la mémoire
-//       >
-//         {markers}
-//       </MapView>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1 },
-//   map: { ...StyleSheet.absoluteFillObject },
-//   clusterView: {
-//     width: 30,
-//     height: 30,
-//     borderRadius: 15,
-//     backgroundColor: '#007AFF',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   clusterText: { color: '#ffffff', fontWeight: 'bold', fontSize: 12 },
-// });
-
-import React, { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import ClusterMarker from '@/components/map/ClusterMarker';
-import { getCluster } from '@/components/map/clustersUtils';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { View, StyleSheet, Dimensions, FlatList } from 'react-native';
+import MapView, { Marker, Region } from 'react-native-maps';
+import { DynamicMarker } from '@/svg/DynamicMarker';
 import { useSession } from '@/context/SessionContext';
 import { apiFetch } from '@/utils/api';
 
-const Style = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    ...StyleSheet.absoluteFill,
-  },
-});
+const { width } = Dimensions.get('window');
+const CARD_WIDTH = width * 0.8;
+const SPACING = 10;
+
+interface Publication {
+  id: number;
+  latitude: number;
+  longitude: number;
+}
 
 const BELLECOUR_REGION = {
   latitude: 45.7578,
@@ -178,90 +23,115 @@ const BELLECOUR_REGION = {
 };
 
 export default function MapScreen() {
-  const [region, setRegion] = useState(BELLECOUR_REGION);
+  const mapRef = useRef<MapView>(null);
+  const flatListRef = useRef<FlatList>(null);
+  const { session } = useSession();
 
-  const [addresses, setAddresses] = useState<any[]>([]); // <--- State pour stocker les adresses de l'API
-  const { session } = useSession(); // À remplacer par ton vrai hook de session (ex: useSession())
+  const [publications, setPublications] = useState<Publication[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // Ta fonction de fetch adaptée
   const fetchAddresses = useCallback(
-    async (currentRegion: typeof BELLECOUR_REGION) => {
+    async (currentRegion: Region) => {
       const min_lat = currentRegion.latitude - currentRegion.latitudeDelta / 2;
       const max_lat = currentRegion.latitude + currentRegion.latitudeDelta / 2;
       const min_lng = currentRegion.longitude - currentRegion.longitudeDelta / 2;
       const max_lng = currentRegion.longitude + currentRegion.longitudeDelta / 2;
 
       try {
-        // Remplacer apiFetch par ta vraie fonction d'appel API
-        const data = await apiFetch<any[]>(
+        const data = await apiFetch<Publication[]>(
           `/address/map?min_lat=${min_lat}&max_lat=${max_lat}&min_lng=${min_lng}&max_lng=${max_lng}`,
           { method: 'GET', token: session },
         );
-        setAddresses(data ?? []);
+
+        const fetchedPubs = data ?? [];
+        setPublications(fetchedPubs);
+
+        if (fetchedPubs.length > 0 && !selectedId) {
+          setSelectedId(fetchedPubs[0].id);
+        }
       } catch (e) {
         console.error('Erreur lors de la récupération des adresses :', e);
       }
     },
-    [session],
+    [session, selectedId],
   );
 
-  const handleRegionChangeComplete = (newRegion: typeof BELLECOUR_REGION) => {
-    setRegion(newRegion); // Met à jour la région pour le supercluster
-    fetchAddresses(newRegion); // Déclenche l'appel API pour la nouvelle zone
+  useEffect(() => {
+    fetchAddresses(BELLECOUR_REGION);
+  }, [fetchAddresses]);
+
+  const handleRegionChangeComplete = (region: Region) => {
+    fetchAddresses(region);
   };
 
-  const renderMarker = (marker, index) => {
-    const key = index + marker.geometry.coordinates[0];
-
-    // If a cluster
-    if (marker.properties) {
-      return (
-        <Marker
-          key={key}
-          coordinate={{
-            latitude: marker.geometry.coordinates[1],
-            longitude: marker.geometry.coordinates[0],
-          }}
-        >
-          <ClusterMarker count={marker.properties.point_count} />
-        </Marker>
-      );
-    }
-    // If a single marker
-    return (
-      <Marker
-        key={key}
-        coordinate={{
-          latitude: marker.geometry.coordinates[1],
-          longitude: marker.geometry.coordinates[0],
-        }}
-      />
+  const centerMapOnMarker = (lat: number, lng: number) => {
+    mapRef.current?.animateToRegion(
+      {
+        latitude: lat,
+        longitude: lng,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      },
+      600,
     );
   };
 
-  const allCoords = addresses.map((c) => ({
-    geometry: {
-      coordinates: [c.longitude, c.latitude],
-    },
-  }));
+  const onScroll = (event: any) => {
+    if (publications.length === 0) return;
 
-  const cluster = getCluster(allCoords, region);
+    const index = Math.round(event.nativeEvent.contentOffset.x / (CARD_WIDTH + SPACING));
+    const pub = publications[index];
+    if (pub && pub.id !== selectedId) {
+      setSelectedId(pub.id);
+      centerMapOnMarker(pub.latitude, pub.longitude);
+    }
+  };
+
+  const handleMarkerPress = (pub: Publication, index: number) => {
+    setSelectedId(pub.id);
+    centerMapOnMarker(pub.latitude, pub.longitude);
+    flatListRef.current?.scrollToIndex({
+      index,
+      animated: true,
+      viewPosition: 0.5,
+    });
+  };
 
   return (
-    <View style={Style.container}>
+    <View style={styles.container}>
       <MapView
-        provider={PROVIDER_GOOGLE}
-        style={Style.map}
-        loadingIndicatorColor={'#ffbbbb'}
-        loadingBackgroundColor={'#ffbbbb'}
-        // CORRECTION ICI : On utilise initialRegion au lieu de region
+        ref={mapRef}
+        style={styles.map}
         initialRegion={BELLECOUR_REGION}
-        // onRegionChangeComplete met à jour l'état pour recalculer supercluster,
-        // mais ne force plus graphiquement la carte à bouger
-        onRegionChangeComplete={handleRegionChangeComplete}
+        showsPointsOfInterest={false}
+        onRegionChangeComplete={handleRegionChangeComplete} // Déclenche l'API au mouvement
       >
-        {cluster.markers.map((marker, index) => renderMarker(marker, index))}
+        {publications.map((pub, index) => (
+          <Marker
+            key={pub.id}
+            coordinate={{ latitude: pub.latitude, longitude: pub.longitude }}
+            onPress={() => handleMarkerPress(pub, index)}
+            tracksViewChanges={false}
+          >
+            <DynamicMarker
+              multiple={false}
+              isSelected={selectedId === pub.id}
+              width={40}
+              height={40}
+            />
+          </Marker>
+        ))}
       </MapView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});
