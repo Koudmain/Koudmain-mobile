@@ -1,13 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { View, StyleSheet, Dimensions, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import MapView, { Marker, Region } from 'react-native-maps';
 import { DynamicMarker } from '@/svg/DynamicMarker';
 import { useSession } from '@/context/SessionContext';
 import { apiFetch } from '@/utils/api';
-
-const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.8;
-const SPACING = 10;
 
 interface Publication {
   id: number;
@@ -29,6 +25,8 @@ export default function MapScreen() {
 
   const [publications, setPublications] = useState<Publication[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [tracksView, setTracksView] = useState(true);
 
   const fetchAddresses = useCallback(
     async (currentRegion: Region) => {
@@ -58,10 +56,32 @@ export default function MapScreen() {
 
   useEffect(() => {
     fetchAddresses(BELLECOUR_REGION);
+
+    return () => {
+      if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current);
+    };
   }, [fetchAddresses]);
 
+  useEffect(() => {
+    if (publications.length > 0) {
+      setTracksView(true);
+
+      const timer = setTimeout(() => {
+        setTracksView(false);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [publications]);
+
   const handleRegionChangeComplete = (region: Region) => {
-    fetchAddresses(region);
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      fetchAddresses(region);
+    }, 800);
   };
 
   const centerMapOnMarker = (lat: number, lng: number) => {
@@ -74,17 +94,6 @@ export default function MapScreen() {
       },
       600,
     );
-  };
-
-  const onScroll = (event: any) => {
-    if (publications.length === 0) return;
-
-    const index = Math.round(event.nativeEvent.contentOffset.x / (CARD_WIDTH + SPACING));
-    const pub = publications[index];
-    if (pub && pub.id !== selectedId) {
-      setSelectedId(pub.id);
-      centerMapOnMarker(pub.latitude, pub.longitude);
-    }
   };
 
   const handleMarkerPress = (pub: Publication, index: number) => {
@@ -104,14 +113,14 @@ export default function MapScreen() {
         style={styles.map}
         initialRegion={BELLECOUR_REGION}
         showsPointsOfInterest={false}
-        onRegionChangeComplete={handleRegionChangeComplete} // Déclenche l'API au mouvement
+        onRegionChangeComplete={handleRegionChangeComplete}
       >
         {publications.map((pub, index) => (
           <Marker
             key={pub.id}
             coordinate={{ latitude: pub.latitude, longitude: pub.longitude }}
             onPress={() => handleMarkerPress(pub, index)}
-            tracksViewChanges={false}
+            tracksViewChanges={tracksView}
           >
             <DynamicMarker
               multiple={false}
