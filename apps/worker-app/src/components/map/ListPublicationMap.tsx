@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { cnFusion } from '@/utils/cnFusion';
 
-interface ListPublicationProps {
+interface ListPublicationMapProps {
   flatListRef: React.RefObject<any>;
   publications: Publication[];
   selectedId: string | null;
@@ -22,7 +22,7 @@ interface ListPublicationProps {
   onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
-function ListPublication({
+function ListPublicationMap({
   flatListRef,
   publications,
   selectedId,
@@ -31,7 +31,7 @@ function ListPublication({
   className,
   onPressItem,
   onScroll,
-}: ListPublicationProps) {
+}: ListPublicationMapProps) {
   const styles = StyleSheet.create({
     listContent: {
       paddingHorizontal: 20,
@@ -91,4 +91,4 @@ function ListPublication({
   );
 }
 
-export default ListPublication;
+export default ListPublicationMap;
