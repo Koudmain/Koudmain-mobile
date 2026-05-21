@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, FlatList, useColorScheme, Image } from 'react-native';
 import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
-import { DynamicMarker } from '@/svg/DynamicMarker';
 import { useSession } from '@/context/SessionContext';
 import { apiFetch } from '@/utils/api';
 import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
@@ -218,4 +217,3 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
 });
-600;

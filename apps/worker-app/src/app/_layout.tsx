@@ -6,7 +6,7 @@ import { SidebarProvider } from '@/context/SidebarContext';
 import { Sidebar } from '@/components/navigation/sidebar/Sidebar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { useTheme, ThemeProvider } from '@/context/ThemeContext';
+import { useTheme, ThemeProvider } from '@koudmain/ui/context/ThemeContext';
 import { SessionProvider, useSession } from '@/context/SessionContext';
 import { SplashScreenController } from '@/splash';
 
@@ -33,12 +33,12 @@ function RootNavigator() {
 }
 
 function RootLayoutContent() {
-  const { colorMode } = useTheme();
+  const { colorMode, themePreference } = useTheme();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <GluestackUIProvider mode={colorMode}>
+        <GluestackUIProvider mode={themePreference}>
           <SessionProvider>
             <SidebarProvider>
               <SafeAreaView className="flex-1 bg-white dark:bg-primary" edges={['top']}>
