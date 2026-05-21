@@ -175,7 +175,7 @@ export default function MapScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-white">
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
@@ -209,10 +209,6 @@ export default function MapScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
   map: {
     ...StyleSheet.absoluteFillObject,
   },
