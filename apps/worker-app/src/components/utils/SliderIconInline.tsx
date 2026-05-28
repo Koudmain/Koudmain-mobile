@@ -20,6 +20,19 @@ interface SliderIconInlineProps {
   className?: string;
 }
 
+/**
+ *
+ * @param title Titre à afficher au-dessus du slider
+ * @param value La valeur actuellement sélectionnée
+ * @param valueMin La valeur minimale sélectionnable (par défaut: 0)
+ * @param valueMax La valeur maximale sélectionnable (par défaut: 10)
+ * @param unit L'unité à afficher à côté du champ de saisie (par défaut: 'h')
+ * @param sliderStyle Styles personnalisés pour le slider, permettant de configurer les couleurs de la piste et du thumb
+ * @param icon L'icône à afficher à gauche du champ de saisie
+ * @param onValueChange Fonction appelée lorsque la valeur change, reçoit la nouvelle valeur en paramètre
+ * @param className Classes supplémentaires pour le conteneur principal du composant
+ * @returns Un composant SliderIconInline qui affiche un champ de saisie pour la valeur et un slider pour la sélectionner visuellement, avec des limites configurables, une unité affichée, et une icône à gauche du champ de saisie. Le slider et le champ de saisie sont synchronisés pour refléter la même valeur.
+ */
 export default function SliderIconInline({
   title,
   value,

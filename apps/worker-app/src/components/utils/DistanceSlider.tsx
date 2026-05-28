@@ -14,6 +14,17 @@ interface DistanceSliderProps {
   className?: string;
 }
 
+/**
+ * Slider pour sélectionner une distance
+ * @param title Titre à afficher au-dessus du slider
+ * @param distance La distance actuellement sélectionnée
+ * @param distanceMin La distance minimale sélectionnable (par défaut: 0)
+ * @param distanceMax La distance maximale sélectionnable (par défaut: 100)
+ * @param onValuesChange Fonction appelée lorsque la distance change, reçoit la nouvelle distance en paramètre
+ * @param unit L'unité de distance à afficher à côté du champ de saisie (par défaut: 'km')
+ * @param className Classes supplémentaires pour le conteneur principal du composant
+ * @returns Un composant DistanceSlider qui affiche un champ de saisie pour la distance et un slider pour la sélectionner visuellement, avec des limites configurables et une unité affichée.
+ */
 export default function DistanceSlider({
   title,
   distance,
