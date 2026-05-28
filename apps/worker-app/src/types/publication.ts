@@ -6,3 +6,9 @@ export interface Publication {
   description: string;
   jobCount: number;
 }
+
+export interface PublicationMap {
+  id: number;
+  latitude: number;
+  longitude: number;
+}
