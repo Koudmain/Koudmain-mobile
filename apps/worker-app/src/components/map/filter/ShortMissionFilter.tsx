@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Text, useColorScheme, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
@@ -6,32 +5,77 @@ import LabeledIconInput from '@/components/form/LabeledIconInput';
 import InfoHint from '@/components/ui/InfoHint';
 import SliderIconInline from '@/components/utils/SliderIconInline';
 
-export default function ShortMissionFilter() {
+export interface FShortMissionFilter {
+  remuneration: string;
+  missionDuration: number;
+  active: boolean;
+  enabled: boolean;
+}
+
+export const defaultShortMissionFilter: FShortMissionFilter = {
+  remuneration: '0',
+  missionDuration: 0,
+  active: false,
+  enabled: true,
+};
+
+interface ShortMissionFilterProps {
+  filters: FShortMissionFilter;
+  setFilters: (filters: FShortMissionFilter) => void;
+}
+
+export default function ShortMissionFilter({ filters, setFilters }: ShortMissionFilterProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
-  const [remuneration, setRemuneration] = useState('0.00');
-  const [missionDuration, setMissionDuration] = useState(0);
+  const computeActive = (nextRemuneration: string, nextMissionDuration: number) => {
+    return [
+      nextRemuneration !== defaultShortMissionFilter.remuneration,
+      nextMissionDuration !== defaultShortMissionFilter.missionDuration,
+    ].filter(Boolean).length;
+  };
+
+  const handleRemunerationChange = (text: string) => {
+    const nextFilters = {
+      ...filters,
+      remuneration: text,
+    };
+
+    setFilters({
+      ...nextFilters,
+      active: computeActive(text, nextFilters.missionDuration) > 0,
+    });
+  };
+
+  const handleMissionDurationChange = (time: number) => {
+    const nextFilters = {
+      ...filters,
+      missionDuration: time,
+    };
+
+    setFilters({
+      ...nextFilters,
+      active: computeActive(nextFilters.remuneration, time) > 0,
+    });
+  };
 
   const changeRemuneration = (text: string) => {
     const numericValue = text.replace(/[^0-9.,]/g, '').replace(',', '.');
 
     if (numericValue === '') {
-      setRemuneration('');
+      handleRemunerationChange('');
       return;
     }
 
     const parsedValue = Number.parseFloat(numericValue);
 
-    if (Number.isNaN(parsedValue)) {
-      return;
-    }
+    if (Number.isNaN(parsedValue)) return;
 
-    setRemuneration(String(parsedValue));
+    handleRemunerationChange(String(parsedValue));
   };
 
   const changeMinimumTime = (time: number) => {
-    setMissionDuration(time);
+    handleMissionDurationChange(time);
   };
 
   return (
@@ -58,7 +102,7 @@ export default function ShortMissionFilter() {
         <View className="space-y-3 mb-4">
           <LabeledIconInput
             iconName="money-check-alt"
-            value={remuneration}
+            value={filters.remuneration}
             onChangeText={changeRemuneration}
             keyboardType="numeric"
             iconSize={20}
@@ -87,7 +131,7 @@ export default function ShortMissionFilter() {
           />
         </View>
         <SliderIconInline
-          value={missionDuration}
+          value={filters.missionDuration}
           valueMin={0}
           valueMax={10}
           unit="h"

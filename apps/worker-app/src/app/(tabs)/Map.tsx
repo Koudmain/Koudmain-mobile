@@ -6,14 +6,12 @@ import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
 import markerLight from '@/assets/images/map/pin_primary.png';
 import markerDark from '@/assets/images/map/pin_white.png';
 import markerSelected from '@/assets/images/map/pin_secondary.png';
-import IconButton from '@/components/utils/IconButton';
-
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import FilterMapModal from '@/components/map/filter/FilterMapModal';
-import { colors } from '@/constants/theme';
 import { mapService } from '@/api/map.api';
 import { PublicationMap } from '@/types/publication';
 import { useSession } from '@/context/SessionContext';
+
+import { MapFilterButton } from '@/components/map/filter/MapFilterButton';
+import { FMapModal, defaultFMapModal } from '@/components/map/filter/FilterMapModal';
 
 const BELLECOUR_REGION = {
   latitude: 45.7578,
@@ -32,9 +30,10 @@ export default function MapScreen() {
   const [publications, setPublications] = useState<PublicationMap[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [tracksView, setTracksView] = useState(true);
-  const [isFilterVisible, setIsFilterVisible] = useState(false);
   const isClickingMarkerRef = useRef(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const [filters, setFilters] = useState<FMapModal>(defaultFMapModal);
 
   const { session } = useSession();
 
@@ -222,19 +221,7 @@ export default function MapScreen() {
           );
         })}
       </MapView>
-      <IconButton
-        shape="round"
-        className={`absolute top-4 left-6 ${isDark ? 'bg-primary' : 'bg-white'} shadow-lg`}
-        icon={
-          <MaterialCommunityIcons
-            name="filter"
-            size={24}
-            color={isDark ? colors.primary.content : colors.primary.DEFAULT}
-          />
-        }
-        onPress={() => setIsFilterVisible(true)}
-      />
-      <FilterMapModal isFilterVisible={isFilterVisible} setIsFilterVisible={setIsFilterVisible} />
+      <MapFilterButton filters={filters} setFilters={setFilters} isDark={isDark} />
     </View>
   );
 }

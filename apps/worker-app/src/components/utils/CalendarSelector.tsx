@@ -41,23 +41,20 @@ LocaleConfig.defaultLocale = 'fr';
 interface CalendarSelectorProps {
   startDate: string | null;
   endDate: string | null;
-  setStartDate: (date: string | null) => void;
-  setEndDate: (date: string | null) => void;
+  onRangeChange: (startDate: string | null, endDate: string | null) => void;
 }
 
 /**
  * Un composant de sélecteur de calendrier qui permet à l'utilisateur de sélectionner une plage de dates
  * @param startDate La date de début sélectionnée (format 'YYYY-MM-DD' ou null si aucune date sélectionnée)
  * @param endDate La date de fin sélectionnée (format 'YYYY-MM-DD' ou null si aucune date sélectionnée)
- * @param setStartDate Fonction pour mettre à jour la date de début sélectionnée
- * @param setEndDate Fonction pour mettre à jour la date de fin sélectionnée
+ * @param onRangeChange Une fonction de rappel qui est appelée lorsque la plage de dates change, avec les nouvelles dates de début et de fin en paramètres
  * @returns Un composant CalendarSelector qui affiche un calendrier et permet de sélectionner une plage de dates, avec des styles adaptés au thème sombre ou clair
  */
 export default function CalendarSelector({
   startDate,
   endDate,
-  setStartDate,
-  setEndDate,
+  onRangeChange,
 }: CalendarSelectorProps) {
   const today = new Date().toISOString().split('T')[0];
 
@@ -68,13 +65,12 @@ export default function CalendarSelector({
     const dateString = day.dateString;
 
     if (!startDate || (startDate && endDate)) {
-      setStartDate(dateString);
-      setEndDate(null);
+      onRangeChange(dateString, null);
     } else if (startDate && !endDate) {
       if (dateString < startDate) {
-        setStartDate(dateString);
+        onRangeChange(dateString, null);
       } else {
-        setEndDate(dateString);
+        onRangeChange(startDate, dateString);
       }
     }
   };

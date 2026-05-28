@@ -1,28 +1,87 @@
 import { Modal, ScrollView, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
-import CalendarSelector from '@/components/utils/CalendarSelector';
-import { useState } from 'react';
 import DistanceSlider from '@/components/utils/DistanceSlider';
 import { CollapsibleCheckbox } from '../../utils/CollapsibleCheckbox';
-import LongMissionFilter from './LongMissionFilter';
-import ShortMissionFilter from './ShortMissionFilter';
+import LongMissionFilter, {
+  FLongMissionFilter,
+  defaultLongMissionFilter,
+} from '@/components/map/filter/long-mission/LongMissionFilter';
+import ShortMissionFilter, {
+  FShortMissionFilter,
+  defaultShortMissionFilter,
+} from '@/components/map/filter/ShortMissionFilter';
 import Divider from '@/components/utils/Divider';
 import { colors } from '@/constants/theme';
+import CalendarFilter, { FCalendarSelector, defaultFCalendarSelector } from './CalendarFilter';
+
+export interface FDistanceSlider {
+  distance: number;
+  active: boolean;
+}
+
+export const defaultFDistanceSlider: FDistanceSlider = {
+  distance: 10,
+  active: false,
+};
+
+export interface FMapModal {
+  shortMissionDisplay: boolean;
+  longMissionDisplay: boolean;
+  shortMission: FShortMissionFilter;
+  longMission: FLongMissionFilter;
+  calendar: FCalendarSelector;
+  distance: FDistanceSlider;
+}
+
+export const defaultFMapModal: FMapModal = {
+  shortMissionDisplay: true,
+  longMissionDisplay: true,
+  shortMission: defaultShortMissionFilter,
+  longMission: defaultLongMissionFilter,
+  calendar: defaultFCalendarSelector,
+  distance: defaultFDistanceSlider,
+};
 
 interface FilterMapModalProps {
+  filters: FMapModal;
+  setFilters: (filters: FMapModal) => void;
   isFilterVisible: boolean;
   setIsFilterVisible: (visible: boolean) => void;
 }
 
 export default function FilterMapModal({
+  filters,
+  setFilters,
   isFilterVisible,
   setIsFilterVisible,
 }: FilterMapModalProps) {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
-  const [distance, setDistance] = useState<number>(10);
-
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { calendar, distance, shortMission, longMission } = filters;
+
+  const handleChangeDistance = (distance: number) => {
+    setFilters({
+      ...filters,
+      distance: {
+        ...filters.distance,
+        distance,
+        active: distance !== defaultFDistanceSlider.distance,
+      },
+    });
+  };
+
+  const handleChangeShortMissionDisplay = (shortMissionDisplay: boolean) => {
+    setFilters({
+      ...filters,
+      shortMissionDisplay,
+    });
+  };
+
+  const handleChangeLongMissionDisplay = (longMissionDisplay: boolean) => {
+    setFilters({
+      ...filters,
+      longMissionDisplay,
+    });
+  };
 
   return (
     <Modal
@@ -39,39 +98,51 @@ export default function FilterMapModal({
             </Text>
           </View>
 
-          <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-            <CalendarSelector
-              startDate={startDate}
-              endDate={endDate}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
+          <ScrollView className="flex flex-1 w-full" showsVerticalScrollIndicator={false}>
+            <CalendarFilter
+              calendar={calendar}
+              setCalendar={(calendar) => setFilters({ ...filters, calendar })}
             />
             <Divider
               className="my-6 w-[90%] self-center"
-              colors={isDark ? colors.primary[400] : colors.primary[50]}
+              color={isDark ? colors.primary[400] : colors.primary[50]}
               thickness={1}
             />
             <DistanceSlider
               title="Distance de recherche"
-              distance={distance}
+              distance={distance.distance}
               distanceMin={0}
               distanceMax={100}
               unit="km"
               onValuesChange={(dist) => {
-                setDistance(dist);
+                handleChangeDistance(dist);
               }}
             />
             <Divider
               className="my-4 w-[90%] self-center"
-              colors={isDark ? colors.primary[400] : colors.primary[50]}
+              color={isDark ? colors.primary[400] : colors.primary[50]}
               thickness={1}
             />
-            <CollapsibleCheckbox label="Mission courte" initialValue={true}>
-              <ShortMissionFilter />
+            <CollapsibleCheckbox
+              label="Mission courte"
+              checked={filters.shortMissionDisplay}
+              onChange={handleChangeShortMissionDisplay}
+            >
+              <ShortMissionFilter
+                filters={shortMission}
+                setFilters={(shortMission) => setFilters({ ...filters, shortMission })}
+              />
             </CollapsibleCheckbox>
 
-            <CollapsibleCheckbox label="Mission longue" initialValue={false}>
-              <LongMissionFilter />
+            <CollapsibleCheckbox
+              label="Mission longue"
+              checked={filters.longMissionDisplay}
+              onChange={handleChangeLongMissionDisplay}
+            >
+              <LongMissionFilter
+                filters={longMission}
+                setFilters={(longMission) => setFilters({ ...filters, longMission })}
+              />
             </CollapsibleCheckbox>
           </ScrollView>
 
