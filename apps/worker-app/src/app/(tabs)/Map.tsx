@@ -99,6 +99,18 @@ export default function MapScreen() {
     }
   }, [publications]);
 
+  useEffect(() => {
+    if (publications.length === 0) return;
+
+    setTracksView(true);
+
+    const timer = setTimeout(() => {
+      setTracksView(false);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [isDark, publications.length]);
+
   const handleRegionChangeComplete = async (region: Region) => {
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -192,6 +204,7 @@ export default function MapScreen() {
       >
         {publications.map((pub, index) => {
           const isSelected = selectedId === pub.id;
+          const markerState = isSelected ? 'selected' : isDark ? 'dark' : 'light';
 
           let markerImage = isDark ? markerDark : markerLight;
           if (isSelected) {
@@ -199,7 +212,7 @@ export default function MapScreen() {
           }
           return (
             <Marker
-              key={pub.id}
+              key={`${pub.id}-${markerState}`}
               coordinate={{ latitude: pub.latitude, longitude: pub.longitude }}
               onPress={() => handleMarkerPress(pub, index)}
               tracksViewChanges={tracksView}

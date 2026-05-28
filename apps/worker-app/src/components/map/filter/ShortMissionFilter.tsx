@@ -82,7 +82,7 @@ export default function ShortMissionFilter() {
               />
             }
             texts={[
-              'Indiquez la durée minimale que doit proposer la mission courte pour être affichée. (en heure',
+              'Indiquez la durée minimale que doit proposer la mission courte pour être affichée (en heure).',
             ]}
           />
         </View>
