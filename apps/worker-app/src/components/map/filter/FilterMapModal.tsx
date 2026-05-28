@@ -1,9 +1,12 @@
-import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Modal, ScrollView, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 import CalendarSelector from '@/components/utils/CalendarSelector';
 import { useState } from 'react';
-import DistanceSelector from '@/components/utils/DistanceSelector';
+import DistanceSlider from '@/components/utils/DistanceSlider';
 import { CollapsibleCheckbox } from '../../utils/CollapsibleCheckbox';
 import LongMissionFilter from './LongMissionFilter';
+import ShortMissionFilter from './ShortMissionFilter';
+import Divider from '@/components/utils/Divider';
+import { colors } from '@/constants/theme';
 
 interface FilterMapModalProps {
   isFilterVisible: boolean;
@@ -17,6 +20,10 @@ export default function FilterMapModal({
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [distance, setDistance] = useState<number>(10);
+
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
   return (
     <Modal
       animationType="fade"
@@ -39,18 +46,31 @@ export default function FilterMapModal({
               setStartDate={setStartDate}
               setEndDate={setEndDate}
             />
-            <DistanceSelector
+            <Divider
+              className="my-6 w-[90%] self-center"
+              colors={isDark ? colors.primary[400] : colors.primary[50]}
+              thickness={1}
+            />
+            <DistanceSlider
+              title="Distance de recherche"
               distance={distance}
+              distanceMin={0}
+              distanceMax={100}
+              unit="km"
               onValuesChange={(dist) => {
                 setDistance(dist);
               }}
-              className="mt-6"
             />
-            <CollapsibleCheckbox label="Mission courte">
-              <Text className="text-gray-400">Formulaire pour mission courte...</Text>
+            <Divider
+              className="my-4 w-[90%] self-center"
+              colors={isDark ? colors.primary[400] : colors.primary[50]}
+              thickness={1}
+            />
+            <CollapsibleCheckbox label="Mission courte" initialValue={true}>
+              <ShortMissionFilter />
             </CollapsibleCheckbox>
 
-            <CollapsibleCheckbox label="Mission longue" initialValue={true}>
+            <CollapsibleCheckbox label="Mission longue" initialValue={false}>
               <LongMissionFilter />
             </CollapsibleCheckbox>
           </ScrollView>

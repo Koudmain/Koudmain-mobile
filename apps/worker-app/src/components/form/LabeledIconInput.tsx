@@ -4,7 +4,7 @@ import { cnFusion } from '@/utils/cnFusion';
 
 type LabeledIconInputProps = {
   iconName: React.ComponentProps<typeof FontAwesome5>['name'];
-  label: string;
+  label?: string;
   value: string;
   onChangeText: (text: string) => void;
   className?: string;
@@ -33,13 +33,15 @@ export default function LabeledIconInput({
 }: LabeledIconInputProps) {
   return (
     <View className={cnFusion('space-y-2', className)}>
-      <Text
-        className={cnFusion('text-sm font-semibold text-primary dark:text-white', labelClassName)}
-      >
-        {label}
-      </Text>
+      {label && (
+        <Text
+          className={cnFusion('text-sm font-semibold text-primary dark:text-white', labelClassName)}
+        >
+          {label}
+        </Text>
+      )}
 
-      <View className="flex-row items-center justify-between rounded-xl border border-gray-100 bg-white px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800">
+      <View className="flex-row items-center justify-between rounded-xl border border-gray-100 bg-white px-3 py-2 dark:border-primary-600 dark:bg-primary-700">
         <FontAwesome5 name={iconName} size={iconSize} color={iconColor} />
         <TextInput
           value={value}

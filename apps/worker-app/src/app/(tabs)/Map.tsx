@@ -3,9 +3,9 @@ import { View, StyleSheet, FlatList, useColorScheme, Image } from 'react-native'
 import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
 
-import markerLight from '@/assets/images/map/pin_black.png';
+import markerLight from '@/assets/images/map/pin_primary.png';
 import markerDark from '@/assets/images/map/pin_white.png';
-import markerSelected from '@/assets/images/map/pin_green.png';
+import markerSelected from '@/assets/images/map/pin_secondary.png';
 import IconButton from '@/components/utils/IconButton';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -180,7 +180,7 @@ export default function MapScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1">
       <MapView
         ref={mapRef}
         provider={PROVIDER_GOOGLE}
@@ -211,8 +211,14 @@ export default function MapScreen() {
       </MapView>
       <IconButton
         shape="round"
-        className="absolute top-4 left-6 bg-white"
-        icon={<MaterialCommunityIcons name="filter" size={24} color={colors.secondary.DEFAULT} />}
+        className={`absolute top-4 left-6 ${isDark ? 'bg-primary' : 'bg-white'} shadow-lg`}
+        icon={
+          <MaterialCommunityIcons
+            name="filter"
+            size={24}
+            color={isDark ? colors.primary.content : colors.primary.DEFAULT}
+          />
+        }
         onPress={() => setIsFilterVisible(true)}
       />
       <FilterMapModal isFilterVisible={isFilterVisible} setIsFilterVisible={setIsFilterVisible} />

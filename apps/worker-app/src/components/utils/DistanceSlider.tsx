@@ -4,17 +4,25 @@ import Slider from '@react-native-community/slider';
 import { colors } from '@/constants/theme';
 import { cnFusion } from '@/utils/cnFusion';
 
-interface DistanceSelectorProps {
+interface DistanceSliderProps {
+  title?: string;
   distance: number;
+  distanceMin?: number;
+  distanceMax?: number;
   onValuesChange: (dist: number) => void;
+  unit?: string;
   className?: string;
 }
 
-export default function DistanceSelector({
+export default function DistanceSlider({
+  title,
   distance,
+  distanceMin = 0,
+  distanceMax = 100,
+  unit = 'km',
   onValuesChange,
   className,
-}: DistanceSelectorProps) {
+}: DistanceSliderProps) {
   const [value, setValue] = useState<string>(distance.toString());
 
   const handleDistChange = (text: string) => {
@@ -32,9 +40,9 @@ export default function DistanceSelector({
   return (
     <View className={cnFusion('space-y-4 p-1', className)}>
       <View className="flex-row items-center">
-        <Text className="text-sm pr-20 font-semibold text-primary dark:text-white">
-          Distance de recherche
-        </Text>
+        {title && (
+          <Text className="text-sm pr-20 font-semibold text-primary dark:text-white">{title}</Text>
+        )}
         <View className="flex-1 flex-row items-center">
           <View className="flex-1">
             <TextInput
@@ -44,15 +52,15 @@ export default function DistanceSelector({
               className="border border-gray-200 rounded-xl p-3 bg-gray-50 text-center font-medium text-gray-800"
             />
           </View>
-          <Text className="text-sm pl-4 text-primary">km</Text>
+          <Text className="text-sm pl-4 text-primary">{unit}</Text>
         </View>
       </View>
 
       <View className="pt-2">
         <Slider
           style={{ width: '100%', height: 40 }}
-          minimumValue={0}
-          maximumValue={100}
+          minimumValue={distanceMin}
+          maximumValue={distanceMax}
           step={1}
           value={parseInt(value, 10) || 0}
           onValueChange={(value) => handleDistChange(value.toString())}
@@ -61,8 +69,12 @@ export default function DistanceSelector({
           thumbTintColor={colors.secondary.DEFAULT}
         />
         <View className="flex-row justify-between px-1">
-          <Text className="text-xs text-gray-400">0 km</Text>
-          <Text className="text-xs text-gray-400">100 km</Text>
+          <Text className="text-xs text-gray-400">
+            {distanceMin} {unit}
+          </Text>
+          <Text className="text-xs text-gray-400">
+            {distanceMax} {unit}
+          </Text>
         </View>
       </View>
     </View>

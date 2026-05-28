@@ -45,6 +45,14 @@ interface CalendarSelectorProps {
   setEndDate: (date: string | null) => void;
 }
 
+/**
+ * Un composant de sélecteur de calendrier qui permet à l'utilisateur de sélectionner une plage de dates
+ * @param startDate La date de début sélectionnée (format 'YYYY-MM-DD' ou null si aucune date sélectionnée)
+ * @param endDate La date de fin sélectionnée (format 'YYYY-MM-DD' ou null si aucune date sélectionnée)
+ * @param setStartDate Fonction pour mettre à jour la date de début sélectionnée
+ * @param setEndDate Fonction pour mettre à jour la date de fin sélectionnée
+ * @returns Un composant CalendarSelector qui affiche un calendrier et permet de sélectionner une plage de dates, avec des styles adaptés au thème sombre ou clair
+ */
 export default function CalendarSelector({
   startDate,
   endDate,

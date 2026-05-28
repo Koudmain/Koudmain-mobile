@@ -8,6 +8,14 @@ interface CollapsibleCheckboxProps {
   children: React.ReactNode;
 }
 
+/**
+ * Un composant qui affiche une case à cocher collapsible
+ * @param label Le libellé de la case à cocher
+ * @param initialValue La valeur initiale de la case à cocher
+ * @param className Classes supplémentaires pour le conteneur principal
+ * @param children Les enfants à afficher lorsque la case est cochée
+ * @returns Un composant CollapsibleCheckbox
+ */
 export const CollapsibleCheckbox = ({
   label,
   initialValue = false,
@@ -30,7 +38,7 @@ export const CollapsibleCheckbox = ({
         <Text className="text-primary dark:text-white text-lg">{label}</Text>
       </Pressable>
 
-      {isChecked && <View className="pl-8 mt-2 animate-fade-in">{children}</View>}
+      {isChecked && <View className="mt-2 animate-fade-in">{children}</View>}
     </View>
   );
 };
