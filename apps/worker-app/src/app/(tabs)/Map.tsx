@@ -1,19 +1,19 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { View, StyleSheet, FlatList, useColorScheme, Image } from 'react-native';
 import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useSession } from '@/context/SessionContext';
-import { apiFetch } from '@/utils/api';
 import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
 
 import markerLight from '@/assets/images/map/pin_black.png';
 import markerDark from '@/assets/images/map/pin_white.png';
 import markerSelected from '@/assets/images/map/pin_green.png';
+import IconButton from '@/components/utils/IconButton';
 
-interface Publication {
-  id: number;
-  latitude: number;
-  longitude: number;
-}
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import FilterMapModal from '@/components/map/filter/FilterMapModal';
+import { colors } from '@/constants/theme';
+import { mapService } from '@/api/map.api';
+import { PublicationMap } from '@/types/publication';
+import { useSession } from '@/context/SessionContext';
 
 const BELLECOUR_REGION = {
   latitude: 45.7578,
@@ -25,16 +25,18 @@ const BELLECOUR_REGION = {
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
   const flatListRef = useRef<FlatList>(null);
-  const { session } = useSession();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const currentMapStyle = isDark ? darkMapStyle : lightMapStyle;
 
-  const [publications, setPublications] = useState<Publication[]>([]);
+  const [publications, setPublications] = useState<PublicationMap[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [tracksView, setTracksView] = useState(true);
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
   const isClickingMarkerRef = useRef(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const { session } = useSession();
 
   const fetchAddresses = useCallback(
     async (options: {
@@ -56,9 +58,12 @@ export default function MapScreen() {
       }
 
       try {
-        const data = await apiFetch<Publication[]>(
-          `/address/map?min_lat=${min_lat}&max_lat=${max_lat}&min_lng=${min_lng}&max_lng=${max_lng}`,
-          { method: 'GET', token: session },
+        const data = await mapService.fetchPublicationsInBounds(
+          session,
+          min_lat,
+          max_lat,
+          min_lng,
+          max_lng,
         );
 
         const fetchedPubs = data ?? [];
@@ -149,7 +154,7 @@ export default function MapScreen() {
         },
         350,
       );
-    } catch (error) {
+    } catch {
       mapRef.current.animateToRegion(
         {
           latitude: lat,
@@ -162,7 +167,7 @@ export default function MapScreen() {
     }
   };
 
-  const handleMarkerPress = (pub: Publication, index: number) => {
+  const handleMarkerPress = (pub: PublicationMap, index: number) => {
     isClickingMarkerRef.current = true;
 
     setSelectedId(pub.id);
@@ -199,11 +204,18 @@ export default function MapScreen() {
               onPress={() => handleMarkerPress(pub, index)}
               tracksViewChanges={tracksView}
             >
-              <Image source={markerImage} style={{ width: 40, height: 40 }} resizeMode="contain" />
+              <Image source={markerImage} className="w-10 h-10" resizeMode="contain" />
             </Marker>
           );
         })}
       </MapView>
+      <IconButton
+        shape="round"
+        className="absolute top-4 left-6 bg-white"
+        icon={<MaterialCommunityIcons name="filter" size={24} color={colors.secondary.DEFAULT} />}
+        onPress={() => setIsFilterVisible(true)}
+      />
+      <FilterMapModal isFilterVisible={isFilterVisible} setIsFilterVisible={setIsFilterVisible} />
     </View>
   );
 }
