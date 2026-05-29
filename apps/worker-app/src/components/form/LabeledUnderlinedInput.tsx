@@ -1,7 +1,12 @@
 import { Text, View } from 'react-native';
-
-import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
-import { EyeIcon, EyeOffIcon } from '@/components/ui/icon';
+import {
+  Input,
+  InputField,
+  InputIcon,
+  InputSlot,
+  EyeIcon,
+  EyeOffIcon,
+} from '@koudmain/ui/gluestack';
 import { useState } from 'react';
 
 type LabeledUnderlinedInputProps = React.ComponentProps<typeof InputField> & {

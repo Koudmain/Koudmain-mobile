@@ -7,7 +7,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { useSidebar } from '@/context/SidebarContext';
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { UserHeader } from './UserHeader';
 import { Feather } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';

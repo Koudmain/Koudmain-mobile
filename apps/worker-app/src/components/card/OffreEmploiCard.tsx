@@ -1,6 +1,4 @@
-import { Card } from '@/components/ui/card';
-import { Heading } from '@/components/ui/heading';
-import { Text } from '@/components/ui/text';
+import { Card, Heading, Text } from '@koudmain/ui/gluestack';
 import { Image, ScrollView, View, Pressable, useColorScheme } from 'react-native';
 import CompetenceCard from './CompetenceCard';
 

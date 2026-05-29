@@ -44,7 +44,7 @@ const sizeStyles: Record<'sm' | 'md' | 'lg', string> = {
   lg: 'py-3 px-6',
 };
 
-export default function Button({
+export function Button({
   label,
   variant = 'primary',
   size = 'md',

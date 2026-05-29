@@ -1,6 +1,6 @@
 import '@/global.css';
 import { Stack } from 'expo-router';
-import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider';
+import { GluestackUIProvider } from '@koudmain/ui/gluestack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SidebarProvider } from '@/context/SidebarContext';
 import { Sidebar } from '@/components/navigation/sidebar/Sidebar';
