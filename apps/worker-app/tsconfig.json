@@ -11,7 +11,7 @@
       ],
       "@koudmain/ui": [
         "../../packages/koudmain-ui/src"
-      ]
+      ],
     },
     "jsx": "react-native",
   },

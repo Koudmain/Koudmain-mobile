@@ -1,3 +1,7 @@
+import { IMessage } from './message';
+import { IPublication } from './publication';
+import { IWorker } from './worker';
+
 export type Conversation = {
   id: number;
   publication_id: number;
@@ -10,3 +14,25 @@ export type Conversation = {
   is_pinned: boolean;
   publication_title: string;
 };
+
+export interface IConversation {
+  id: number;
+  publication_id: number;
+  worker_id: number;
+  company_id: number;
+  updated_at: string;
+  worker: IWorker;
+  settings: IConversationSettings;
+  publication: IPublication;
+  last_message: IMessage[];
+}
+
+export interface IConversationSettings {
+  id: number;
+  user_id: number;
+  conversation_id: number;
+  is_pinned: boolean;
+  is_deleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

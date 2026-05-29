@@ -29,7 +29,7 @@ class SocketService {
             useChatStore.getState().addMessage(data);
           }
         } catch (e) {
-          console.error("Erreur parsing WS", e);
+          console.error('Erreur parsing WS', e);
         }
       };
 

@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { Input, InputField } from '@/components/ui/input';
-import { colors } from '@/constants/theme';
+import { Input, InputField } from '../../ui/input';
+import { colors } from '../../../constants/theme';
 
 interface MessageInputProps {
-  onSend: (text: string) => void;
+  onSend: (text: string) => Promise<void>;
   placeholder?: string;
 }
 
-export default function MessageInput({
+export function MessageInput({
   onSend,
   placeholder = 'Votre message...',
 }: MessageInputProps) {
   const [value, setValue] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSend = () => {
-    if (value.trim().length > 0) {
-      onSend(value);
-      setValue('');
+  const handleSend = async () => {
+    if (value.trim().length > 0 && !isSending) {
+      setIsSending(true);
+      try {
+        await onSend(value);
+        setValue('');
+      } catch (error) {
+        console.error("Erreur d'envoi:", error);
+      } finally {
+        setIsSending(false);
+      }
     }
   };
 
@@ -35,12 +43,13 @@ export default function MessageInput({
             value={value}
             onChangeText={setValue}
             multiline={true}
+            editable={!isSending}
           />
         </Input>
       </View>
 
       <View className="flex-row items-center h-10">
-        {!isTyping ? (
+        {!isTyping && !isSending ? (
           <View className="flex-row items-center">
             <TouchableOpacity className="mx-1 p-1">
               <Ionicons name="mic-outline" size={24} color="#666" />
@@ -55,9 +64,14 @@ export default function MessageInput({
         ) : (
           <TouchableOpacity
             onPress={handleSend}
+            disabled={isSending || !isTyping}
             className="bg-secondary w-12 h-8 rounded-[15] items-center justify-center shadow-sm"
           >
-            <Feather name="send" size={22} color={colors.primary.content} />
+            {isSending ? (
+              <ActivityIndicator size="small" color={colors.primary.content} />
+            ) : (
+              <Feather name="send" size={22} color={colors.primary.content} />
+            )}
           </TouchableOpacity>
         )}
       </View>
