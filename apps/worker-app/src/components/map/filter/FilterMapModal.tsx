@@ -1,6 +1,6 @@
 import { Modal, ScrollView, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 import DistanceSlider from '@/components/utils/DistanceSlider';
-import { CollapsibleCheckbox } from '../../utils/CollapsibleCheckbox';
+import { CollapsibleCheckbox } from '@/components/utils/CollapsibleCheckbox';
 import LongMissionFilter, {
   FLongMissionFilter,
   defaultLongMissionFilter,

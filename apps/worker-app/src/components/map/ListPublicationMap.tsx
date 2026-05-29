@@ -1,5 +1,5 @@
 import { Publication } from '@/types/publication';
-import { colors } from '@koudmain/ui';
+import { colors } from '@/constants/theme';
 import {
   FlatList,
   Text,
