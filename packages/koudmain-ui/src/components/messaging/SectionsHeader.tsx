@@ -1,8 +1,8 @@
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
 
-const SectionHeader = ({ title, icon }: { title: string; icon: string }) => {
+export const SectionHeader = ({ title, icon }: { title: string; icon: string }) => {
   if (!title) return <View className="h-4" />;
 
   return (
@@ -21,5 +21,3 @@ const SectionHeader = ({ title, icon }: { title: string; icon: string }) => {
     </View>
   );
 };
-
-export default SectionHeader;

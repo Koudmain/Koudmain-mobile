@@ -104,12 +104,12 @@ module.exports = {
         success: {
           DEFAULT: '#4F8A10',
           muted: '#B4F298',
-          dark: '#3b660c',
+          dark: '#3B660C',
         },
         error: {
           DEFAULT: '#D8000C',
           muted: '#FFA4A4',
-          dark: '#b0000a',
+          dark: '#B0000A',
         },
         warning: {
           DEFAULT: '#9F6000',
@@ -122,12 +122,12 @@ module.exports = {
           dark: '#245269',
         },
         assets: {
-          moon: '#3f3f46',
-          sun: '#f59e0b',
+          moon: '#3F3F46',
+          sun: '#F59E0B',
         },
         utils: {
-          star: '#F59E0B',
-          heart: '#E11D48',
+          hearth: '#E02424',
+          star: '#FBBF24',
         },
 
         // Neutral colors

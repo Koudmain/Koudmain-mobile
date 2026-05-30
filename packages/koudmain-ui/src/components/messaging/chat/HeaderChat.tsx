@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, Image, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { colors } from '@/constants/theme';
+import { colors } from '../../../constants/theme';
 
 interface HeaderChatProps {
   userName: string;

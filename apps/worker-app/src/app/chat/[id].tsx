@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, useColorScheme, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { MOCK_CONVERSATIONS } from '@/constants/fakeConversations';
-import { HeaderChat } from '@/components/messaging/chat/HeaderChat';
+import { HeaderChat } from '@koudmain/ui/components/messaging/chat/HeaderChat';
 import { colors } from '@/constants/theme';
 import { MOCK_MESSAGES } from '@/constants/fakeMessages';
-import MessageBubble from '@/components/messaging/chat/MessageBubble';
-import MessageInput from '@/components/messaging/chat/MessageInput';
+import { MessageBubble } from '@koudmain/ui/components/messaging/chat/MessageBubble';
+import { MessageInput } from '@koudmain/ui/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ChatScreen() {

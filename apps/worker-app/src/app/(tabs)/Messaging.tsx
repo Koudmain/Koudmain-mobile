@@ -1,16 +1,20 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SectionList, Text, View, Pressable } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
-
 import SearchBar from '@/components/tools/SearchBar';
 import { normalizeText } from '@/utils/text';
-import { MOCK_CONVERSATIONS } from '@/constants/fakeConversations';
-import ConversationItem from '@/components/messaging/ConversationItem';
-import SectionHeader from '@/components/messaging/SectionsHeader';
+import { ConversationItem } from '@koudmain/ui/components/messaging/ConversationItem';
+import { SectionHeader } from '@koudmain/ui/components/messaging/SectionsHeader';
+import { useSession } from '@/context/SessionContext';
+import { IConversation } from '@koudmain/ui';
 
 export default function Messaging() {
   const [searchText, setSearchText] = useState('');
   const [openRowId, setOpenRowId] = useState<number | null>(null);
+  const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
+  const [conversations, setConversations] = useState<IConversation[]>([]);
+
+  const { session } = useSession();
 
   useFocusEffect(
     useCallback(() => {
@@ -18,14 +22,20 @@ export default function Messaging() {
     }, []),
   );
 
+  useEffect(() => {
+    if (session) {
+      console.log('Fetching conversations for worker with session:', session);
+    }
+  }, [session]);
+
   const closeAll = () => {
     setOpenRowId(null);
   };
 
   const handlePin = (id: number) => {
-    const convIndex = MOCK_CONVERSATIONS.findIndex((c) => c.id === id);
+    const convIndex = conversations.findIndex((c) => c.id === id);
     if (convIndex !== -1) {
-      MOCK_CONVERSATIONS[convIndex].is_pinned = !MOCK_CONVERSATIONS[convIndex].is_pinned;
+      conversations[convIndex].settings.is_pinned = !conversations[convIndex].settings.is_pinned;
       setOpenRowId(null);
     }
   };
@@ -33,14 +43,17 @@ export default function Messaging() {
   const sections = useMemo(() => {
     const cleanQuery = normalizeText(searchText.trim());
     const tokens = cleanQuery.length > 0 ? cleanQuery.split(/\s+/) : [];
+    const filtered = conversations.filter((conv) => {
+      if (selectedPubId && conv.publication_id !== selectedPubId) {
+        return false;
+      }
 
-    const filtered = MOCK_CONVERSATIONS.filter((conv) => {
-      const searchableText = normalizeText(`${conv.other_user_name} ${conv.last_message_content}`);
+      const searchableText = normalizeText(`${conv.last_message[0]?.content_text}`);
       return tokens.every((token) => searchableText.includes(token));
     });
 
-    const pinned = filtered.filter((c) => c.is_pinned);
-    const others = filtered.filter((c) => !c.is_pinned);
+    const pinned = filtered.filter((c) => c.settings.is_pinned);
+    const others = filtered.filter((c) => !c.settings.is_pinned);
 
     const result = [];
     if (pinned.length > 0) {
@@ -50,7 +63,7 @@ export default function Messaging() {
       result.push({ title: '', data: others, icon: '' });
     }
     return result;
-  }, [searchText]);
+  }, [searchText, conversations, selectedPubId]);
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
@@ -95,7 +108,9 @@ export default function Messaging() {
         ListEmptyComponent={
           <View className="items-center mt-20 px-10">
             <Text className="text-neutral-500 text-center">
-              Aucune conversation correspondante.
+              {selectedPubId
+                ? 'Aucun message pour cette mission.'
+                : 'Aucune conversation correspondante.'}
             </Text>
           </View>
         }
