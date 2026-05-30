@@ -150,6 +150,12 @@ module.exports = {
           backdrop: 'rgba(0, 0, 0, 0.5)',
         },
 
+        // Shadow colors
+        shadow: {
+          light: '#00000010',
+          dark: '#FFFFFF10',
+        },
+
         // Gluestack CSS variable-based colors
         'gs-primary': {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',

@@ -4,6 +4,7 @@ import { Shadow } from 'react-native-shadow-2';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageBackground, TouchableOpacity, View, Text } from 'react-native';
 import { cnFusion } from '@/utils/cnFusion';
+import { colors } from '@/constants/theme';
 
 export type PublicationTheme = 'service' | 'plonge' | 'cuisine' | 'bar' | 'accueil';
 
@@ -59,7 +60,7 @@ const PublicationStoryItem = ({ item, isActive, onPress }: PublicationStoryItemP
         </ImageBackground>
 
         <View className="absolute -top-4 -left-2 w-24">
-          <Shadow distance={3} startColor={'#00000010'} offset={[0, 2]}>
+          <Shadow distance={3} startColor={colors.shadow.light} offset={[0, 2]}>
             <View className="bg-white dark:bg-neutral-800 px-2 py-1 rounded-lg border border-neutral-100 dark:border-neutral-700 max-w-[85px]">
               <Text
                 className="text-[9px] font-bold text-center text-neutral-900 dark:text-white"

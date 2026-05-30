@@ -11,6 +11,7 @@ import CompetenceCard from '@/components/Competences';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { Shadow } from 'react-native-shadow-2';
+import { colors } from '@/constants/theme';
 
 interface Competence {
   name1: string;
@@ -59,7 +60,7 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
       overshootRight={false}
       rightThreshold={40}
     >
-      <Shadow startColor="#00000010" offset={[0, 2]} style={{ borderRadius: 20 }}>
+      <Shadow startColor={colors.shadow.light} offset={[0, 2]} style={{ borderRadius: 20 }}>
         <Card className="w-96 p-4 rounded-[18]  mt-2 bg-white">
           <View className="mb flex-row justify-between items-center">
             <Heading className="text-lg font-bold">{data.title}</Heading>

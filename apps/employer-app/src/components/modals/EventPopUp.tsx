@@ -28,7 +28,7 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
           {items.map((event, index) => (
             <Shadow
               key={`${event.id}-${event.starting_date}-${index}`}
-              startColor={isDark ? '#FFFFFF10' : '#00000010'}
+              startColor={isDark ? colors.shadow.dark : colors.shadow.light}
               style={{
                 borderRadius: 22,
                 width: '100%',

@@ -63,7 +63,7 @@ export default function YourOffers() {
         {filteredOffers.map((offre, index) => (
           <Shadow
             key={`${offre.name}-${offre.date}-${index}`}
-            startColor={isDark ? '#FFFFFF10' : '#00000010'}
+            startColor={isDark ? colors.shadow.dark : colors.shadow.light}
             style={{
               borderRadius: 24,
               width: '100%',
