@@ -1,18 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { planningService } from '@/api/planning.api';
+import { PlanningApiEvent } from '@/types/planning';
 
 const parseLocalDate = (dateStr: string): Date => {
   const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) {
     throw new Error(`Invalid date format: "${dateStr}". Expected YYYY-MM-DD`);
   }
-
   const [, yearStr, monthStr, dayStr] = match;
   return new Date(parseInt(yearStr, 10), parseInt(monthStr, 10) - 1, parseInt(dayStr, 10));
 };
 
 export const useCalendarEvents = (session: any, currentMonthStr: string) => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<PlanningApiEvent[]>([]);
   const loadedMonths = useRef<Set<string>>(new Set());
 
   useEffect(() => {
@@ -23,9 +23,9 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
       const month = currentDate.getMonth() + 1;
 
       const targetMonths = [
-        new Date(year, month - 2, 1), // M-1
-        new Date(year, month - 1, 1), // M
-        new Date(year, month, 1), // M+1
+        new Date(year, month - 2, 1),
+        new Date(year, month - 1, 1),
+        new Date(year, month, 1),
       ];
 
       const missingMonths = targetMonths.filter((d) => {
@@ -33,8 +33,8 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
         return !loadedMonths.current.has(key);
       });
 
-      const minAllowedTime = new Date(year, month - 3, 1).getTime(); // display_month - 2
-      const maxAllowedTime = new Date(year, month + 2, 0).getTime(); // display_month + 2
+      const minAllowedTime = new Date(year, month - 3, 1).getTime();
+      const maxAllowedTime = new Date(year, month + 2, 0).getTime();
 
       const updateCacheLimits = () => {
         targetMonths.forEach((d) =>
@@ -53,8 +53,8 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
         updateCacheLimits();
         setEvents((prevEvents) =>
           prevEvents.filter((evt) => {
-            if (!evt.startingDate) return false;
-            const eventTime = new Date(evt.startingDate).getTime();
+            if (!evt.starting_date) return false;
+            const eventTime = new Date(evt.starting_date).getTime();
             return eventTime >= minAllowedTime && eventTime <= maxAllowedTime;
           }),
         );
@@ -63,7 +63,6 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
 
       const minMissDate = new Date(Math.min(...missingMonths.map((d) => d.getTime())));
       const maxMissDate = new Date(Math.max(...missingMonths.map((d) => d.getTime())));
-
       const fetchStartDate = new Date(minMissDate.getFullYear(), minMissDate.getMonth(), 1);
       const fetchEndDate = new Date(maxMissDate.getFullYear(), maxMissDate.getMonth() + 1, 0);
 
@@ -73,30 +72,30 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
             ? await planningService.getPlanning(session)
             : await planningService.getPlanning(session, fetchStartDate, fetchEndDate);
 
-        let fetchedEvents: any[] = [];
+        let fetchedEvents: PlanningApiEvent[] = [];
         if (Array.isArray(response)) {
           fetchedEvents = response;
         } else if (response && Array.isArray((response as any).data)) {
           fetchedEvents = (response as any).data;
         } else if (response) {
-          fetchedEvents = response as any;
+          fetchedEvents = response as PlanningApiEvent[];
         }
 
         updateCacheLimits();
 
         setEvents((prevEvents) => {
           const allEvents = [...prevEvents, ...fetchedEvents];
-          const uniqueEventsMap = new Map();
+          const uniqueEventsMap = new Map<string, PlanningApiEvent>();
           allEvents.forEach((evt) => {
-            const key = evt.publicationId
-              ? `${evt.publicationId}-${evt.startingDate}`
+            const key = evt.publication_id
+              ? `${evt.publication_id}-${evt.starting_date}`
               : JSON.stringify(evt);
             uniqueEventsMap.set(key, evt);
           });
 
           return Array.from(uniqueEventsMap.values()).filter((evt) => {
-            if (!evt.startingDate) return false;
-            const eventTime = new Date(evt.startingDate).getTime();
+            if (!evt.starting_date) return false;
+            const eventTime = new Date(evt.starting_date).getTime();
             return eventTime >= minAllowedTime && eventTime <= maxAllowedTime;
           });
         });

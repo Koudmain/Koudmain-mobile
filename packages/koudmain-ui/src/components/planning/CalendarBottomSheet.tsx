@@ -4,28 +4,31 @@ import {
   Dimensions,
   Modal,
   PanResponder,
-  ScrollView,
   Text,
   TouchableOpacity,
   View,
   useColorScheme,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import PlanningCard from '@/components/card/PlanningCard';
-import { Shadow } from 'react-native-shadow-2';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '@/constants/theme';
 
 const { height: screenHeight } = Dimensions.get('window');
 
-interface EventPopUpProps {
+interface CalendarBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
   selectedDate: string;
   events: any[];
+  renderContent: (events: any[], isDark: boolean) => React.ReactNode;
 }
 
-export default function EventPopUp({ isVisible, onClose, selectedDate, events }: EventPopUpProps) {
+export default function CalendarBottomSheet({
+  isVisible,
+  onClose,
+  selectedDate,
+  events,
+  renderContent,
+}: CalendarBottomSheetProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [shouldRenderModal, setShouldRenderModal] = useState(isVisible);
@@ -67,11 +70,10 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
     const touchStartsInHandle = evt.nativeEvent.pageY <= sheetTop + dragHandleHeight;
     const isPredominantlyVertical = Math.abs(gestureState.dy) > Math.abs(gestureState.dx);
     const hasEnoughMovement = Math.abs(gestureState.dy) > 5;
-    if (!touchStartsInHandle) {
-      return false;
-    }
+    if (!touchStartsInHandle) return false;
     return requireMovement ? isPredominantlyVertical && hasEnoughMovement : true;
   };
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => isDragHandleGesture(evt, gestureState),
@@ -109,9 +111,7 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
       <View className="absolute inset-0" pointerEvents="box-none">
         <Animated.View
           className="absolute inset-0 bg-black/40 z-10"
-          style={{
-            opacity: overlayOpacity,
-          }}
+          style={{ opacity: overlayOpacity }}
         >
           <TouchableOpacity
             className="flex-1"
@@ -125,12 +125,7 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
 
         <Animated.View
           className="absolute left-0 right-0 top-0 rounded-t-[30px] z-20 shadow-lg bg-background-light dark:bg-background-dark"
-          style={[
-            {
-              height: bottomSheetHeight,
-              transform: [{ translateY: translateY }],
-            },
-          ]}
+          style={[{ height: bottomSheetHeight, transform: [{ translateY }] }]}
           {...panResponder.panHandlers}
         >
           <View className="w-full items-center py-3">
@@ -145,42 +140,7 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
             <View className="flex-1 relative">
               {events.length > 0 ? (
                 <>
-                  <ScrollView
-                    className="p-6 pt-4"
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 30 }}
-                  >
-                    {events.map((event) => (
-                      <Shadow
-                        key={`${event.id}-${event.startingDate}`}
-                        startColor={isDark ? '#FFFFFF10' : '#00000010'}
-                        style={{
-                          borderRadius: 22,
-                          width: '100%',
-                          marginBottom: 16,
-                          backgroundColor: isDark
-                            ? colors.background.dark
-                            : colors.background.light,
-                        }}
-                      >
-                        <PlanningCard
-                          key={`${event.id}-${event.startingDate}`}
-                          id={event.id}
-                          name={event.name || 'Entreprise'}
-                          image_profile={event.image_profile || null}
-                          city={event.city || ''}
-                          zip={event.zip || ''}
-                          rate={event.rate || 0}
-                          number_rate={event.number_rate || 0}
-                          title={event.title || 'Mission'}
-                          wage={event.wage || 0}
-                          begin={event.time || '00h00'}
-                          end={event.end || '00h00'}
-                          status={event.status || 'pending'}
-                        />
-                      </Shadow>
-                    ))}
-                  </ScrollView>
+                  {renderContent(events, isDark)}
 
                   <LinearGradient
                     colors={
@@ -188,31 +148,16 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
                         ? ['rgba(49, 49, 49, 1)', 'rgba(49, 49, 49, 0)']
                         : ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']
                     }
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: 30,
-                      zIndex: 10,
-                    }}
+                    style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 30, zIndex: 10 }}
                     pointerEvents="none"
                   />
-
                   <LinearGradient
                     colors={
                       isDark
                         ? ['rgba(49, 49, 49, 0)', 'rgba(49, 49, 49, 1)']
                         : ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']
                     }
-                    style={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: 40,
-                      zIndex: 10,
-                    }}
+                    style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 40, zIndex: 10 }}
                     pointerEvents="none"
                   />
                 </>

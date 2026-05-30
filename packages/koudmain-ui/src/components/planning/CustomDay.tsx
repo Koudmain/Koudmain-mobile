@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import BasicDay from 'react-native-calendars/src/calendar/day/basic';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 interface CustomDayProps {
   props: any;
@@ -18,9 +18,7 @@ export default function CustomDay({ props, cellHeight, isDark }: CustomDayProps)
   return (
     <View
       className={`w-full ${isWeekend ? 'bg-background-50' : 'bg-background-light dark:bg-background-dark'} justify-center items-center`}
-      style={{
-        height: cellHeight,
-      }}
+      style={{ height: cellHeight }}
     >
       <BasicDay
         {...rest}

@@ -6,10 +6,10 @@ import { formatDayEvents } from '@/utils/calendarUtils';
 import EventPopUp from '@/components/modals/EventPopUp';
 
 export default function CalendarComponent() {
-  const { session } = useSession();
+  const { session, activeCompanyId } = useSession();
   const today = new Date();
   const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-  const { events } = useCalendarEvents(session, currentMonthStr);
+  const { events } = useCalendarEvents(session, currentMonthStr, activeCompanyId);
 
   return (
     <SharedCalendar
