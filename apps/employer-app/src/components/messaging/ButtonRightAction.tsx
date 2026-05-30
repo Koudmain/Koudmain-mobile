@@ -56,7 +56,11 @@ const ButtonRightAction = ({
             closeSwipe();
           }}
         >
-          <Octicons name={conversation.settings.is_pinned ? 'pin-slash' : 'pin'} size={24} color="white" />
+          <Octicons
+            name={conversation.settings.is_pinned ? 'pin-slash' : 'pin'}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
       </Reanimated.View>
 

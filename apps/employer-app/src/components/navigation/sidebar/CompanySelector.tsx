@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSession } from '@/context/SessionContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { colors } from "@/constants/theme";
+import { colors } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 
 export function CompanySelector() {
