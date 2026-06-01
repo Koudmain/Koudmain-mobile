@@ -24,13 +24,14 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarActiveTintColor: colors.secondary.DEFAULT,
         tabBarInactiveTintColor: isDark ? colors.primary.content : colors.primary.DEFAULT,
         tabBarShowLabel: false,
         headerShown: false,
         tabBarBackground: () => <TabBarGradient />,
         tabBarStyle: {
+          display: route.name === 'CreatePost' ? 'none' : 'flex',
           position: 'absolute',
           borderTopWidth: 0,
           backgroundColor: 'transparent',
@@ -39,7 +40,7 @@ export default function TabLayout() {
           flexDirection: 'row',
           justifyContent: 'center',
         },
-      }}
+      })}
     >
       {TABS_CONFIG.map((tab) => {
         const dimensions = tab.isLarge ? ICON_DIMENSIONS.large : ICON_DIMENSIONS.small;
