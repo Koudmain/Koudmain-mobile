@@ -70,13 +70,6 @@ export async function apiFetch<T>(
       requestHeaders.set('Content-Type', 'application/json');
     }
 
-    console.log('API Request:', {
-      url: buildApiUrl(endpoint),
-      method: rest.method || 'GET',
-      headers: Object.fromEntries(requestHeaders.entries()),
-      body: isFormData ? '[FormData]' : body,
-    });
-
     const response = await fetch(buildApiUrl(endpoint), {
       ...rest,
       headers: requestHeaders,

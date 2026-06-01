@@ -87,18 +87,6 @@ export default function MapScreen() {
   }, [fetchAddresses]);
 
   useEffect(() => {
-    if (publications.length > 0) {
-      setTracksView(true);
-
-      const timer = setTimeout(() => {
-        setTracksView(false);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, [publications]);
-
-  useEffect(() => {
     if (publications.length === 0) return;
 
     setTracksView(true);

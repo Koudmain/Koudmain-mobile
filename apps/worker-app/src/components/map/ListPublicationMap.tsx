@@ -73,6 +73,9 @@ function ListPublicationMap({
             selectedId === item.id && { borderColor: colors.map.selected, borderWidth: 2.5 },
           ]}
           className="bg-white dark:bg-primary rounded-[15] p-[16]"
+          onPress={() =>
+            onPressItem && onPressItem(publications.findIndex((pub) => pub.id === item.id))
+          }
         >
           <View className="bg-primary-light self-start px-3 py-1 rounded-lg mb-8">
             <Text className="text-sm font-bold text-primary">

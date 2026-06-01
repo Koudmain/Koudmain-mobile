@@ -69,17 +69,13 @@ export default function FilterMapModal({
     });
   };
 
-  const handleChangeShortMissionDisplay = (shortMissionDisplay: boolean) => {
+  const handleChangeMissionDisplay = (
+    key: 'shortMissionDisplay' | 'longMissionDisplay',
+    value: boolean,
+  ) => {
     setFilters({
       ...filters,
-      shortMissionDisplay,
-    });
-  };
-
-  const handleChangeLongMissionDisplay = (longMissionDisplay: boolean) => {
-    setFilters({
-      ...filters,
-      longMissionDisplay,
+      [key]: value,
     });
   };
 
@@ -126,7 +122,7 @@ export default function FilterMapModal({
             <CollapsibleCheckbox
               label="Mission courte"
               checked={filters.shortMissionDisplay}
-              onChange={handleChangeShortMissionDisplay}
+              onChange={(value) => handleChangeMissionDisplay('shortMissionDisplay', value)}
             >
               <ShortMissionFilter
                 filters={shortMission}
@@ -137,7 +133,7 @@ export default function FilterMapModal({
             <CollapsibleCheckbox
               label="Mission longue"
               checked={filters.longMissionDisplay}
-              onChange={handleChangeLongMissionDisplay}
+              onChange={(value) => handleChangeMissionDisplay('longMissionDisplay', value)}
             >
               <LongMissionFilter
                 filters={longMission}
