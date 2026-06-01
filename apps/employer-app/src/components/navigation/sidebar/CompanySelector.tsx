@@ -11,14 +11,12 @@ import {
 } from 'react-native';
 import { useSession } from '@/context/SessionContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { colors } from "@/constants/theme";
-import { useRouter } from 'expo-router';
+import { colors } from '@/constants/theme';
 
 export function CompanySelector() {
   const { companies, activeCompanyId, changeCompany } = useSession();
   const [isVisible, setIsVisible] = useState(false);
 
-  const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -35,7 +33,7 @@ export function CompanySelector() {
 
   const handleAddCompany = () => {
     setIsVisible(false);
-    // router.push('/(menu)/CreateCompany');
+    // router.push('/(menu)/CreateCompany'); TODO
   };
 
   const hasCompanies = companies && companies.length > 0;

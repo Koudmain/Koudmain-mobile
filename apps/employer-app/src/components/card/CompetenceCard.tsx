@@ -1,11 +1,14 @@
 import { Text } from '@/components/ui/text';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
 
 type CompetenceCardProps = {
   comp: string;
   backgroundColor?: string;
   accentColor?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  deletable?: boolean;
+  onDelete?: () => void;
 };
 
 const SIZE_STYLES = {
@@ -20,13 +23,15 @@ export default function CompetenceCard({
   backgroundColor = '#F5D2C8',
   accentColor = '#D84A22',
   size = 'md',
+  deletable = false,
+  onDelete,
 }: CompetenceCardProps) {
   const sizeStyle = SIZE_STYLES[size];
 
   return (
     <View className="flex-row">
       <View
-        className="rounded-full m-1"
+        className="rounded-full m-1 flex-row items-center justify-center"
         style={{
           backgroundColor,
           borderColor: accentColor,
@@ -36,6 +41,11 @@ export default function CompetenceCard({
         }}
       >
         <Text style={{ color: accentColor, fontSize: sizeStyle.fontSize }}>{comp}</Text>
+        {deletable && (
+          <TouchableOpacity onPress={onDelete} style={{ marginLeft: 8 }}>
+            <FontAwesomeIcon name="times" size={sizeStyle.fontSize} color={accentColor} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

@@ -11,7 +11,7 @@ export const chatService = {
   },
 
   getCompanyConversation: async (token: string, companyId: number) => {
-    console.log("Fetching conversations for company ID:", companyId);
+    console.log('Fetching conversations for company ID:', companyId);
     return apiFetch<IConversation[]>(`/chat/company/${companyId}/conversations`, {
       method: 'GET',
       token: token,

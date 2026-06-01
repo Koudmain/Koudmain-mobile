@@ -7,9 +7,12 @@ const API_URL = transformIpBackendUrl(RAW_API_HOST, 4000);
 
 class SocketService {
   private socket: WebSocket | null = null;
+  private isExplicitlyClosed = false;
 
   connect(token: string) {
     if (this.socket || !token) return;
+
+    this.isExplicitlyClosed = false;
 
     const wsUrl = API_URL.replace(/^http/, 'ws') + `/ws?token=${token}`;
 
@@ -29,7 +32,7 @@ class SocketService {
             useChatStore.getState().addMessage(data);
           }
         } catch (e) {
-          console.error("Erreur parsing WS", e);
+          console.error('Erreur parsing WS', e);
         }
       };
 
@@ -39,8 +42,7 @@ class SocketService {
 
       this.socket.onclose = (e) => {
         this.socket = null;
-        console.log(`Socket déconnecté (Code: ${e.code}). Tentative dans 5s...`);
-        if (e.code !== 1000) {
+        if (!this.isExplicitlyClosed && e.code !== 1000) {
           setTimeout(() => this.connect(token), 5000);
         }
       };
@@ -50,6 +52,7 @@ class SocketService {
   }
 
   disconnect() {
+    this.isExplicitlyClosed = true;
     this.socket?.close();
     this.socket = null;
   }

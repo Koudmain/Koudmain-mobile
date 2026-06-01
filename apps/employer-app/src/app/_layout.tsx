@@ -21,6 +21,9 @@ function RootNavigator() {
     } else {
       socketService.disconnect();
     }
+    return () => {
+      socketService.disconnect();
+    };
   }, [session]);
 
   return (
@@ -43,12 +46,12 @@ function RootNavigator() {
 }
 
 function RootLayoutContent() {
-  const { colorMode } = useTheme();
+  const { colorMode, themePreference } = useTheme();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <GluestackUIProvider mode={colorMode}>
+        <GluestackUIProvider mode={themePreference}>
           <SessionProvider>
             <SidebarProvider>
               <SafeAreaView className="flex-1 bg-white dark:bg-primary" edges={['top']}>

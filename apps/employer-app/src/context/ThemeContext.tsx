@@ -1,61 +1,71 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+type ThemePreference = 'light' | 'dark' | 'system';
 type ColorMode = 'light' | 'dark';
 
 interface ThemeContextType {
+  themePreference: ThemePreference;
   colorMode: ColorMode;
-  toggleColorMode: () => void;
-  isManualControl: boolean;
+  setThemePreference: (pref: ThemePreference) => Promise<void>;
+  isLoading: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const systemColorScheme = useColorScheme();
+  const [themePreference, setThemePreferenceState] = useState<ThemePreference>('system');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [colorMode, setColorMode] = useState<ColorMode>(systemColorScheme || 'light');
-  const [isManualControl, setIsManualControl] = useState(false);
+  const [osColorScheme, setOsColorScheme] = useState<ColorMode>(
+    Appearance.getColorScheme() === 'dark' ? 'dark' : 'light',
+  );
+
+  const themePreferenceRef = useRef<ThemePreference>('system');
+
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      if (themePreferenceRef.current === 'system') {
+        setOsColorScheme(colorScheme === 'dark' ? 'dark' : 'light');
+      }
+    });
+
+    return () => subscription.remove();
+  }, []);
 
   useEffect(() => {
     const loadTheme = async () => {
       try {
-        const savedTheme = await AsyncStorage.getItem('@user_theme');
-        if (savedTheme) {
-          setColorMode(savedTheme as ColorMode);
-          setIsManualControl(true);
-        } else if (systemColorScheme) {
-          setColorMode(systemColorScheme);
+        const savedPref = await AsyncStorage.getItem('@user_theme_pref');
+        if (savedPref) {
+          const pref = savedPref as ThemePreference;
+          themePreferenceRef.current = pref;
+          setThemePreferenceState(pref);
         }
       } catch (err) {
-        console.error('Erreur au chargement du thème via AsyncStorage', err);
+        console.error('Erreur au chargement du thème', err);
+      } finally {
+        setIsLoading(false);
       }
     };
     loadTheme();
   }, []);
 
-  useEffect(() => {
-    if (!isManualControl && systemColorScheme) {
-      setColorMode(systemColorScheme);
-    }
-  }, [systemColorScheme, isManualControl]);
+  const colorMode: ColorMode = themePreference === 'system' ? osColorScheme : themePreference;
 
-  const toggleColorMode = async () => {
-    const newMode = colorMode === 'light' ? 'dark' : 'light';
-
-    setColorMode(newMode);
-    setIsManualControl(true);
-
+  const setThemePreference = async (newPref: ThemePreference) => {
+    themePreferenceRef.current = newPref;
+    setThemePreferenceState(newPref);
     try {
-      await AsyncStorage.setItem('@user_theme', newMode);
+      await AsyncStorage.setItem('@user_theme_pref', newPref);
     } catch (err) {
       console.error('Erreur à la sauvegarde du thème', err);
     }
   };
 
   return (
-    <ThemeContext.Provider value={{ colorMode, toggleColorMode, isManualControl }}>
+    <ThemeContext.Provider value={{ themePreference, colorMode, setThemePreference, isLoading }}>
       {children}
     </ThemeContext.Provider>
   );

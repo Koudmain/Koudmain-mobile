@@ -18,12 +18,15 @@ export function GluestackUIProvider({
   const { colorScheme, setColorScheme } = useColorScheme();
 
   useEffect(() => {
-    setColorScheme(mode);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+    if (mode === 'system') {
+      setColorScheme('system');
+    } else {
+      setColorScheme(mode);
+    }
+  }, [mode, setColorScheme]);
 
   return (
-    <View style={[config[colorScheme!], { flex: 1, height: '100%', width: '100%' }, props.style]}>
+    <View style={[config[colorScheme ?? 'light'], { flex: 1, height: '100%', width: '100%' }, props.style]}>
       <OverlayProvider>
         <ToastProvider>{props.children}</ToastProvider>
       </OverlayProvider>

@@ -1,3 +1,9 @@
+export enum PublicationStatus {
+  OPEN = 'Ouverte',
+  CLOSE = 'Fermée',
+  URGENT = 'Urgente',
+}
+
 export interface IPublication {
   id: number;
   company_id: number | null;
@@ -13,4 +19,18 @@ export interface IPublication {
   clicks: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PublicationsDto {
+  createdByUserId?: number;
+  addressId?: number;
+  title: string;
+  description: string;
+  hourly_rate: number;
+  starting_date: string;
+  ending_date: string;
+  status?: PublicationStatus;
+  skills: number[];
+  autoAccept: boolean;
+  highlight: boolean;
 }
