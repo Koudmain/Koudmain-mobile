@@ -2,14 +2,10 @@ import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native'
 import { useState } from 'react';
 
 import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
-import { VStack } from '@/components/ui/vstack';
-import { FormControl } from '@/components/ui/form-control';
-import Button from '@/components/ui/Button';
+import { VStack, FormControl, Button, Divider } from '@koudmain/ui/gluestack';
 import AuthTop from '@/components/auth/AuthTop';
 
 import { router } from 'expo-router';
-
-import { Divider } from '@/components/ui/divider';
 import GoogleIcon from '@/assets/svg/google-24px.svg';
 import { useSession } from '@/context/SessionContext';
 
@@ -49,7 +45,7 @@ export default function SignIn() {
               type="text"
               value={email}
               validationState={emailValidationState}
-              onChangeText={(value) => {
+              onChangeText={(value: string) => {
                 setEmail(value);
                 setSigninFailed(false);
               }}
@@ -59,7 +55,7 @@ export default function SignIn() {
               placeholder="•••••••••••"
               type="password"
               value={password}
-              onChangeText={(value) => {
+              onChangeText={(value: string) => {
                 setPassword(value);
                 setSigninFailed(false);
               }}

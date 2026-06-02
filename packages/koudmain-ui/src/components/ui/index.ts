@@ -12,5 +12,4 @@ export * from './center/index';
 export * from './icon/index';
 export * from './select/index';
 export * from './slider/index';
-
 export * from './Button'

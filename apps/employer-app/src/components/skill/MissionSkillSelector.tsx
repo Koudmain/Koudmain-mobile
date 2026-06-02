@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import CompetenceCard from '@/components/card/CompetenceCard';
 import { Skill } from '@/types/skill';

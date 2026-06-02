@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { View } from 'react-native';
 
 type CompetenceCardProps = {

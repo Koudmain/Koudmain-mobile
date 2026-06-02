@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { colors } from '@/constants/theme';

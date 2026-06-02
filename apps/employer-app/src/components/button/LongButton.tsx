@@ -1,8 +1,6 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Text } from '@/components/ui/text';
-import { colors } from 'src/constants/theme';
+import { TouchableOpacity } from 'react-native';
+import { Text } from '@koudmain/ui/gluestack';
 
 interface CustomButtonProps {
   label: string;

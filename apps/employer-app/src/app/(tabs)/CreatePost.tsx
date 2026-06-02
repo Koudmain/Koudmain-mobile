@@ -1,6 +1,4 @@
-import { FormControl } from '@/components/ui/form-control';
-import { VStack } from '@/components/ui/vstack';
-import { Text } from '@/components/ui/text';
+import { FormControl, VStack, Text } from '@koudmain/ui/gluestack';
 import { Alert, View, TouchableOpacity } from 'react-native';
 import React, { useState, useRef, useCallback } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';

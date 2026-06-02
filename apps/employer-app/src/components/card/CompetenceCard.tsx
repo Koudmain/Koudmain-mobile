@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { View, TouchableOpacity } from 'react-native';
 import FontAwesomeIcon from '@expo/vector-icons/FontAwesome';
 

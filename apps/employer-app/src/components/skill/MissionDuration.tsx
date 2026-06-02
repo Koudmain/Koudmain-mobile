@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { View } from 'react-native';
 import { CustomButton } from '@/components/button/LongButton';
 import CalendarStrip from 'react-native-calendar-strip';

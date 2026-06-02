@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { Switch } from '@/components/ui/switch';
+import { Switch } from '@koudmain/ui/gluestack';
 import { colors } from '@/constants/theme';
 export type HorizontalSwitchProps = {
   isEnabled: boolean;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField } from '@koudmain/ui/gluestack';
 import { colors } from '@/constants/theme';
 
 interface MessageInputProps {

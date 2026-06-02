@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { Text } from '@/components/ui/text';
-import { Heading } from '@/components/ui/heading';
+import { Text, Heading } from '@koudmain/ui/gluestack';
 import { useSession } from '@/context/SessionContext';
 import { CompanySelector } from './CompanySelector';
 

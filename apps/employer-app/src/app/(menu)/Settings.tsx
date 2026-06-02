@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { ScrollView, TouchableOpacity, View, useColorScheme } from 'react-native';
-import { VStack } from '@/components/ui/vstack';
-import { HStack } from '@/components/ui/hstack';
-import { Heading } from '@/components/ui/heading';
-import { Text } from '@/components/ui/text';
-import { Input, InputField } from '@/components/ui/input';
-import { FormControl, FormControlLabel, FormControlLabelText } from '@/components/ui/form-control';
-import { Divider } from '@/components/ui/divider';
+import {
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  Input,
+  InputField,
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+  Divider,
+} from '@koudmain/ui/gluestack';
 
 import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';

@@ -1,4 +1,4 @@
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { View, ScrollView } from 'react-native';
 import { useEffect } from 'react';
 import { useGetSkillByCategoryId } from '@/hooks/useGetSkillByCategoryId';

@@ -7,7 +7,7 @@ module.exports = defineConfig([
   expoConfig,
   eslintPluginPrettierRecommended,
   {
-    ignores: ['dist/*', 'mobile-client/src/components/ui/*', 'node_modules/*'],
+    ignores: ['dist/*', 'node_modules/*'],
   },
   {
     rules: {

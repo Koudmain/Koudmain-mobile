@@ -1,6 +1,4 @@
-import { Card } from '@/components/ui/card';
-import { Heading } from '@/components/ui/heading';
-import { Text } from '@/components/ui/text';
+import { Card, Heading, Text } from '@koudmain/ui/gluestack';
 import { View, Pressable, Image } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';

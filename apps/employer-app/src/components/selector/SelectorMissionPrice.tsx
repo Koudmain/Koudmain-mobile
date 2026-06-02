@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-import { Input, InputField } from '@/components/ui/input';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {
@@ -13,8 +12,10 @@ import {
   SelectDragIndicatorWrapper,
   SelectDragIndicator,
   SelectItem,
-} from '@/components/ui/select';
-import { ChevronDownIcon } from '@/components/ui/icon/ChevronDownIcon';
+  ChevronDownIcon,
+  Input,
+  InputField,
+} from '@koudmain/ui/gluestack';
 
 export type SelectorMissionPriceProps = {
   title: string;
