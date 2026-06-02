@@ -6,6 +6,9 @@
     "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*", "./*"],
+      "@koudmain/ui/*": [
+        "../../packages/koudmain-ui/src/*"
+      ],
       "tailwind.config": [
         "./tailwind.config.js"
       ],

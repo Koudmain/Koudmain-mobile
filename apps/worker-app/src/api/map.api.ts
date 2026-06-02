@@ -1,5 +1,5 @@
 import { PublicationMap } from '@/types/publication';
-import { apiFetch } from '@koudmain/ui';
+import { apiFetch } from '@koudmain/ui/utils/api';
 
 export const mapService = {
   fetchPublicationsInBounds: async (

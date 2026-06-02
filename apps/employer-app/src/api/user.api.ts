@@ -1,5 +1,5 @@
 import { User } from '@/types/user';
-import { apiFetch } from '@koudmain/ui';
+import { apiFetch } from '@koudmain/ui/utils/api';
 
 export const userService = {
   getMe: async (token: string) => {

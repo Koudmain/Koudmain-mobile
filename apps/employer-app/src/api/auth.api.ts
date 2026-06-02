@@ -1,4 +1,4 @@
-import { apiFetch } from '@koudmain/ui/';
+import { apiFetch } from '@koudmain/ui/utils/api';
 
 type LoginResponse = {
   access_token: string;

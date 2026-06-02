@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { userService } from '@/api/user.api';
 import { authService } from '@/api/auth.api';
 import { User } from '@/types/user';
-import { configureAuthRefresh } from '@koudmain/ui';
+import { configureAuthRefresh } from '@koudmain/ui/utils/api';
 
 const ACCESS_TOKEN_KEY = 'session';
 const REFRESH_TOKEN_KEY = 'refresh_token';

@@ -1,4 +1,4 @@
-import { apiFetch } from '@koudmain/ui';
+import { apiFetch } from '@koudmain/ui/utils/api';
 import * as SecureStore from 'expo-secure-store';
 import { SkillCategory } from '@/types/skill-category';
 
