@@ -3,7 +3,7 @@ import { Pressable, Text, useColorScheme, View } from 'react-native';
 
 import { LIST_FAV } from '@/constants/fake_data';
 
-import OffreEmploiCard from '@/components/card/OffreEmploiCard';
+import OffreEmploiCard from '@koudmain/ui/components/card/OffreEmploiCard';
 import FiltersOffers from '@/components/filters/FiltersOffers';
 import { Shadow } from 'react-native-shadow-2';
 import SearchBar from '@koudmain/ui/components/tools/SearchBar';

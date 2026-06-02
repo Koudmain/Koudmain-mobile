@@ -1,6 +1,6 @@
 import { Text } from '@koudmain/ui/gluestack';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
-import CompetenceCard from '@/components/card/CompetenceCard';
+import CompetenceCard from '@koudmain/ui/components/card/CompetenceCard';
 import { Skill } from '@/types/skill';
 
 export interface MissionSkillSelectorProps {

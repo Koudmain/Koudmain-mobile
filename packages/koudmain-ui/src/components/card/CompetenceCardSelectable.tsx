@@ -1,7 +1,7 @@
-import { Text } from '@koudmain/ui/gluestack';
+import { Text } from '../ui';
 import { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 type CompetenceCardSelectableProps = {
   comp: string;

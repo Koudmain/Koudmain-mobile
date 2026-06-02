@@ -1,10 +1,10 @@
-import { Card, Heading, Text } from '@koudmain/ui/gluestack';
+import { Card, Heading, Text } from '../ui';
 import { View, Pressable, Image } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 type PlanningCardProps = {
   id: number;

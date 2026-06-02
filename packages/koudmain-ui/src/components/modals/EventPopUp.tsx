@@ -1,9 +1,9 @@
 import { ScrollView } from 'react-native';
 import { CalendarBottomSheet } from '@koudmain/ui';
-import PlanningCard from '@/components/card/PlanningCard';
+import PlanningCard from '../card/PlanningCard';
 import { Shadow } from 'react-native-shadow-2';
-import { colors } from '@/constants/theme';
-import { PlanningEvent } from '@/types/planning';
+import { colors } from '../../constants/theme';
+import { PlanningEvent } from '../../types/planning';
 
 interface EventPopUpProps {
   isVisible: boolean;
@@ -25,9 +25,9 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
         >
-          {items.map((event) => (
+          {items.map((event, index) => (
             <Shadow
-              key={`${event.id}-${event.starting_date}`}
+              key={`${event.id}-${event.starting_date}-${index}`}
               startColor={isDark ? colors.shadow.dark : colors.shadow.light}
               style={{
                 borderRadius: 22,
@@ -40,15 +40,12 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
                 id={event.id}
                 name={event.name}
                 image_profile={event.image_profile}
-                city={event.city}
-                zip={event.zip}
                 rate={event.rate}
                 number_rate={event.number_rate}
                 title={event.title}
                 wage={event.wage}
                 begin={event.time}
                 end={event.end}
-                status={event.status}
               />
             </Shadow>
           ))}

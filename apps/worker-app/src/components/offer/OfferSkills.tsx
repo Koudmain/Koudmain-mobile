@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '@/constants/theme';
-import CompetenceCard from '@/components/card/CompetenceCard';
+import CompetenceCard from '@koudmain/ui/components/card/CompetenceCard';
 
 interface OfferSkillsProps {
   skills: string[];

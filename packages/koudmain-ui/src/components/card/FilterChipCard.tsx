@@ -2,7 +2,7 @@ import React from 'react';
 import { SvgProps } from 'react-native-svg';
 import { TouchableOpacity, Text, View, useColorScheme } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 interface FilterChipProps {
   label: string;

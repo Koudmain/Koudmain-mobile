@@ -1,4 +1,4 @@
-import { Card, Heading, Text } from '@koudmain/ui/gluestack';
+import { Card, Heading, Text } from '../ui';
 import { Image, ScrollView, View, Pressable, useColorScheme } from 'react-native';
 import CompetenceCard from './CompetenceCard';
 
@@ -10,7 +10,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 import { router } from 'expo-router';
 
 type OffreEmploiCardProps = {

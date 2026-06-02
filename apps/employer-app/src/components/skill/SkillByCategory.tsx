@@ -2,7 +2,7 @@ import { Text } from '@koudmain/ui/gluestack';
 import { View, ScrollView } from 'react-native';
 import { useEffect } from 'react';
 import { useGetSkillByCategoryId } from '@/hooks/useGetSkillByCategoryId';
-import CompetenceCardSelectable from '@/components/card/CompetenceCardSelectable';
+import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
 import { SkillCategory } from '@/types/skill-category';
 import { Skill } from '@/types/skill';
 

@@ -3,7 +3,7 @@ import { SharedCalendar } from '@koudmain/ui';
 import { useSession } from '@/context/SessionContext';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { formatDayEvents } from '@/utils/calendarUtils';
-import EventPopUp from '@/components/modals/EventPopUp';
+import EventPopUp from '@koudmain/ui/components/modals/EventPopUp';
 
 export default function CalendarComponent() {
   const { session, activeCompanyId } = useSession();

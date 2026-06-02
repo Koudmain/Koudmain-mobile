@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import FilterChip from '@/components/card/FilterChipCard';
+import FilterChip from '@koudmain/ui/components/card/FilterChipCard';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
