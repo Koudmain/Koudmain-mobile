@@ -2,7 +2,7 @@ import { Text, useColorScheme, View } from 'react-native';
 import { colors } from '@/constants/theme';
 import LabeledIconInput from '@/components/form/LabeledIconInput';
 import { FontAwesome5 } from '@expo/vector-icons';
-import InfoHint from '@/components/ui/InfoHint';
+import InfoHint from '@koudmain/ui/components/utils/InfoHint';
 
 export interface FRemunerationLongMissionFilter {
   active: boolean;

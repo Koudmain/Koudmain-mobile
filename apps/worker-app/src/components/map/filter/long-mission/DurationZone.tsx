@@ -1,4 +1,4 @@
-import InfoHint from '@/components/ui/InfoHint';
+import InfoHint from '@koudmain/ui/components/utils/InfoHint';
 import DurationSelectorInput from '@koudmain/ui/components/utils/DurationSelectorInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
