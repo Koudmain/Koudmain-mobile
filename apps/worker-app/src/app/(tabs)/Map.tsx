@@ -31,7 +31,7 @@ export default function MapScreen() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [tracksView, setTracksView] = useState(true);
   const isClickingMarkerRef = useRef(false);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [filters, setFilters] = useState<FMapModal>(defaultFMapModal);
 
