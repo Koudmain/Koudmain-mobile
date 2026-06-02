@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { colors } from '@/constants/theme';
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 
 interface DistanceSliderProps {
   title?: string;

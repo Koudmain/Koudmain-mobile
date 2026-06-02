@@ -1,5 +1,5 @@
 import { colors } from '@/constants/theme';
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 import { Text, View, StyleSheet } from 'react-native';
 
 interface DividerProps {

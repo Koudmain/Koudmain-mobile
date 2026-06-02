@@ -6,7 +6,7 @@ import CalendarStrip from 'react-native-calendar-strip';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { colors } from '@/constants/theme';
-import { formatTime } from '@/utils/FormatTime';
+import { formatTime } from '@koudmain/ui/utils/formatTime';
 
 export interface MissionDurationPickerProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<string>>;

@@ -8,7 +8,7 @@ import OffreEmploiCard from '@/components/card/OffreEmploiCard';
 import FiltersOffers from '@/components/filters/FiltersOffers';
 import { AppScrollView } from '@/components/layout/AppScrollView';
 import SearchBar from '@/components/tools/SearchBar';
-import { normalizeText } from '@/utils/text';
+import { normalizeText } from '@koudmain/ui/utils/text';
 import { colors } from '@/constants/theme';
 
 export default function Offers() {

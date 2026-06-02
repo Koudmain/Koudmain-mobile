@@ -1,9 +1,9 @@
 import React from 'react';
-import { formatPublicationDate } from '@/utils/date';
+import { formatPublicationDate } from '@koudmain/ui/utils/date';
 import { Shadow } from 'react-native-shadow-2';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ImageBackground, TouchableOpacity, View, Text } from 'react-native';
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 import { colors } from '@/constants/theme';
 
 export type PublicationTheme = 'service' | 'plonge' | 'cuisine' | 'bar' | 'accueil';

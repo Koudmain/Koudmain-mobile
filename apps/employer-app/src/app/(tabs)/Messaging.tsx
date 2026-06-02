@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SectionList, Text, View, FlatList, Pressable } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import SearchBar from '@/components/tools/SearchBar';
-import { normalizeText } from '@/utils/text';
+import { normalizeText } from '@koudmain/ui/utils/text';
 import { MOCK_PUBLICATIONS } from '@/constants/fakePubliConv';
 import ConversationItem from '@/components/messaging/ConversationItem';
 import SectionHeader from '@/components/messaging/SectionsHeader';

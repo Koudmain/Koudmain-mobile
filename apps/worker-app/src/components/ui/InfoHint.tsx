@@ -1,4 +1,4 @@
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 import React, { useState, useRef } from 'react';
 import { Pressable, Text, View, Modal, TouchableWithoutFeedback } from 'react-native';
 

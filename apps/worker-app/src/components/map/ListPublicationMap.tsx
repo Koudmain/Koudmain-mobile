@@ -9,7 +9,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 
 interface ListPublicationMapProps {
   flatListRef: React.RefObject<any>;

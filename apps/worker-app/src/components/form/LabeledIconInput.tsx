@@ -1,6 +1,6 @@
 import { Text, TextInput, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { cnFusion } from '@/utils/cnFusion';
+import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 
 type LabeledIconInputProps = {
   iconName: React.ComponentProps<typeof FontAwesome5>['name'];
