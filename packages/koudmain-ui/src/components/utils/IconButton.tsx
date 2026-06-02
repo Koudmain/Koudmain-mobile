@@ -1,4 +1,4 @@
-import { cnFusion } from '@koudmain/ui/utils/cnFusion';
+import { cnFusion } from '../../utils/cnFusion';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 

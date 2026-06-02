@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 import { View, useColorScheme } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 

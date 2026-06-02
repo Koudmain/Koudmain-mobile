@@ -1,5 +1,5 @@
 import InfoHint from '@/components/ui/InfoHint';
-import DurationSelectorInput from '@/components/utils/DurationSelectorInput';
+import DurationSelectorInput from '@koudmain/ui/components/utils/DurationSelectorInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { View, Text, useColorScheme } from 'react-native';

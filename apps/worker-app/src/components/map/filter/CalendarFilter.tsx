@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from 'react-native';
-import CalendarSelector from '@/components/utils/CalendarSelector';
+import CalendarSelector from '@koudmain/ui/components/utils/CalendarSelector';
 
 export interface FCalendarSelector {
   startDate: string | null;

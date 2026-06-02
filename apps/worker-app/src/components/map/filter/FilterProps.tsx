@@ -1,4 +1,4 @@
-import { DurationSelectorOption } from '@/components/utils/DurationSelectorInput';
+import { DurationSelectorOption } from '@koudmain/ui/components/utils/DurationSelectorInput';
 
 const MAX_DAYS = 30;
 const MAX_MONTHS = 18;

@@ -1,6 +1,6 @@
 import { Modal, ScrollView, Text, TouchableOpacity, useColorScheme, View } from 'react-native';
-import DistanceSlider from '@/components/utils/DistanceSlider';
-import { CollapsibleCheckbox } from '@/components/utils/CollapsibleCheckbox';
+import DistanceSlider from '@koudmain/ui/components/utils/DistanceSlider';
+import { CollapsibleCheckbox } from '@koudmain/ui/components/utils/CollapsibleCheckbox';
 import LongMissionFilter, {
   FLongMissionFilter,
   defaultLongMissionFilter,
@@ -9,7 +9,7 @@ import ShortMissionFilter, {
   FShortMissionFilter,
   defaultShortMissionFilter,
 } from '@/components/map/filter/ShortMissionFilter';
-import Divider from '@/components/utils/Divider';
+import Divider from '@koudmain/ui/components/utils/Divider';
 import { colors } from '@/constants/theme';
 import CalendarFilter, { FCalendarSelector, defaultFCalendarSelector } from './CalendarFilter';
 

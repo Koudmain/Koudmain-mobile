@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Text, TextInput, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 export type DurationSelectorOption = {
   label: string;

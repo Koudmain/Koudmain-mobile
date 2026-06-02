@@ -3,7 +3,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import LabeledIconInput from '@/components/form/LabeledIconInput';
 import InfoHint from '@/components/ui/InfoHint';
-import SliderIconInline from '@/components/utils/SliderIconInline';
+import SliderIconInline from '@koudmain/ui/components/utils/SliderIconInline';
 
 export interface FShortMissionFilter {
   remuneration: string;
