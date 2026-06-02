@@ -1,7 +1,7 @@
 import { Text, useColorScheme, View } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
-import LabeledIconInput from '@/components/form/LabeledIconInput';
+import LabeledIconInput from '@koudmain/ui/components/form/LabeledIconInput';
 import InfoHint from '@koudmain/ui/components/utils/InfoHint';
 import SliderIconInline from '@koudmain/ui/components/utils/SliderIconInline';
 

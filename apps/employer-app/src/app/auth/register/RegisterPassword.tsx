@@ -1,7 +1,7 @@
 import { View, Text, Pressable, Keyboard } from 'react-native';
 import { useState } from 'react';
 
-import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '@koudmain/ui/gluestack';
 import AuthTop from '@/components/auth/AuthTop';
 import PasswordChecker, { isPasswordValid } from '@/components/auth/PasswordChecker';

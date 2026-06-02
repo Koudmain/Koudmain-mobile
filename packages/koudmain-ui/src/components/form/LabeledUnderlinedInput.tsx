@@ -6,7 +6,7 @@ import {
   InputSlot,
   EyeIcon,
   EyeOffIcon,
-} from '@koudmain/ui/gluestack';
+} from '../ui';
 import { useState } from 'react';
 
 type LabeledUnderlinedInputProps = React.ComponentProps<typeof InputField> & {
@@ -16,6 +16,16 @@ type LabeledUnderlinedInputProps = React.ComponentProps<typeof InputField> & {
   validationState?: 'default' | 'error' | 'success';
 };
 
+/**
+ * Un champ de saisie avec un label au-dessus et une ligne de soulignement. Il prend en charge les champs de mot de passe avec une icône pour basculer la visibilité, ainsi que les champs multiligne.
+ * @param label - Le texte du label affiché au-dessus du champ de saisie.
+ * @param multiline - Indique si le champ de saisie doit être multiligne. Par défaut, il est à false (champ à une seule ligne).
+ * @param containerClassName - Classes supplémentaires pour le conteneur global du composant.
+ * @param inputClassName - Classes supplémentaires pour le champ de saisie lui-même.
+ * @param validationState - L'état de validation du champ, qui peut être 'default', 'error' ou 'success'. Cela affecte la couleur de la bordure du champ de saisie.
+ * @param fieldProps - Toutes les autres propriétés standard d'un champ de saisie (InputField) de Gluestack.
+ * @returns Un composant de champ de saisie stylisé avec un label et une ligne de soulignement, adapté pour les mots de passe et les champs multiligne.
+ */
 export default function LabeledUnderlinedInput({
   label,
   multiline = false,

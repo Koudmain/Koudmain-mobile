@@ -1,6 +1,6 @@
 import { Text, useColorScheme, View } from 'react-native';
 import { colors } from '@/constants/theme';
-import LabeledIconInput from '@/components/form/LabeledIconInput';
+import LabeledIconInput from '@koudmain/ui/components/form/LabeledIconInput';
 import { FontAwesome5 } from '@expo/vector-icons';
 import InfoHint from '@koudmain/ui/components/utils/InfoHint';
 

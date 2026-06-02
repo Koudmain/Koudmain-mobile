@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native';
 import { useState } from 'react';
 
-import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button, Divider } from '@koudmain/ui';
 import AuthTop from '@/components/auth/AuthTop';
 
