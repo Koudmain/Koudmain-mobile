@@ -2,7 +2,7 @@ import { FormControl, VStack, Text } from '@koudmain/ui/gluestack';
 import { Alert, View, TouchableOpacity } from 'react-native';
 import React, { useState, useRef, useCallback } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { AppScrollView } from '@/components/layout/AppScrollView';
+import { AppScrollView } from '@koudmain/ui/components/layout/AppScrollView';
 import LabeledUnderlinedInput from '@/components/form/LabeledUnderlinedInput';
 import DurationSlider from '@/components/slider/Slider';
 import HorizontalSwitch from '@/components/switch/HorizontalSwitch';

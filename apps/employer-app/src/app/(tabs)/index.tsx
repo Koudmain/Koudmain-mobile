@@ -1,5 +1,5 @@
 import PubliCards from '@/components/PubliCards';
-import { AppScrollView } from '@/components/layout/AppScrollView';
+import { AppScrollView } from '@koudmain/ui/components/layout/AppScrollView';
 
 export default function Publication() {
   const desc1 =
