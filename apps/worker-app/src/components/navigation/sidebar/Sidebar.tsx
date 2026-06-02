@@ -7,12 +7,12 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { useSidebar } from '@/context/SidebarContext';
-import { Text } from '@/components/ui/text';
+import { Text } from '@koudmain/ui/gluestack';
 import { UserHeader } from './UserHeader';
 import { Feather } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { Href, useRouter } from 'expo-router';
-import { ThemeToggle } from '@/components/tools/ThemeToggle';
+import { ThemeToggle } from '@koudmain/ui/components/tools/ThemeToggle';
 
 import { useSession } from '@/context/SessionContext';
 import { scheduleOnRN } from 'react-native-worklets';

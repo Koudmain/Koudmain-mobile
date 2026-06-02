@@ -1,7 +1,7 @@
 import { View } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 import React from 'react';
-import { colors } from '@/constants/theme';
+import { colors } from '../../constants/theme';
 
 export const ICON_DIMENSIONS = {
   small: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { Heading } from '@/components/ui/heading';
+import { Heading } from '@koudmain/ui/gluestack';
 import { useSession } from '@/context/SessionContext';
 
 export function UserHeader() {

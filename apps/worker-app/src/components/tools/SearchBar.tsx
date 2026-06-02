@@ -1,5 +1,5 @@
 import { View, useColorScheme } from 'react-native';
-import { Input, InputField } from '@/components/ui/input';
+import { Input, InputField } from '@koudmain/ui/gluestack';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { colors } from '@/constants/theme';
 import { cnFusion } from '@/utils/cnFusion';

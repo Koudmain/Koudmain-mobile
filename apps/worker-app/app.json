@@ -8,7 +8,7 @@
     "scheme": "koudmain",
     "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -38,6 +38,13 @@
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAllowPermissionDescription": "Permettre à Koudmain d'accéder à votre position pour vous proposer des missions à proximité.",
+          "isAndroidBackgroundLocationEnabled": false
         }
       ],
       "expo-font",

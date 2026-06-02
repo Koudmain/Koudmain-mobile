@@ -6,6 +6,7 @@ import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
 import { TabBarHitBox } from '@/components/navigation/TabBarHitBox';
 import { useSidebar } from '@/context/SidebarContext';
+import { MapIcon } from '@/svg/MapIcon';
 
 const TABS_CONFIG = [
   {
@@ -23,13 +24,25 @@ const TABS_CONFIG = [
     isLarge: false,
   },
   {
+    name: 'Map',
+    SvgComponent: MapIcon,
+    label: 'Publier',
+    isLarge: true,
+  },
+  {
     name: 'Messaging',
     IconLibrary: FontAwesome6,
     iconName: 'message',
     label: 'messaging',
     isLarge: false,
   },
-  { name: 'Profile', IconLibrary: Feather, iconName: 'menu', label: 'Menu', isLarge: false },
+  {
+    name: 'Profile',
+    IconLibrary: Feather,
+    iconName: 'menu',
+    label: 'Menu',
+    isLarge: false,
+  },
 ];
 
 export default function TabLayout() {
@@ -78,6 +91,7 @@ export default function TabLayout() {
               tabBarIcon: ({ color }) => (
                 <TabBarIcon
                   IconLibrary={tab.IconLibrary}
+                  SvgComponent={tab.SvgComponent}
                   iconName={tab.iconName}
                   color={color}
                   isLarge={tab.isLarge}

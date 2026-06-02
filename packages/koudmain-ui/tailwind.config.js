@@ -76,10 +76,19 @@ module.exports = {
         // Basic colors
         primary: {
           DEFAULT: 'hsl(0, 0%, 19%)', // #313131
+          50: 'hsl(0, 0%, 95%)',
+          100: 'hsl(0, 0%, 90%)',
+          200: 'hsl(0, 0%, 80%)',
+          300: 'hsl(0, 0%, 70%)',
+          400: 'hsl(0, 0%, 60%)',
+          500: 'hsl(0, 0%, 50%)',
+          600: 'hsl(0, 0%, 40%)',
+          700: 'hsl(0, 0%, 30%)',
           hover: 'hsl(0, 0%, 25%)',
           active: 'hsl(0, 0%, 15%)',
           focus: 'hsl(0, 0%, 19%, 0.4)',
           disabled: 'hsl(0, 0%, 60%)',
+          light: 'hsl(0, 0%, 85%)',
           content: '#FFFFFF',
         },
 
@@ -128,6 +137,10 @@ module.exports = {
         utils: {
           hearth: '#E02424',
           star: '#FBBF24',
+        },
+        map : {
+          selected: '#2ecc71',
+          stroke: '#333',
         },
 
         // Neutral colors

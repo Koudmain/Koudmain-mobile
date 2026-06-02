@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Text, View, Image, useColorScheme } from 'react-native';
 
-import Button from '@/components/ui/Button';
+import { Button } from '@koudmain/ui/gluestack';
 
 import logo from '@/assets/images/logo/logo_v1.2_only_transparant.png';
 import logo_white from '@/assets/images/logo/logo_v1.2_only_transparant_white.png';
