@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { IMessage } from '@/types/message';
+import { IMessage } from '../types/message';
 
 interface ChatState {
   messages: IMessage[];

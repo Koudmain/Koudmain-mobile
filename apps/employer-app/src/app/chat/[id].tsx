@@ -6,7 +6,7 @@ import { colors } from '@/constants/theme';
 import MessageBubble from '@/components/messaging/chat/MessageBubble';
 import MessageInput from '@/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useChatStore } from '@/store/useChatStore';
+import { useChatStore } from '@koudmain/ui/store/useChatStore';
 import { useSession } from '@/context/SessionContext';
 import { chatService } from '@/api/chat.api';
 import { IMessage } from '@/types/message';

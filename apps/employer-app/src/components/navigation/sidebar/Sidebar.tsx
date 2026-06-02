@@ -13,7 +13,7 @@ import { UserHeader } from './UserHeader';
 import { Feather } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { Href, useRouter } from 'expo-router';
-import { ThemeToggle } from '@/components/tools/ThemeToggle';
+import { ThemeToggle } from '@koudmain/ui/components/tools/ThemeToggle';
 
 import { useSession } from '@/context/SessionContext';
 

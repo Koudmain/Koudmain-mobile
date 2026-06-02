@@ -7,7 +7,7 @@ import { LIST_PUBLI } from '@/constants/fake_data';
 import OffreEmploiCard from '@/components/card/OffreEmploiCard';
 import FiltersOffers from '@/components/filters/FiltersOffers';
 import { AppScrollView } from '@/components/layout/AppScrollView';
-import SearchBar from '@/components/tools/SearchBar';
+import SearchBar from '@koudmain/ui/components/tools/SearchBar';
 import { normalizeText } from '@koudmain/ui/utils/text';
 import { colors } from '@/constants/theme';
 

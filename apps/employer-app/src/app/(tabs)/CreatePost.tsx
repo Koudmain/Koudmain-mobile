@@ -12,7 +12,7 @@ import { CustomButton } from '@/components/button/LongButton';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useGetSkillCategory } from '@/hooks/useGetSkillCategory';
-import { SearchBarProps } from '@/components/tools/SearchBar';
+import { SearchBarProps } from '@koudmain/ui/components/tools/SearchBar';
 import { router } from 'expo-router';
 import { Entypo } from '@expo/vector-icons';
 import { Skill } from '@/types/skill';

@@ -1,7 +1,7 @@
 import { Text } from '@koudmain/ui/gluestack';
 import { View } from 'react-native';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { SearchBarBottomSheet, SearchBarProps } from '@/components/tools/SearchBar';
+import { SearchBarBottomSheet, SearchBarProps } from '@koudmain/ui/components/tools/SearchBar';
 import { CustomButton } from '@/components/button/LongButton';
 import CategorySection from './SkillByCategory';
 import { Skill } from '@/types/skill';
