@@ -10,7 +10,10 @@ class SocketService {
   private isExplicitlyClosed = false;
 
   connect(token: string) {
-    if (this.socket || !token) return;
+    if (this.socket || !token) {
+      console.log('WebSocket: connexion ignorée (socket déjà ouverte ou token manquant)');
+      return;
+    }
 
     this.isExplicitlyClosed = false;
 
@@ -22,7 +25,7 @@ class SocketService {
       this.socket = new WebSocket(wsUrl);
 
       this.socket.onopen = () => {
-        console.log('WebSocket Connecté avec succès !');
+        console.log('WebSocket: connecté avec succès');
       };
 
       this.socket.onmessage = (event) => {
@@ -37,17 +40,18 @@ class SocketService {
       };
 
       this.socket.onerror = (e: any) => {
-        console.error('Erreur de connexion WebSocket. Vérifiez le port 4000 et votre Firewall.');
+        console.error('WebSocket: erreur de connexion', e);
       };
 
       this.socket.onclose = (e) => {
         this.socket = null;
         if (!this.isExplicitlyClosed && e.code !== 1000) {
+          console.log('WebSocket: reconnexion dans 5s');
           setTimeout(() => this.connect(token), 5000);
         }
       };
     } catch (err) {
-      console.error('Erreur fatale lors de la création du WebSocket', err);
+      console.error('WebSocket: erreur fatale lors de la création', err);
     }
   }
 
