@@ -1,5 +1,5 @@
 import { useChatStore } from '@/store/useChatStore';
-import { transformIpBackendUrl } from '@/utils/api';
+import { transformIpBackendUrl } from '@koudmain/ui';
 
 const RAW_API_HOST = process.env.EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME;
 

@@ -1,6 +1,6 @@
 import { IConversation } from '@/types/conversation';
 import { IMessage } from '@/types/message';
-import { apiFetch } from '@/utils/api';
+import { apiFetch } from '@koudmain/ui';
 
 export const chatService = {
   getMessages: async (token: string, conversationId: number) => {

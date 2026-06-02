@@ -1,4 +1,4 @@
-import { apiFetch } from '@/utils/api';
+import { apiFetch } from '@koudmain/ui';
 import * as SecureStore from 'expo-secure-store';
 import { Skill } from '@/types/skill';
 

@@ -8,6 +8,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "process-env.d.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"

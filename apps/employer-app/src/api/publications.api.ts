@@ -1,6 +1,6 @@
 import { PublicationsDto } from '@/types/publication';
 import * as SecureStore from 'expo-secure-store';
-import { apiFetch } from '@/utils/api';
+import { apiFetch } from '@koudmain/ui';
 
 export interface PostResponse {
   message: string;

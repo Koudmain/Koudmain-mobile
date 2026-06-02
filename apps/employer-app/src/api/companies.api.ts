@@ -1,5 +1,5 @@
 import { Companies } from '@/types/companies';
-import { apiFetch } from '@/utils/api';
+import { apiFetch } from '@koudmain/ui';
 
 export const companiesService = {
   getMyCompanies: async (token: string) => {

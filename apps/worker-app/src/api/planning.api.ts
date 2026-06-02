@@ -1,4 +1,4 @@
-import { apiFetch } from '@/utils/api';
+import { apiFetch } from '@koudmain/ui';
 
 export const planningService = {
   getPlanning: async (token: string, startDate?: Date, endDate?: Date) => {
