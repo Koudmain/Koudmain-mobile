@@ -96,19 +96,7 @@ export default function MapScreen() {
 
       return () => clearTimeout(timer);
     }
-  }, [publications]);
-
-  useEffect(() => {
-    if (publications.length === 0) return;
-
-    setTracksView(true);
-
-    const timer = setTimeout(() => {
-      setTracksView(false);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [isDark, publications.length]);
+  }, [isDark, publications]);
 
   const handleRegionChangeComplete = async (region: Region) => {
     if (debounceTimerRef.current) {
