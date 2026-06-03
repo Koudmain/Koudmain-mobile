@@ -23,6 +23,8 @@ const BELLECOUR_REGION = {
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
   const flatListRef = useRef<FlatList>(null);
+  const isClickingMarkerRef = useRef(false);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const currentMapStyle = isDark ? darkMapStyle : lightMapStyle;
@@ -30,9 +32,6 @@ export default function MapScreen() {
   const [publications, setPublications] = useState<PublicationMap[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [tracksView, setTracksView] = useState(true);
-  const isClickingMarkerRef = useRef(false);
-  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const [filters, setFilters] = useState<FMapModal>(defaultFMapModal);
 
   const { session } = useSession();
