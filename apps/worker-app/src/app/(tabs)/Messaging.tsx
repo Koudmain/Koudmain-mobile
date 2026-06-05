@@ -11,8 +11,8 @@ import { IConversation } from '@koudmain/ui';
 export default function Messaging() {
   const [searchText, setSearchText] = useState('');
   const [openRowId, setOpenRowId] = useState<number | null>(null);
-  const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
-  const [conversations, setConversations] = useState<IConversation[]>([]);
+  const [selectedPubId] = useState<number | null>(null);
+  const [conversations] = useState<IConversation[]>([]);
 
   const { session } = useSession();
 
