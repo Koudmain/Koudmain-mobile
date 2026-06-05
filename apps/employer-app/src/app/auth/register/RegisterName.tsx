@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '@koudmain/ui/gluestack';
 import AuthTop from '@/components/auth/AuthTop';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import { router, useLocalSearchParams } from 'expo-router';
 
 export default function RegisterName() {

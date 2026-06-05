@@ -8,7 +8,7 @@ import markerDark from '@/assets/images/map/pin_white.png';
 import markerSelected from '@/assets/images/map/pin_secondary.png';
 import { mapService } from '@/api/map.api';
 import { PublicationMap } from '@/types/publication';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 import { MapFilterButton } from '@/components/map/filter/MapFilterButton';
 import { FMapModal, defaultFMapModal } from '@/components/map/filter/FilterMapModal';

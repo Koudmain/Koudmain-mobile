@@ -7,7 +7,7 @@ import AuthTop from '@/components/auth/AuthTop';
 
 import { router } from 'expo-router';
 import GoogleIcon from '@/assets/svg/google-24px.svg';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

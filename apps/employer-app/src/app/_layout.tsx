@@ -7,7 +7,8 @@ import { Sidebar } from '@/components/navigation/sidebar/Sidebar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useTheme, ThemeProvider } from '@koudmain/ui/context/ThemeContext';
-import { SessionProvider, useSession } from '@/context/SessionContext';
+import { SessionProvider, useSession } from '@koudmain/ui/context/SessionContext';
+import { CompanyProvider } from '@/context/CompanyContext';
 import { SplashScreenController } from '@/splash';
 import { useEffect } from 'react';
 import { socketService } from '@/services/socket.service';
@@ -52,15 +53,17 @@ function RootLayoutContent() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <GluestackUIProvider mode={themePreference}>
-          <SessionProvider>
-            <SidebarProvider>
-              <SafeAreaView className="flex-1 bg-white dark:bg-primary" edges={['top']}>
-                <StatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />
-                <SplashScreenController />
-                <RootNavigator />
-              </SafeAreaView>
-              <Sidebar />
-            </SidebarProvider>
+          <SessionProvider targetApp="employer">
+            <CompanyProvider>
+              <SidebarProvider>
+                <SafeAreaView className="flex-1 bg-white dark:bg-primary" edges={['top']}>
+                  <StatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />
+                  <SplashScreenController />
+                  <RootNavigator />
+                </SafeAreaView>
+                <Sidebar />
+              </SidebarProvider>
+            </CompanyProvider>
           </SessionProvider>
         </GluestackUIProvider>
       </SafeAreaProvider>

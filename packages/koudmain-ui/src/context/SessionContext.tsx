@@ -1,22 +1,23 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { userService } from '@/api/user.api';
-import { authService } from '@/api/auth.api';
-import { User } from '@/types/user';
-import { configureAuthRefresh } from '@koudmain/ui/utils/api';
+import { User } from '../types/user';
+import { userService } from '../api/user.api';
+import { authService } from '../api/auth.api';
+import { configureAuthRefresh } from '../utils/api';
 
 const ACCESS_TOKEN_KEY = 'session';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
-  register: (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    is_worker_active: boolean,
-  ) => Promise<boolean>;
+  register: (data: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    is_worker_active?: boolean;
+    is_employer_active?: boolean;
+  }) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;
@@ -24,7 +25,7 @@ interface AuthContextType {
   refreshUser: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function useSession() {
   const context = useContext(AuthContext);
@@ -34,10 +35,27 @@ export function useSession() {
   return context;
 }
 
-export function SessionProvider({ children }: React.PropsWithChildren) {
+interface SessionProviderProps {
+  children: React.ReactNode;
+  targetApp: 'employer' | 'worker';
+  onSessionLoaded?: (token: string) => Promise<void>;
+  onSessionCleared?: () => Promise<void>;
+}
+
+export function SessionProvider({ children, targetApp, onSessionLoaded, onSessionCleared }: SessionProviderProps) {
   const [session, setSession] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const clearSession = useCallback(async () => {
+    await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
+    await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+    setSession(null);
+    setUser(null);
+    if (onSessionCleared) {
+      await onSessionCleared();
+    }
+  }, [onSessionCleared]);
 
   useEffect(() => {
     configureAuthRefresh({
@@ -48,17 +66,14 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
         setSession(accessToken);
       },
       onAuthExpired: async () => {
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        setSession(null);
-        setUser(null);
+        await clearSession();
       },
     });
 
     return () => {
       configureAuthRefresh(null);
     };
-  }, []);
+  }, [clearSession]);
 
   useEffect(() => {
     async function loadStorageData() {
@@ -70,22 +85,21 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
           setSession(token);
           const userData = await userService.getMe(token);
           setUser(userData);
+          if (onSessionLoaded) {
+            await onSessionLoaded(token);
+          }
         } else {
-          await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-          await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+          await clearSession();
         }
       } catch (e) {
         console.error('Session obsolète ou invalide, nettoyage...', e);
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        setSession(null);
-        setUser(null);
+        await clearSession();
       } finally {
         setIsLoading(false);
       }
     }
     loadStorageData();
-  }, []);
+  }, [clearSession, onSessionLoaded]);
 
   const refreshUser = async () => {
     if (!session) return;
@@ -97,22 +111,16 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
     }
   };
 
-  const register = async (
-    email: string,
-    password: string,
-    first_name: string,
-    last_name: string,
-    is_worker_active: boolean,
-  ) => {
+  const register = async (data: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    is_worker_active?: boolean;
+    is_employer_active?: boolean;
+  }) => {
     try {
-      await authService.register({
-        first_name,
-        last_name,
-        email,
-        password,
-        is_worker_active,
-        is_employer_active: false,
-      });
+      await authService.register(data);
       return true;
     } catch (error) {
       console.error("Erreur d'inscription:", error);
@@ -122,7 +130,7 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await authService.login(email, password);
+      const response = await authService.login(email, password, targetApp);
 
       if (!response?.access_token || typeof response.access_token !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
@@ -140,8 +148,14 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
 
       const userData = await userService.getMe(token);
       setUser(userData);
-    } catch (error: any) {
-      console.error('Erreur de connexion détaillée:', error.message);
+      
+      if (onSessionLoaded) {
+        await onSessionLoaded(token);
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      console.error('Erreur de connexion détaillée:', errorMessage);
+      await clearSession();
       throw error;
     }
   };
@@ -151,12 +165,10 @@ export function SessionProvider({ children }: React.PropsWithChildren) {
       if (session) {
         await authService.logout(session);
       }
-      await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-      await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-      setSession(null);
-      setUser(null);
     } catch (error) {
       console.error('Erreur logout API:', error);
+    } finally {
+      await clearSession();
     }
   };
 

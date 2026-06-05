@@ -5,11 +5,20 @@ type LoginResponse = {
   refresh_token: string;
 };
 
+type RegisterData = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  is_worker_active?: boolean;
+  is_employer_active?: boolean;
+};
+
 export const authService = {
-  login: async (email: string, password: string) => {
+  login: async (email: string, password: string, targetApp: 'employer' | 'worker') => {
     return apiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
-      body: { email, password, targetApp: 'employer' },
+      body: { email, password, targetApp },
     });
   },
 
@@ -27,13 +36,7 @@ export const authService = {
     });
   },
 
-  register: async (data: {
-    email: string;
-    password: string;
-    first_name: string;
-    last_name: string;
-    is_employer_active: boolean;
-  }) => {
+  register: async (data: RegisterData) => {
     return apiFetch<LoginResponse>('/auth/register', {
       method: 'POST',
       body: data,

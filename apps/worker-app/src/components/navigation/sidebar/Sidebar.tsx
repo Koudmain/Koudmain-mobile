@@ -14,7 +14,7 @@ import { colors } from '@/constants/theme';
 import { Href, useRouter } from 'expo-router';
 import { ThemeToggle } from '@koudmain/ui/components/tools/ThemeToggle';
 
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import { scheduleOnRN } from 'react-native-worklets';
 
 const { width } = Dimensions.get('window');

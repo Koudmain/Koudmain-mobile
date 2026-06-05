@@ -5,7 +5,7 @@ import SearchBar from '@koudmain/ui/components/tools/SearchBar';
 import { normalizeText } from '@koudmain/ui/utils/text';
 import { ConversationItem } from '@koudmain/ui/components/messaging/ConversationItem';
 import { SectionHeader } from '@koudmain/ui/components/messaging/SectionsHeader';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import { IConversation } from '@koudmain/ui';
 
 export default function Messaging() {

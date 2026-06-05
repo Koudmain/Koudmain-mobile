@@ -1,7 +1,7 @@
 import { TouchableOpacity, View, Image } from 'react-native';
 import { VStack, Heading, Text } from '@koudmain/ui/gluestack';
 import Feather from '@expo/vector-icons/Feather';
-import { User } from '@/types/user';
+import { User } from '@koudmain/ui/types';
 import { router } from 'expo-router';
 import { colors } from '@/constants/theme';
 

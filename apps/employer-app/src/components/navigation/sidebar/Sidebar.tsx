@@ -15,7 +15,7 @@ import { colors } from '@/constants/theme';
 import { Href, useRouter } from 'expo-router';
 import { ThemeToggle } from '@koudmain/ui/components/tools/ThemeToggle';
 
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 const { width } = Dimensions.get('window');
 const SIDEBAR_WIDTH = width * 0.65;
