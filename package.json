@@ -26,6 +26,7 @@
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "eslint-plugin-unicorn": "^64.0.0",
     "turbo": "^2.5.4"
   },
   "engines": {
