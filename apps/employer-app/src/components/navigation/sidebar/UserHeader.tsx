@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import { Text, Heading } from '@koudmain/ui/gluestack';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
 import { CompanySelector } from './CompanySelector';
 
 export function UserHeader() {
-  const { user, companies, activeCompanyId } = useSession();
+  const { user } = useSession();
+  const { companies, activeCompanyId } = useCompany();
 
   return (
     <View className="items-center pb-8 border-b border-primary-disabled mb-6">

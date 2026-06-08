@@ -1,5 +1,5 @@
 import { Redirect } from 'expo-router';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 export default function Index() {
   const { session } = useSession();

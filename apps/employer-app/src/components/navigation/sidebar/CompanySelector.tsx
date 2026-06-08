@@ -9,12 +9,12 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import { useSession } from '@/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { colors } from '@/constants/theme';
 
 export function CompanySelector() {
-  const { companies, activeCompanyId, changeCompany } = useSession();
+  const { companies, activeCompanyId, changeCompany } = useCompany();
   const [isVisible, setIsVisible] = useState(false);
 
   const colorScheme = useColorScheme();

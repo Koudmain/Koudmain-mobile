@@ -1,4 +1,4 @@
-import { User } from '@/types/user';
+import { User } from '../types/user';
 import { apiFetch } from '@koudmain/ui/utils/api';
 
 export const userService = {
@@ -47,7 +47,7 @@ export const userService = {
       });
     }
 
-    return apiFetch<any>('/users/me', {
+    return apiFetch<User>('/users/me', {
       method: 'PATCH',
       token,
       body: formData,

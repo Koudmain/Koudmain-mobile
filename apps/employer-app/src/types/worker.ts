@@ -1,4 +1,4 @@
-import { IUser } from './user';
+import { IUser } from '@koudmain/ui/types';
 
 export interface IWorker {
   id: number;

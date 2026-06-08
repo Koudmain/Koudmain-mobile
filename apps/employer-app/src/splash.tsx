@@ -1,7 +1,7 @@
 import { SplashScreen } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 void SplashScreen.preventAutoHideAsync();
 

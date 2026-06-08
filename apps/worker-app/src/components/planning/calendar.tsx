@@ -1,6 +1,6 @@
 import React from 'react';
 import { SharedCalendar } from '@koudmain/ui';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { formatDayEvents } from '@/utils/calendarUtils';
 import EventPopUp from '@koudmain/ui/components/modals/EventPopUp';

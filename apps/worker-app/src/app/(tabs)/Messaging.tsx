@@ -5,14 +5,14 @@ import SearchBar from '@koudmain/ui/components/tools/SearchBar';
 import { normalizeText } from '@koudmain/ui/utils/text';
 import { ConversationItem } from '@koudmain/ui/components/messaging/ConversationItem';
 import { SectionHeader } from '@koudmain/ui/components/messaging/SectionsHeader';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import { IConversation } from '@koudmain/ui';
 
 export default function Messaging() {
   const [searchText, setSearchText] = useState('');
   const [openRowId, setOpenRowId] = useState<number | null>(null);
-  const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
-  const [conversations, setConversations] = useState<IConversation[]>([]);
+  const [selectedPubId] = useState<number | null>(null);
+  const [conversations] = useState<IConversation[]>([]);
 
   const { session } = useSession();
 

@@ -7,7 +7,8 @@ import { MOCK_PUBLICATIONS } from '@/constants/fakePubliConv';
 import ConversationItem from '@/components/messaging/ConversationItem';
 import SectionHeader from '@/components/messaging/SectionsHeader';
 import PublicationStoryItem from '@/components/messaging/PublicationStoryItem';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
 import { chatService } from '@/api/chat.api';
 import { IConversation } from '@/types/conversation';
 
@@ -17,7 +18,8 @@ export default function Messaging() {
   const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
-  const { session, activeCompanyId } = useSession();
+  const { session } = useSession();
+  const { activeCompanyId } = useCompany();
 
   useFocusEffect(
     useCallback(() => {

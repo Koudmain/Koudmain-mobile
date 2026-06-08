@@ -7,7 +7,8 @@ import MessageBubble from '@/components/messaging/chat/MessageBubble';
 import MessageInput from '@/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useChatStore } from '@koudmain/ui/store/useChatStore';
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
 import { chatService } from '@/api/chat.api';
 import { IMessage } from '@/types/message';
 import { IConversation } from '@/types/conversation';
@@ -15,7 +16,8 @@ import { IConversation } from '@/types/conversation';
 export default function ChatScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const conversationId = Number(id);
-  const { session, activeCompanyId } = useSession();
+  const { session } = useSession();
+  const { activeCompanyId } = useCompany();
 
   const messages = useChatStore((state) => state.messages);
   const setMessages = useChatStore((state) => state.setMessages);

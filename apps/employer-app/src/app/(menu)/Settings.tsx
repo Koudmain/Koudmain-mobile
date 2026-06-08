@@ -16,12 +16,12 @@ import {
 import Entypo from '@expo/vector-icons/Entypo';
 import Feather from '@expo/vector-icons/Feather';
 
-import { useSession } from '@/context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 import * as ImagePicker from 'expo-image-picker';
 import HeaderProfileSettings from '@/components/menu/settings/HeaderProfileSettings';
 import AnimatedProfileButtons from '@/components/menu/settings/AnimatedProfileButtons';
 import { colors } from '@/constants/theme';
-import { userService } from '@/api/user.api';
+import { userService } from '@koudmain/ui/api/user.api';
 
 export default function SettingsScreen() {
   const { user, session, refreshUser, signOut } = useSession();
