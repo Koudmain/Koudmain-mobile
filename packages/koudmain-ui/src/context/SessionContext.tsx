@@ -11,12 +11,12 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   register: (data: {
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
-    is_worker_active?: boolean;
-    is_employer_active?: boolean;
+    isWorkerActive?: boolean;
+    isEmployerActive?: boolean;
   }) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
@@ -112,12 +112,12 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
   };
 
   const register = async (data: {
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
-    is_worker_active?: boolean;
-    is_employer_active?: boolean;
+    isWorkerActive?: boolean;
+    isEmployerActive?: boolean;
   }) => {
     try {
       await authService.register(data);
@@ -148,7 +148,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
 
       const userData = await userService.getMe(token);
       setUser(userData);
-      
+
       if (onSessionLoaded) {
         await onSessionLoaded(token);
       }

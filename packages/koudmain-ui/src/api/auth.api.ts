@@ -6,12 +6,12 @@ type LoginResponse = {
 };
 
 type RegisterData = {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
-  is_worker_active?: boolean;
-  is_employer_active?: boolean;
+  isWorkerActive?: boolean;
+  isEmployerActive?: boolean;
 };
 
 export const authService = {
@@ -39,7 +39,14 @@ export const authService = {
   register: async (data: RegisterData) => {
     return apiFetch<LoginResponse>('/auth/register', {
       method: 'POST',
-      body: data,
+      body: {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        password: data.password,
+        is_worker_active: data.isWorkerActive,
+        is_employer_active: data.isEmployerActive,
+      },
     });
   },
 };
