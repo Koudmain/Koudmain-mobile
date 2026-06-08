@@ -1,9 +1,11 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+import { nextJsConfig } from "@koudmain/eslint-config/next-js";
+import { defineConfig } from "eslint/config";
+import expoConfig from "eslint-config-expo/flat.js";
+import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
 
-module.exports = defineConfig([
+/** @type {import("eslint").Linter.Config[]} */
+export default defineConfig([
+  ...nextJsConfig,
   expoConfig,
   eslintPluginPrettierRecommended,
   {

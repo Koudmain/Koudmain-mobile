@@ -1,5 +1,6 @@
 {
   "name": "@koudmain/worker",
+  "type": "module",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -83,7 +84,8 @@
     "prettier": "3.8.1",
     "react-native-calendars": "^1.1314.0",
     "react-native-svg-transformer": "^1.5.3",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "@koudmain/eslint-config": "workspace:*"
   },
   "private": true
 }

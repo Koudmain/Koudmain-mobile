@@ -5,6 +5,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import { config as baseConfig } from "./base.js";
+import pluginUnicorn from "eslint-plugin-unicorn";
 
 /**
  * A custom ESLint configuration for libraries that use React.
@@ -34,6 +35,20 @@ export const config = [
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
       "react/react-in-jsx-scope": "off",
+    },
+  },
+  {
+    files: ["**/*.ts"],
+    plugins: { unicorn: pluginUnicorn },
+    rules: {
+      "unicorn/filename-case": ["error", { case: "camelCase" }],
+    },
+  },
+  {
+    files: ["**/*.tsx"],
+    plugins: { unicorn: pluginUnicorn },
+    rules: {
+      "unicorn/filename-case": ["error", { case: "pascalCase" }],
     },
   },
 ];
