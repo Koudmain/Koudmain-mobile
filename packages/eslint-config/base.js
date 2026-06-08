@@ -64,4 +64,9 @@ export const config = [
       ],
     },
   },
+  {
+    rules: {
+      "@stylistic/no-trailing-spaces": "error"
+    }
+  }
 ];
