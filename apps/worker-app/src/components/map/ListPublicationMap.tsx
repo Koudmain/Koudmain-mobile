@@ -12,7 +12,7 @@ import {
 import { cnFusion } from '@koudmain/ui/utils/cnFusion';
 
 interface ListPublicationMapProps {
-  flatListRef: React.RefObject<any>;
+  flatListRef: React.RefObject<FlatList<Publication>>;
   publications: Publication[];
   selectedId: string | null;
   cardWidth: number;

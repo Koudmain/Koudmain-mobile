@@ -9,7 +9,7 @@ type FiltersOffersProps = {
   onChange: (ids: string[]) => void;
 };
 
-const FiltersOffers = ({ selectedIds, onChange }: FiltersOffersProps) => {
+function FiltersOffers({ selectedIds, onChange }: FiltersOffersProps) {
   const categories = [
     {
       id: 'cuisine',
@@ -54,6 +54,6 @@ const FiltersOffers = ({ selectedIds, onChange }: FiltersOffersProps) => {
       </ScrollView>
     </View>
   );
-};
+}
 
 export default FiltersOffers;

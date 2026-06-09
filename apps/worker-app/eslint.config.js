@@ -1,4 +1,4 @@
-import { nextJsConfig } from "@koudmain/eslint-config/next-js";
+import { nextJsConfig } from '@koudmain/eslint-config/next-js';
 import { defineConfig } from 'eslint/config';
 import expoConfig from 'eslint-config-expo/flat.js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';

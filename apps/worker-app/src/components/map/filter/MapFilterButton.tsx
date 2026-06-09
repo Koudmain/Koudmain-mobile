@@ -11,7 +11,7 @@ interface MapFilterButtonProps {
   setFilters: (filters: FMapModal) => void;
 }
 
-export const MapFilterButton = ({ isDark, filters, setFilters }: MapFilterButtonProps) => {
+export function MapFilterButton({ isDark, filters, setFilters }: MapFilterButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
   const activeFiltersCount =
     Number(filters.calendar.active) +
@@ -59,4 +59,4 @@ export const MapFilterButton = ({ isDark, filters, setFilters }: MapFilterButton
       />
     </>
   );
-};
+}
