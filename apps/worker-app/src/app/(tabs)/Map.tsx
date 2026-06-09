@@ -39,18 +39,18 @@ export default function MapScreen() {
   const fetchAddresses = useCallback(
     async (options: {
       region?: Region;
-      boundaries?: { min_lat: number; max_lat: number; min_lng: number; max_lng: number };
+      boundaries?: { minLat: number; maxLat: number; minLng: number; maxLng: number };
     }) => {
-      let min_lat, max_lat, min_lng, max_lng;
+      let minLat, maxLat, minLng, maxLng;
 
       if (options.boundaries) {
-        ({ min_lat, max_lat, min_lng, max_lng } = options.boundaries);
+        ({ minLat, maxLat, minLng, maxLng } = options.boundaries);
       } else if (options.region) {
         const { latitude, longitude, latitudeDelta, longitudeDelta } = options.region;
-        min_lat = latitude - latitudeDelta / 2;
-        max_lat = latitude + latitudeDelta / 2;
-        min_lng = longitude - longitudeDelta / 2;
-        max_lng = longitude + longitudeDelta / 2;
+        minLat = latitude - latitudeDelta / 2;
+        maxLat = latitude + latitudeDelta / 2;
+        minLng = longitude - longitudeDelta / 2;
+        maxLng = longitude + longitudeDelta / 2;
       } else {
         return;
       }
@@ -58,10 +58,10 @@ export default function MapScreen() {
       try {
         const data = await mapService.fetchPublicationsInBounds(
           session,
-          min_lat,
-          max_lat,
-          min_lng,
-          max_lng,
+          minLat,
+          maxLat,
+          minLng,
+          maxLng,
         );
 
         const fetchedPubs = data ?? [];
@@ -113,12 +113,12 @@ export default function MapScreen() {
       try {
         const boundaries = await mapRef.current.getMapBoundaries();
 
-        const min_lat = boundaries.southWest.latitude;
-        const max_lat = boundaries.northEast.latitude;
-        const min_lng = boundaries.southWest.longitude;
-        const max_lng = boundaries.northEast.longitude;
+        const minLat = boundaries.southWest.latitude;
+        const maxLat = boundaries.northEast.latitude;
+        const minLng = boundaries.southWest.longitude;
+        const maxLng = boundaries.northEast.longitude;
 
-        await fetchAddresses({ boundaries: { min_lat, max_lat, min_lng, max_lng } });
+        await fetchAddresses({ boundaries: { minLat, maxLat, minLng, maxLng } });
       } catch (error) {
         console.error('Impossible de récupérer les limites de la carte :', error);
       }
