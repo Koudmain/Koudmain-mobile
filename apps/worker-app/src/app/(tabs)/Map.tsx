@@ -138,10 +138,10 @@ export default function MapScreen() {
         boundaries.northEast.longitude - boundaries.southWest.longitude,
       );
 
-      const IDEAL_DELTA = 0.005;
+      const idealDelta = 0.005;
 
-      const finalLatDelta = currentLatDelta < IDEAL_DELTA ? currentLatDelta : IDEAL_DELTA;
-      const finalLngDelta = currentLngDelta < IDEAL_DELTA ? currentLngDelta : IDEAL_DELTA;
+      const finalLatDelta = currentLatDelta < idealDelta ? currentLatDelta : idealDelta;
+      const finalLngDelta = currentLngDelta < idealDelta ? currentLngDelta : idealDelta;
 
       mapRef.current.animateToRegion(
         {

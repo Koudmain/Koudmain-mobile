@@ -4,13 +4,13 @@ import { apiFetch } from '@koudmain/ui/utils/api';
 export const mapService = {
   fetchPublicationsInBounds: async (
     token: string | null,
-    min_lat: number,
-    max_lat: number,
-    min_lng: number,
-    max_lng: number,
+    minLat: number,
+    maxLat: number,
+    minLng: number,
+    maxLng: number,
   ) => {
     return apiFetch<PublicationMap[]>(
-      `/address/map?min_lat=${min_lat}&max_lat=${max_lat}&min_lng=${min_lng}&max_lng=${max_lng}`,
+      `/address/map?min_lat=${minLat}&max_lat=${maxLat}&min_lng=${minLng}&max_lng=${maxLng}`,
       {
         method: 'GET',
         token: token ?? undefined,
