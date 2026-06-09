@@ -53,6 +53,17 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     }
   };
 
+  const handleContinue = async () => {
+    if (appContext === 'worker') {
+      router.push({
+        pathname: '/auth/register/RegisterJob',
+        params: { email, password, firstName, lastName },
+      });
+    } else {
+      await handleRegister();
+    }
+  };
+
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">
       <AuthTop title="Inscription" />
@@ -95,7 +106,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                 variant={isFormValid && !isLoading ? 'primary' : 'muted'}
                 className="mx-2"
                 disabled={!isFormValid || isLoading}
-                onPress={handleRegister}
+                onPress={handleContinue}
               />
               {registerFailed && (
                 <Text className="text-red-500 text-center mt-4 mx-2">
