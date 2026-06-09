@@ -25,7 +25,10 @@ interface PublicationStoryItemProps {
   onPress: () => void;
 }
 
-const themeIcons: Record<PublicationTheme, keyof typeof MaterialCommunityIcons | any> = {
+const themeIcons: Record<
+  PublicationTheme,
+  React.ComponentProps<typeof MaterialCommunityIcons>['name']
+> = {
   service: 'silverware-variant',
   plonge: 'dishwasher',
   cuisine: 'chef-hat',
@@ -33,7 +36,7 @@ const themeIcons: Record<PublicationTheme, keyof typeof MaterialCommunityIcons |
   accueil: 'account-check',
 };
 
-const PublicationStoryItem = ({ item, isActive, onPress }: PublicationStoryItemProps) => {
+function PublicationStoryItem({ item, isActive, onPress }: PublicationStoryItemProps) {
   const displayDate = formatPublicationDate(item.start_date);
 
   return (
@@ -81,6 +84,6 @@ const PublicationStoryItem = ({ item, isActive, onPress }: PublicationStoryItemP
       </View>
     </TouchableOpacity>
   );
-};
+}
 
 export default PublicationStoryItem;

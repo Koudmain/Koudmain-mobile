@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { ScrollView, TouchableOpacity, View, useColorScheme } from 'react-native';
 import {
   VStack,
@@ -35,7 +35,7 @@ export default function SettingsScreen() {
   const [tempImage, setTempImage] = useState<string | null>(null);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
@@ -64,7 +64,6 @@ export default function SettingsScreen() {
     } catch (error) {
       console.error(error);
       alert('Erreur lors de la mise à jour.');
-    } finally {
     }
   };
 
@@ -136,33 +135,35 @@ export default function SettingsScreen() {
   );
 }
 
-const SettingsItem = ({
+function SettingsItem({
   iconName,
   title,
   isDark,
 }: {
-  iconName: any;
+  iconName: ComponentProps<typeof Feather>['name'];
   title: string;
   isDark: boolean;
-}) => (
-  <TouchableOpacity className="flex-row justify-between items-center p-4">
-    <HStack space="md" className="items-center">
-      <Feather
-        name={iconName}
-        size={20}
+}) {
+  return (
+    <TouchableOpacity className="flex-row justify-between items-center p-4">
+      <HStack space="md" className="items-center">
+        <Feather
+          name={iconName}
+          size={20}
+          color={isDark ? colors.primary.content : colors.primary.DEFAULT}
+        />
+        <Text className="text-primary dark:text-white font-medium ml-3">{title}</Text>
+      </HStack>
+      <Entypo
+        name="chevron-right"
+        size={18}
         color={isDark ? colors.primary.content : colors.primary.DEFAULT}
       />
-      <Text className="text-primary dark:text-white font-medium ml-3">{title}</Text>
-    </HStack>
-    <Entypo
-      name="chevron-right"
-      size={18}
-      color={isDark ? colors.primary.content : colors.primary.DEFAULT}
-    />
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
+}
 
-const SettingsFormControl = ({
+function SettingsFormControl({
   label,
   value,
   onChange,
@@ -172,19 +173,21 @@ const SettingsFormControl = ({
   value: string;
   onChange: (text: string) => void;
   isEditing: boolean;
-}) => (
-  <FormControl className="mt-4" isReadOnly={!isEditing}>
-    <FormControlLabel>
-      <FormControlLabelText className="text-gray-600 dark:text-gray-400">
-        {label}
-      </FormControlLabelText>
-    </FormControlLabel>
-    <Input variant="underlined" className="border-gray-300 dark:border-gray-700 h-12">
-      <InputField
-        className={isEditing ? 'text-primary dark:text-white' : ' text-primary-disabled'}
-        value={value}
-        onChangeText={onChange}
-      />
-    </Input>
-  </FormControl>
-);
+}) {
+  return (
+    <FormControl className="mt-4" isReadOnly={!isEditing}>
+      <FormControlLabel>
+        <FormControlLabelText className="text-gray-600 dark:text-gray-400">
+          {label}
+        </FormControlLabelText>
+      </FormControlLabel>
+      <Input variant="underlined" className="border-gray-300 dark:border-gray-700 h-12">
+        <InputField
+          className={isEditing ? 'text-primary dark:text-white' : ' text-primary-disabled'}
+          value={value}
+          onChangeText={onChange}
+        />
+      </Input>
+    </FormControl>
+  );
+}

@@ -10,7 +10,7 @@ interface HeaderChatProps {
   userImage?: string;
 }
 
-export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChatProps) => {
+export function HeaderChat({ userName, publicationTitle, userImage }: HeaderChatProps) {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
@@ -56,4 +56,4 @@ export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChat
       </TouchableOpacity>
     </View>
   );
-};
+}

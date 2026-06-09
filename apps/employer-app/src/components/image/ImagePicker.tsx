@@ -13,14 +13,14 @@ export default function KoudmainImagePicker({ titleText, insideText }: ImportIma
   const [open, setOpen] = useState(false);
 
   const takePhoto = async () => {
-    const CamerapermissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    const camerapermissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (!CamerapermissionResult.granted) {
+    if (!camerapermissionResult.granted) {
       Alert.alert('Permission required', 'Permission to access the camera is required.');
       return;
     }
 
-    let result = await ImagePicker.launchCameraAsync({
+    const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
@@ -33,14 +33,14 @@ export default function KoudmainImagePicker({ titleText, insideText }: ImportIma
   };
 
   const pickImage = async () => {
-    const ImagepermissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const imagepermissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (!ImagepermissionResult.granted) {
+    if (!imagepermissionResult.granted) {
       Alert.alert('Permission required', 'Permission to access the media library is required.');
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [4, 3],
