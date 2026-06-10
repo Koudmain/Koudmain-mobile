@@ -1,20 +1,20 @@
-import { View, Text, Pressable, Keyboard, TextInput, ScrollView } from 'react-native';
-import { useState } from 'react';
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  ScrollView,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
+import { useState, useEffect } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
-
-const JOBS = [
-  { id: 1, name: 'Plombier' },
-  { id: 2, name: 'Électricien' },
-  { id: 3, name: 'Maçon' },
-  { id: 4, name: 'Menuisier' },
-  { id: 5, name: 'Peintre' },
-  { id: 6, name: 'Jardinier' },
-  { id: 7, name: 'Serrurier' },
-  { id: 8, name: 'Mécanicien' },
-  { id: 9, name: 'Déménageur' },
-];
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { skillCategoryService, SkillCategory } from '../../../api/skillCategory.api';
+import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
 
 export default function RegisterJob() {
   const params = useLocalSearchParams<{
@@ -26,12 +26,31 @@ export default function RegisterJob() {
 
   const [selectedJobs, setSelectedJobs] = useState<number[]>([]);
   const [bio, setBio] = useState('');
+  const [jobs, setJobs] = useState<SkillCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleJob = (id: number) => {
-    if (selectedJobs.includes(id)) {
-      setSelectedJobs(selectedJobs.filter((j) => j !== id));
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const categories = await skillCategoryService.getAll();
+        setJobs(categories);
+      } catch (err) {
+        setError('Erreur lors du chargement des métiers.');
+        console.error('Error fetching jobs:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  const handleJobChange = (id: number, selected: boolean) => {
+    if (selected) {
+      setSelectedJobs((prev) => (prev.includes(id) ? prev : [...prev, id]));
     } else {
-      setSelectedJobs([...selectedJobs, id]);
+      setSelectedJobs((prev) => prev.filter((j) => j !== id));
     }
   };
 
@@ -40,76 +59,87 @@ export default function RegisterJob() {
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">
       <AuthTop title="Inscription" />
-      <Pressable onPress={Keyboard.dismiss} className="flex-1">
-        <FormControl className="flex-1">
-          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-            <VStack className="flex flex-col justify-between h-full px-10 pb-10">
-              <View className="gap-4 mt-4">
-                <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        enabled={Platform.OS === 'ios'}
+        className="flex-1"
+      >
+        <Pressable onPress={Keyboard.dismiss} className="flex-1">
+          <FormControl className="flex-1">
+            <ScrollView
+              contentContainerStyle={{ flexGrow: 1 }}
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
+            >
+              <View className="gap-4 mt-4 px-10">
+                <Text className="text-primary dark:text-white text-4xl font-bold mt-10 mb-2">
                   Votre profil métier
                 </Text>
                 <Text className="text-gray-500 dark:text-white mb-6">
                   Sélectionnez vos métiers et ajoutez une description pour votre profil.
                 </Text>
 
-                <View className="flex-row flex-wrap gap-3 mt-2">
-                  {JOBS.map((job) => {
-                    const isSelected = selectedJobs.includes(job.id);
-                    return (
-                      <Pressable
-                        key={job.id}
-                        onPress={() => toggleJob(job.id)}
-                        className={`px-4 py-2 rounded-full border ${
-                          isSelected
-                            ? 'bg-secondary-500 border-secondary-500'
-                            : 'bg-transparent border-gray-300 dark:border-gray-600'
-                        }`}
-                      >
-                        <Text
-                          className={`${
-                            isSelected ? 'text-white' : 'text-gray-600 dark:text-gray-300'
-                          } font-semibold`}
-                        >
-                          {job.name}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </View>
+                {loading ? (
+                  <View className="py-4">
+                    <ActivityIndicator size="large" color="#0000ff" />
+                  </View>
+                ) : error ? (
+                  <Text className="text-red-500">{error}</Text>
+                ) : (
+                  <View className="flex-row flex-wrap mt-2">
+                    {jobs.map((job) => {
+                      return (
+                        <View key={job.id} className="mb-3">
+                          <CompetenceCardSelectable
+                            comp={job.name}
+                            onChange={(selected) => handleJobChange(job.id, selected)}
+                            size="lg"
+                          />
+                        </View>
+                      );
+                    })}
+                  </View>
+                )}
 
-                <Text className="text-primary dark:text-white text-lg font-bold mt-6 px-2">
-                  Description
-                </Text>
-                <TextInput
-                  className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 text-primary dark:text-white bg-gray-50 dark:bg-primary-dark"
-                  multiline
-                  numberOfLines={5}
+                <LabeledUnderlinedInput
+                  label="Description"
                   placeholder="Décrivez vos compétences et expériences..."
-                  placeholderTextColor="#9ca3af"
                   value={bio}
                   onChangeText={setBio}
-                  textAlignVertical="top"
+                  multiline
                 />
               </View>
 
-              <View className="mt-10">
+              <View className="mt-auto px-10 pb-10 pt-32">
                 <Button
                   label="Continuer"
                   variant={isFormValid ? 'primary' : 'muted'}
-                  className="mx-2"
                   disabled={!isFormValid}
-                  onPress={() => {
+                  onPress={() =>
                     router.push({
                       pathname: '/auth/register/RegisterLocation',
                       params: { ...params, selectedJobs: selectedJobs.join(','), bio },
-                    });
-                  }}
+                    })
+                  }
                 />
+                <Text className="text-gray-400 my-4 mx-2">
+                  En créant un compte, j&apos;accepte les
+                  <Text className="text-secondary-400 font-bold">
+                    {' '}
+                    conditions d&apos;utilisation{' '}
+                  </Text>
+                  et la
+                  <Text className="text-secondary-400 font-bold">
+                    {' '}
+                    politique de confidentialité{' '}
+                  </Text>
+                  de Koudmain.
+                </Text>
               </View>
-            </VStack>
-          </ScrollView>
-        </FormControl>
-      </Pressable>
+            </ScrollView>
+          </FormControl>
+        </Pressable>
+      </KeyboardAvoidingView>
     </View>
   );
 }

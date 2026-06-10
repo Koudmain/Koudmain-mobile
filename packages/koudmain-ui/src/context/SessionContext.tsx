@@ -15,9 +15,11 @@ interface AuthContextType {
     lastName: string;
     email: string;
     password: string;
-    isWorkerActive?: boolean;
-    isEmployerActive?: boolean;
-  }) => Promise<boolean>;
+    role: 'WORKER' | 'EMPLOYER';
+    workerProfile?: any;
+    employerProfile?: any;
+  }) => Promise<number>;
+  verifyEmail: (userId: number, code: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;
@@ -116,14 +118,42 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
     lastName: string;
     email: string;
     password: string;
-    isWorkerActive?: boolean;
-    isEmployerActive?: boolean;
+    role: 'WORKER' | 'EMPLOYER';
+    workerProfile?: any;
+    employerProfile?: any;
   }) => {
     try {
-      await authService.register(data);
-      return true;
+      const res = await authService.register(data);
+      return res.userId;
     } catch (error) {
       console.error("Erreur d'inscription:", error);
+      throw error;
+    }
+  };
+
+  const verifyEmail = async (userId: number, code: string) => {
+    try {
+      const response = await authService.verifyEmail(userId, code);
+      if (!response?.access_token || !response?.refresh_token) {
+        throw new Error("Jetons invalides après vérification.");
+      }
+
+      const token = response.access_token;
+      const refreshToken = response.refresh_token;
+
+      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
+      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+      setSession(token);
+
+      const userData = await userService.getMe(token);
+      setUser(userData);
+
+      if (onSessionLoaded) {
+        await onSessionLoaded(token);
+      }
+      return true;
+    } catch (error) {
+      console.error("Erreur vérification email:", error);
       throw error;
     }
   };
@@ -174,7 +204,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
 
   return (
     <AuthContext.Provider
-      value={{ register, signIn, signOut, session, user, isLoading, refreshUser }}
+      value={{ register, verifyEmail, signIn, signOut, session, user, isLoading, refreshUser }}
     >
       {children}
     </AuthContext.Provider>

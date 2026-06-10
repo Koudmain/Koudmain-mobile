@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Keyboard,
-  TextInput,
-  ScrollView,
-  useColorScheme,
-} from 'react-native';
+import { View, Text, Pressable, Keyboard, ScrollView, useColorScheme } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
@@ -54,19 +46,35 @@ export default function RegisterLocation() {
 
   const handleRegister = async () => {
     try {
-      // NOTE: We call the normal register function for now.
-      // Depending on backend support, you can adapt this to pass `workerProfile`
-      // which includes the selected jobs, bio, and location.
-      const didRegister = await register({
+      const userId = await register({
         email: params.email || '',
         password: params.password || '',
         firstName: params.firstName || '',
         lastName: params.lastName || '',
-        isWorkerActive: true,
+        role: 'WORKER',
+        workerProfile: {
+          skill_category_id: parseInt(params.selectedJobs?.split(',')[0] || '1', 10),
+          bio: params.bio,
+          work_radius: radius,
+          address: addressData
+            ? {
+                street_number: addressData.street_number || undefined,
+                street_name: addressData.street_name || '',
+                zip_code: addressData.zip_code || '',
+                city: addressData.city || '',
+                country: addressData.country || 'France',
+                latitude: addressData.latitude,
+                longitude: addressData.longitude,
+              }
+            : undefined,
+        },
       });
 
-      if (didRegister) {
-        router.replace('/auth/SignIn');
+      if (userId) {
+        router.push({
+          pathname: '/auth/register/RegisterVerificationCode',
+          params: { userId: userId.toString(), email: params.email },
+        });
         return;
       }
       setRegisterFailed(true);
@@ -76,8 +84,6 @@ export default function RegisterLocation() {
     }
   };
 
-  // Adjust zoom level dynamically based on radius
-  // roughly: 1km -> 0.01 delta
   const computedDelta = Math.max(0.01, radius * 0.02);
 
   return (
@@ -87,12 +93,10 @@ export default function RegisterLocation() {
         <FormControl className="flex-1">
           <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
             <VStack className="flex flex-col justify-between h-full pb-10 px-3">
-              <View className="mt-8">
-                <Text className="text-primary dark:text-white text-3xl font-bold mt-4 ">
-                  Ou souhaitez vous travailler ?
+              <View className="mt-6 px-5">
+                <Text className="text-primary dark:text-white text-3xl font-bold mb-2">
+                  Où souhaitez-vous travailler ?
                 </Text>
-              </View>
-              <View className="px-3">
                 <AddressAutocomplete
                   onSelect={(addr) => {
                     setAddressData(addr);

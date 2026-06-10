@@ -33,16 +33,23 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
 
   const handleRegister = async () => {
     try {
-      const didRegister = await register({
-        email,
-        password,
-        first_name: firstName,
-        last_name: lastName,
-        is_employer_active: appContext === 'employer',
-        is_worker_active: appContext === 'worker',
+      const userId = await register({
+        email: typeof email === 'string' ? email : '',
+        password: typeof password === 'string' ? password : '',
+        firstName,
+        lastName,
+        role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
+        employerProfile: appContext === 'employer' ? {
+          company_name: 'Mock Company',
+          owner_position: 'OWNER',
+          desired_trade_ids: [1],
+        } : undefined,
       });
-      if (didRegister) {
-        router.replace('/auth/SignIn');
+      if (userId) {
+        router.push({
+          pathname: '/auth/register/RegisterVerificationCode',
+          params: { userId: userId.toString(), email },
+        });
         return;
       }
       setRegisterFailed(true);
