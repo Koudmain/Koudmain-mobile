@@ -93,19 +93,19 @@ export function RegisterVerificationCodeScreen() {
         <FormControl className="flex-1">
           <View className="flex-1 px-10 pb-10">
             <View className="gap-4 mt-12">
-              <Text className="text-primary dark:text-white text-4xl font-bold mb-2 text-center">
+              <Text className="text-primary dark:text-white text-4xl font-bold mb-2">
                 Code à 6 chiffres
               </Text>
-              <Text className="text-gray-400 dark:text-gray-300 mb-8 text-center px-4">
-                Code envoyé à l'adresse {email || 'votre email'}
+              <Text className="text-gray-400 dark:text-gray-300 mb-8 px-1">
+                Code envoyé à l'adresse <Text className="font-bold text-secondary">{email || 'votre email'}</Text>
               </Text>
 
-              <View className="flex-row items-center justify-center gap-2">
+              <View className="flex-row items-center justify-center gap-2 mt-20">
                 {code.map((digit, index) => (
                   <React.Fragment key={index}>
                     <View
                       className={`w-12 h-14 rounded-lg border flex justify-center items-center ${
-                        digit ? 'border-secondary-500' : 'border-secondary-500'
+                        digit ? 'border-secondary-500' : 'border-grey-500 dark:border-white'
                       }`}
                     >
                       <TextInput
@@ -133,7 +133,7 @@ export function RegisterVerificationCodeScreen() {
               </Pressable>
 
               {resendMessage && (
-                <Text className="text-green-500 text-center mt-2 text-sm">{resendMessage}</Text>
+                <Text className="text-secondary-300 text-center mt-2 text-sm">{resendMessage}</Text>
               )}
 
               {error && (
@@ -150,9 +150,12 @@ export function RegisterVerificationCodeScreen() {
                 disabled={!isCodeComplete || isVerifying}
                 onPress={handleVerify}
               />
-              <Text className="text-gray-400 my-4 text-center text-xs px-2">
-                En créant un compte, j'accepte les
-                <Text className="text-secondary-400 font-bold"> conditions d'utilisation </Text>
+              <Text className="text-gray-400 my-4 mx-2">
+                En créant un compte, j&apos;accepte les
+                <Text className="text-secondary-400 font-bold">
+                  {' '}
+                  conditions d&apos;utilisation{' '}
+                </Text>
                 et la
                 <Text className="text-secondary-400 font-bold"> politique de confidentialité </Text>
                 de Koudmain.
