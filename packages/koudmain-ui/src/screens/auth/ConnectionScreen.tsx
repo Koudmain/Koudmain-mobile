@@ -35,7 +35,7 @@ export function ConnectionScreen({ logoLight, logoDark }: ConnectionScreenProps)
           variant="primary"
           className="mt-10"
           onPress={() => {
-            router.push('/auth/register/RegisterEmail');
+            router.push('/auth/register/RegisterName');
           }}
         />
       </View>

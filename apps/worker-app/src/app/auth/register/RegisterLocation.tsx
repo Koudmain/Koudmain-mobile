@@ -39,49 +39,29 @@ export default function RegisterLocation() {
     longitudeDelta: 0.1,
   });
 
-  const { register, isLoading } = useSession();
-  const [registerFailed, setRegisterFailed] = useState(false);
+  const { isLoading } = useSession();
+  const [registerFailed] = useState(false);
 
   const isFormValid = addressData !== null;
 
   const handleRegister = async () => {
-    try {
-      const userId = await register({
-        email: params.email || '',
-        password: params.password || '',
-        firstName: params.firstName || '',
-        lastName: params.lastName || '',
-        role: 'WORKER',
-        workerProfile: {
-          skill_category_id: parseInt(params.selectedJobs?.split(',')[0] || '1', 10),
-          bio: params.bio,
-          work_radius: radius,
-          address: addressData
-            ? {
-                street_number: addressData.street_number || undefined,
-                street_name: addressData.street_name || '',
-                zip_code: addressData.zip_code || '',
-                city: addressData.city || '',
-                country: addressData.country || 'France',
-                latitude: addressData.latitude,
-                longitude: addressData.longitude,
-              }
-            : undefined,
-        },
-      });
-
-      if (userId) {
-        router.push({
-          pathname: '/auth/register/RegisterVerificationCode',
-          params: { userId: userId.toString(), email: params.email },
-        });
-        return;
-      }
-      setRegisterFailed(true);
-    } catch (error) {
-      console.error('Registration failed:', error);
-      setRegisterFailed(true);
-    }
+    router.push({
+      pathname: '/auth/register/RegisterEmail',
+      params: {
+        firstName: params.firstName,
+        lastName: params.lastName,
+        selectedJobs: params.selectedJobs,
+        bio: params.bio,
+        radius: radius.toString(),
+        street_number: addressData?.street_number || '',
+        street_name: addressData?.street_name || '',
+        zip_code: addressData?.zip_code || '',
+        city: addressData?.city || '',
+        country: addressData?.country || 'France',
+        latitude: addressData?.latitude?.toString() || '',
+        longitude: addressData?.longitude?.toString() || '',
+      },
+    });
   };
 
   const computedDelta = Math.max(0.01, radius * 0.02);

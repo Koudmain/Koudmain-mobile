@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native';
 import { useState } from 'react';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '../../../components/ui/index';
@@ -9,6 +9,7 @@ import { AuthTop } from '../../../components/auth/AuthTop';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function RegisterEmailScreen() {
+  const params = useLocalSearchParams();
   const [email, setEmail] = useState('');
 
   const trimmedEmail = email.trim();
@@ -56,7 +57,7 @@ export function RegisterEmailScreen() {
                 onPress={() =>
                   router.push({
                     pathname: '/auth/register/RegisterPassword',
-                    params: { email: trimmedEmail },
+                    params: { ...params, email: trimmedEmail },
                   })
                 }
               />

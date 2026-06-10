@@ -87,12 +87,12 @@ export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
               variant="outline"
               className="mx-2"
               onPress={() => {
-                router.push('/auth/register/RegisterEmail');
+                router.push('/auth/register/RegisterName');
               }}
             />
             <View className="flex-row items-center justify-center gap-2 mt-10">
               <Text className="text-gray-400">Vous n&apos;avez pas de compte ?</Text>
-              <TouchableOpacity onPress={() => router.push('/auth/register/RegisterEmail')}>
+              <TouchableOpacity onPress={() => router.push('/auth/register/RegisterName')}>
                 <Text className="text-secondary-400 font-bold">S&apos;inscrire</Text>
               </TouchableOpacity>
             </View>

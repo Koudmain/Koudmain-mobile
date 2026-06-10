@@ -64,10 +64,13 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     if (appContext === 'worker') {
       router.push({
         pathname: '/auth/register/RegisterJob',
-        params: { email, password, firstName, lastName },
+        params: { firstName, lastName },
       });
     } else {
-      await handleRegister();
+      router.push({
+        pathname: '/auth/register/RegisterEmail',
+        params: { firstName, lastName },
+      });
     }
   };
 
