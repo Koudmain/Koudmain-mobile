@@ -3,8 +3,8 @@ import { View, Text, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platf
 import { router, useLocalSearchParams } from 'expo-router';
 import { FormControl, Button } from '../../../components/ui/index';
 import { AuthTop } from '../../../components/auth/AuthTop';
-import { useSession } from '../../../context/SessionContext';
-import { authService } from '../../../api/auth.api';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { authService } from '@koudmain/ui/api/auth.api';
 
 export function RegisterVerificationCodeScreen() {
   const { userId: userIdParam, email: emailParam } = useLocalSearchParams<{

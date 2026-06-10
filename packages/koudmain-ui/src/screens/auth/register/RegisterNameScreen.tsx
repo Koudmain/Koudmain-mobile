@@ -5,7 +5,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '../../../components/ui/index';
 import { AuthTop } from '../../../components/auth/AuthTop';
-import { useSession } from '../../../context/SessionContext';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 type RegisterNameScreenProps = {
   appContext: 'employer' | 'worker';
