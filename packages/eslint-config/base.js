@@ -43,11 +43,15 @@ export const config = [
         {
           selector: "variableLike",
           format: ["camelCase"],
+          filter: {
+            regex: "^_$",
+            match: false
+          }
         },
         {
           selector: "variable",
           modifiers: ["const", "global"],
-          format: ["camelCase", "UPPER_CASE"],
+          format: ["camelCase", "UPPER_CASE", "PascalCase"],
         },
         {
           selector: "function",

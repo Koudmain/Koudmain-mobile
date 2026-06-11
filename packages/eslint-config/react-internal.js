@@ -48,7 +48,16 @@ export const config = [
     files: ["**/*.tsx"],
     plugins: { unicorn: pluginUnicorn },
     rules: {
-      "unicorn/filename-case": ["error", { case: "pascalCase" }],
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "pascalCase",
+          ignore: [
+            "^_layout\\.tsx$",
+            "^\\[.*\\]\\.tsx$"
+          ],
+        },
+      ],
     },
   },
 ];
