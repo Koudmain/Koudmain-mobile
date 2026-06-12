@@ -48,6 +48,9 @@ export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
               type="text"
               value={email}
               validationState={emailValidationState}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={(value: string) => {
                 setEmail(value);
                 setSigninFailed(false);

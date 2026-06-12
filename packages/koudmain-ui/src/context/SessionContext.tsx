@@ -134,12 +134,12 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
   const verifyEmail = async (userId: number, code: string) => {
     try {
       const response = await authService.verifyEmail(userId, code);
-      if (!response?.access_token || !response?.refresh_token) {
+      if (!response?.accessToken || !response?.refreshToken) {
         throw new Error("Jetons invalides après vérification.");
       }
 
-      const token = response.access_token;
-      const refreshToken = response.refresh_token;
+      const token = response.accessToken;
+      const refreshToken = response.refreshToken;
 
       await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
       await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
@@ -162,15 +162,15 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
     try {
       const response = await authService.login(email, password, targetApp);
 
-      if (!response?.access_token || typeof response.access_token !== 'string') {
+      if (!response?.accessToken || typeof response.accessToken !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
       }
-      if (!response?.refresh_token || typeof response.refresh_token !== 'string') {
+      if (!response?.refreshToken || typeof response.refreshToken !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de refresh token valide.");
       }
 
-      const token = response.access_token;
-      const refreshToken = response.refresh_token;
+      const token = response.accessToken;
+      const refreshToken = response.refreshToken;
 
       await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
       await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);

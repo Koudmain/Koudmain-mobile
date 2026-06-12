@@ -144,19 +144,19 @@ async function refreshAccessToken(): Promise<string | null> {
       const response = await fetch(buildApiUrl('/auth/refresh'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken }),
+        body: JSON.stringify({ refreshToken }),
       });
 
       const rawData = await response.json().catch(() => null);
-      const data = rawData as { access_token?: string; refresh_token?: string } | null;
+      const data = rawData as { accessToken?: string; refreshToken?: string } | null;
 
-      if (!response.ok || !data?.access_token || !data?.refresh_token) {
+      if (!response.ok || !data?.accessToken || !data?.refreshToken) {
         await handlers.onAuthExpired?.();
         return null;
       }
 
-      const accessToken = data.access_token;
-      const newRefreshToken = data.refresh_token;
+      const accessToken = data.accessToken;
+      const newRefreshToken = data.refreshToken;
       await handlers.onAuthRefreshed({
         accessToken,
         refreshToken: newRefreshToken,

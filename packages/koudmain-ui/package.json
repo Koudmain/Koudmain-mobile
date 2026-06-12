@@ -8,6 +8,7 @@
     ".": "./src/index.ts",
     "./gluestack": "./src/components/ui/index.ts",
     "./screens": "./src/screens/index.ts",
+    "./api": "./src/api/index.ts",
     "./*": ["./src/*.tsx", "./src/*.ts"]
   },
   "scripts": {

@@ -8,6 +8,7 @@ import { AuthTop } from '../../../components/auth/AuthTop';
 import { PasswordChecker, isPasswordValid } from '../../../components/auth/PasswordChecker';
 
 import { useSession } from '@koudmain/ui/context/SessionContext';
+import { OwnerPosition } from '../../../api';
 
 type RegisterPasswordScreenProps = {
   appContext: 'employer' | 'worker';
@@ -40,9 +41,9 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
         lastName: getParam('lastName') || '',
         role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
         workerProfile: appContext === 'worker' ? {
-          skill_category_id: parseInt(getParam('selectedJobs')?.split(',')[0] || '1', 10),
+          skillCategoryId: parseInt(getParam('selectedJobs')?.split(',')[0] || '1', 10),
           bio: getParam('bio'),
-          work_radius: parseInt(getParam('radius') || '10', 10),
+          workRadius: parseInt(getParam('radius') || '10', 10),
           address: getParam('street_name') ? {
             street_number: getParam('street_number') || undefined,
             street_name: getParam('street_name') || '',
@@ -54,9 +55,21 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
           } : undefined,
         } : undefined,
         employerProfile: appContext === 'employer' ? {
-          company_name: 'Mock Company',
-          owner_position: 'OWNER',
-          desired_trade_ids: [1],
+          companyName: getParam('company_name') || 'Entreprise inconnue',
+          establishmentType: getParam('establishment_type') || 'Autre',
+          ownerPosition: (getParam('owner_position') as OwnerPosition) || 'OWNER',
+          desiredTradeIds: getParam('desiredTradeIds')
+            ? getParam('desiredTradeIds').split(',').map((id: string) => parseInt(id, 10))
+            : [],
+          address: getParam('street_name') ? {
+            street_number: getParam('street_number') || undefined,
+            street_name: getParam('street_name') || '',
+            zip_code: getParam('zip_code') || '',
+            city: getParam('city') || '',
+            country: getParam('country') || 'France',
+            latitude: parseFloat(getParam('latitude') || '0'),
+            longitude: parseFloat(getParam('longitude') || '0'),
+          } : undefined,
         } : undefined,
       });
 

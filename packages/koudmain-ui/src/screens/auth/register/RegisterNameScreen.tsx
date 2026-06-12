@@ -4,9 +4,20 @@ import { router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '../../../components/ui/index';
+import {
+  Select,
+  SelectTrigger,
+  SelectInput,
+  SelectIcon,
+  SelectPortal,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicatorWrapper,
+  SelectDragIndicator,
+  SelectItem,
+} from '../../../components/ui/select';
+import { ChevronDownIcon } from '../../../components/ui/icon';
 import { AuthTop } from '../../../components/auth/AuthTop';
-import { useSession } from '@koudmain/ui/context/SessionContext';
-
 type RegisterNameScreenProps = {
   appContext: 'employer' | 'worker';
 };
@@ -20,9 +31,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const password = Array.isArray(passwordParam) ? (passwordParam[0] ?? '') : (passwordParam ?? '');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [registerFailed, setRegisterFailed] = useState(false);
-  const { register, isLoading } = useSession();
-
+  const [ownerPosition, setOwnerPosition] = useState('');
   const isFirstNameValid = firstName.trim().length > 0;
   const isLastNameValid = lastName.trim().length > 0;
   const isFormValid = isFirstNameValid && isLastNameValid;
@@ -31,34 +40,6 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const lastNameValidationState =
     lastName.length === 0 ? 'default' : isLastNameValid ? 'success' : 'error';
 
-  const handleRegister = async () => {
-    try {
-      const userId = await register({
-        email: typeof email === 'string' ? email : '',
-        password: typeof password === 'string' ? password : '',
-        firstName,
-        lastName,
-        role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
-        employerProfile: appContext === 'employer' ? {
-          company_name: 'Mock Company',
-          owner_position: 'OWNER',
-          desired_trade_ids: [1],
-        } : undefined,
-      });
-      if (userId) {
-        router.push({
-          pathname: '/auth/register/RegisterVerificationCode',
-          params: { userId: userId.toString(), email },
-        });
-        return;
-      }
-      setRegisterFailed(true);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-      console.error('Registration failed:', errorMessage);
-      setRegisterFailed(true);
-    }
-  };
 
   const handleContinue = async () => {
     if (appContext === 'worker') {
@@ -68,8 +49,8 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
       });
     } else {
       router.push({
-        pathname: '/auth/register/RegisterEmail',
-        params: { firstName, lastName },
+        pathname: '/auth/register/RegisterEstablishment',
+        params: { firstName, lastName, owner_position: ownerPosition },
       });
     }
   };
@@ -85,7 +66,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                 Créer un compte
               </Text>
               <Text className="text-gray-500 dark:text-white mb-6">
-                Presque terminé ! Il ne vous reste plus qu&apos;à nous donner votre nom et prénom.
+                Renseignez votre nom et prénom pour commencer la création de votre compte.
               </Text>
               <LabeledUnderlinedInput
                 label="Prénom"
@@ -95,7 +76,6 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                 validationState={firstNameValidationState}
                 onChangeText={(value: string) => {
                   setFirstName(value);
-                  setRegisterFailed(false);
                 }}
               />
               <LabeledUnderlinedInput
@@ -106,23 +86,46 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                 validationState={lastNameValidationState}
                 onChangeText={(value: string) => {
                   setLastName(value);
-                  setRegisterFailed(false);
                 }}
               />
+              {appContext === 'employer' && (
+                <View className="mt-2">
+                  <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-5">
+                    Votre fonction
+                  </Text>
+                  <Select
+                    selectedValue={ownerPosition}
+                    onValueChange={(value) => setOwnerPosition(value)}
+                  >
+                    <SelectTrigger variant="outline" size="xl" className="justify-between w-full">
+                      <SelectInput placeholder="Sélectionnez votre fonction" className="flex-1" />
+                      <SelectIcon className="mr-3" as={ChevronDownIcon} />
+                    </SelectTrigger>
+                    <SelectPortal>
+                      <SelectBackdrop />
+                      <SelectContent>
+                        <SelectDragIndicatorWrapper>
+                          <SelectDragIndicator />
+                        </SelectDragIndicatorWrapper>
+                        <SelectItem label="Propriétaire" value="OWNER" />
+                        <SelectItem label="Directeur" value="DIRECTOR" />
+                        <SelectItem label="Manager" value="MANAGER" />
+                        <SelectItem label="RH" value="HR" />
+                        <SelectItem label="Autre" value="OTHER" />
+                      </SelectContent>
+                    </SelectPortal>
+                  </Select>
+                </View>
+              )}
             </View>
             <View className="mt-10">
               <Button
-                label={isLoading ? 'Inscription...' : 'Continuer'}
-                variant={isFormValid && !isLoading ? 'primary' : 'muted'}
+                label="Continuer"
+                variant={isFormValid ? 'primary' : 'muted'}
                 className="mx-2"
-                disabled={!isFormValid || isLoading}
+                disabled={!isFormValid}
                 onPress={handleContinue}
               />
-              {registerFailed && (
-                <Text className="text-red-500 text-center mt-4 mx-2">
-                  Échec de l&apos;inscription. Merci de réessayer.
-                </Text>
-              )}
               <Text className="text-gray-400 my-4 mx-2">
                 En créant un compte, j&apos;accepte les
                 <Text className="text-secondary-400 font-bold">

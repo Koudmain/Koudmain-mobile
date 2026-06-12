@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Input, InputField, InputSlot } from '../ui';
 
 export type AddressData = {
   street_number?: string;
@@ -95,19 +96,27 @@ export function AddressAutocomplete({ onSelect, placeholder = 'Rechercher une ad
 
   return (
     <View className="relative z-50 w-full mb-2">
-      <View className="flex-row items-center border-b border-gray-300 dark:border-gray-600 py-3">
-        <TextInput
-          className="flex-1 text-lg text-primary dark:text-white"
+      <Input
+        variant="underlined"
+        size="xl"
+        className="rounded-none border-0 border-b-2 border-neutral-300 data-[focus=true]:border-secondary h-12 flex-row items-center"
+      >
+        <InputField
           placeholder={placeholder}
-          placeholderTextColor="#9ca3af"
           value={query}
           onChangeText={(text) => {
             setQuery(text);
             setShowDropdown(true);
           }}
+          allowFontScaling={false}
+          className="px-0 font-jakarta text-primary dark:text-white h-12 leading-tight flex-1"
         />
-        {loading && <ActivityIndicator size="small" color="#3b82f6" />}
-      </View>
+        {loading && (
+          <InputSlot className="pr-3">
+            <ActivityIndicator size="small" color="#3b82f6" />
+          </InputSlot>
+        )}
+      </Input>
 
       {showDropdown && results.length > 0 && (
         <View className="absolute top-14 w-full bg-white dark:bg-primary rounded-lg shadow-soft-2 border border-gray-200 dark:border-primary-600 max-h-60 overflow-hidden z-50">

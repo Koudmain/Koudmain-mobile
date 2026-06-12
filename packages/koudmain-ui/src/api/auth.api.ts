@@ -1,11 +1,13 @@
 import { apiFetch } from '@koudmain/ui/utils/api';
 
 type LoginResponse = {
-  access_token: string;
-  refresh_token: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
-type RegisterData = {
+export type OwnerPosition = 'OWNER' | 'DIRECTOR' | 'MANAGER' | 'HR' | 'OTHER';
+
+export type RegisterData = {
   firstName: string;
   lastName: string;
   email: string;
@@ -14,9 +16,9 @@ type RegisterData = {
   phoneNumber?: string;
   birthDate?: string;
   workerProfile?: {
-    skill_category_id: number;
+    skillCategoryId: number;
     bio?: string;
-    work_radius?: number;
+    workRadius?: number;
     address?: {
       street_number?: string;
       street_name: string;
@@ -28,9 +30,10 @@ type RegisterData = {
     };
   };
   employerProfile?: {
-    company_name: string;
-    owner_position: 'OWNER' | 'DIRECTOR' | 'MANAGER' | 'HR' | 'OTHER';
-    desired_trade_ids: number[];
+    companyName: string;
+    establishmentType: string;
+    ownerPosition: OwnerPosition;
+    desiredTradeIds: number[];
     address?: {
       street_number?: string;
       street_name: string;
@@ -54,7 +57,7 @@ export const authService = {
   refresh: async (refreshToken: string) => {
     return apiFetch<LoginResponse>('/auth/refresh', {
       method: 'POST',
-      body: { refresh_token: refreshToken },
+      body: { refreshToken },
     });
   },
 
@@ -69,13 +72,13 @@ export const authService = {
     return apiFetch<{ userId: number; message: string }>('/auth/register', {
       method: 'POST',
       body: {
-        first_name: data.firstName,
-        last_name: data.lastName,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: data.password,
         role: data.role,
-        phone_number: data.phoneNumber || '0600000000',
-        birth_date: data.birthDate || '1990-01-01',
+        phoneNumber: data.phoneNumber || '0600000000',
+        birthDate: data.birthDate || '1990-01-01',
         workerProfile: data.workerProfile,
         employerProfile: data.employerProfile,
       },

@@ -13,7 +13,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
-import { skillCategoryService, SkillCategory } from '../../../api/skillCategory.api';
+import { skillCategoryService, SkillCategory } from '@koudmain/ui/api';
 import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
 
 export default function RegisterJob() {

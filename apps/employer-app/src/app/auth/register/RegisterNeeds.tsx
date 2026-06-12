@@ -1,0 +1,117 @@
+import { View, Text, Pressable, Keyboard, ScrollView, ActivityIndicator } from 'react-native';
+import { useState, useEffect } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+
+import { FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { skillCategoryService, SkillCategory } from '@koudmain/ui/api';
+import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
+
+export default function RegisterNeeds() {
+  const params = useLocalSearchParams();
+  const [selectedJobs, setSelectedJobs] = useState<number[]>([]);
+  const [jobs, setJobs] = useState<SkillCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const categories = await skillCategoryService.getAll();
+        setJobs(categories);
+      } catch (err) {
+        setError('Erreur lors du chargement des métiers.');
+        console.error('Error fetching jobs:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  const handleJobChange = (id: number, selected: boolean) => {
+    if (selected) {
+      setSelectedJobs((prev) => (prev.includes(id) ? prev : [...prev, id]));
+    } else {
+      setSelectedJobs((prev) => prev.filter((j) => j !== id));
+    }
+  };
+
+  const isFormValid = selectedJobs.length > 0;
+
+  return (
+    <View className="flex-1 bg-white dark:bg-primary h-full">
+      <AuthTop title="Inscription" />
+      <Pressable onPress={Keyboard.dismiss} className="flex-1">
+        <FormControl className="flex-1">
+          <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View className="gap-4 mt-4 px-10">
+              <Text className="text-primary dark:text-white text-3xl font-bold mt-10 mb-2">
+                Vos besoins en personnel
+              </Text>
+              <Text className="text-gray-500 dark:text-white mb-6">
+                Sélectionnez les postes que vous cherchez à pourvoir ponctuellement ou
+                régulièrement.
+              </Text>
+
+              <Text className="text-primary dark:text-white font-inter font-bold text-xl">
+                Métiers recherchés
+              </Text>
+
+              {loading ? (
+                <View className="py-4">
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+              ) : error ? (
+                <Text className="text-red-500">{error}</Text>
+              ) : (
+                <View className="flex-row flex-wrap mt-2">
+                  {jobs.map((job) => {
+                    return (
+                      <View key={job.id} className="mb-3">
+                        <CompetenceCardSelectable
+                          comp={job.name}
+                          onChange={(selected) => handleJobChange(job.id, selected)}
+                          size="xl"
+                        />
+                      </View>
+                    );
+                  })}
+                </View>
+              )}
+            </View>
+
+            <View className="mt-auto px-10 pb-10 pt-32">
+              <Button
+                label="Continuer"
+                variant={isFormValid ? 'primary' : 'muted'}
+                disabled={!isFormValid}
+                onPress={() =>
+                  router.push({
+                    pathname: '/auth/register/RegisterEmail',
+                    params: { ...params, desiredTradeIds: selectedJobs.join(',') },
+                  })
+                }
+              />
+              <Text className="text-gray-400 my-4 mx-2">
+                En créant un compte, j&apos;accepte les
+                <Text className="text-secondary-400 font-bold">
+                  {' '}
+                  conditions d&apos;utilisation{' '}
+                </Text>
+                et la
+                <Text className="text-secondary-400 font-bold"> politique de confidentialité </Text>
+                de Koudmain.
+              </Text>
+            </View>
+          </ScrollView>
+        </FormControl>
+      </Pressable>
+    </View>
+  );
+}
