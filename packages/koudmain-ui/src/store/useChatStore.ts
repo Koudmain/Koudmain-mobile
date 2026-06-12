@@ -16,7 +16,7 @@ export const useChatStore = create<ChatState>((set) => ({
           m.isOptimistic &&
           m.content_text === msg.content_text &&
           m.sender_id === msg.sender_id &&
-          m.conversation_id === msg.conversation_id,
+          m.conversationId === msg.conversationId,
       );
 
       let newMessages = [...state.messages];

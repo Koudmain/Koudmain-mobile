@@ -44,7 +44,7 @@ export default function Messaging() {
     const cleanQuery = normalizeText(searchText.trim());
     const tokens = cleanQuery.length > 0 ? cleanQuery.split(/\s+/) : [];
     const filtered = conversations.filter((conv) => {
-      if (selectedPubId && conv.publication_id !== selectedPubId) {
+      if (selectedPubId && conv.publicationId !== selectedPubId) {
         return false;
       }
 

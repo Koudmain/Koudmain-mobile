@@ -3,7 +3,7 @@ import { Message } from '@/types/message';
 export const MOCK_MESSAGES: Message[] = [
   {
     id: 'm7',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 99,
     text: 'Super, à demain alors ! 😊',
     created_at: '2026-03-25T14:15:00Z',
@@ -11,7 +11,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm6',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 1,
     text: 'Pas de souci, 12h pile devant le resto.',
     created_at: '2026-03-25T14:12:00Z',
@@ -19,7 +19,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm5',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 99,
     text: 'Ça marche pour moi. On se rejoint sur place ?',
     created_at: '2026-03-25T14:10:00Z',
@@ -27,7 +27,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm4',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 1,
     text: "Je pense qu'on aura besoin de toi pour le rush de midi principalement.",
     created_at: '2026-03-25T10:05:00Z',
@@ -35,7 +35,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm3',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 1,
     text: 'Salut ! Pour la mission de demain, tu peux venir 15min avant ?',
     created_at: '2026-03-25T10:00:00Z',
@@ -43,7 +43,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm2',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 99,
     text: 'Bonjour, je suis très intéressé par votre annonce de plongeur.',
     created_at: '2026-03-24T18:30:00Z',
@@ -51,7 +51,7 @@ export const MOCK_MESSAGES: Message[] = [
   },
   {
     id: 'm1',
-    conversation_id: 1,
+    conversationId: 1,
     sender_id: 1,
     text: "L'annonce est toujours disponible",
     created_at: '2026-03-24T18:00:00Z',

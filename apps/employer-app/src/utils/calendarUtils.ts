@@ -13,15 +13,15 @@ export const formatDayEvents = (
       const startDate = new Date(item.starting_date);
       const endDate = item.ending_date ? new Date(item.ending_date) : startDate;
       return {
-        id: item.publication_id,
+        id: item.publicationId,
         name: item.worker_name,
         image_profile: item.worker_profile_picture,
         title: item.title,
         wage: parseFloat(item.salary),
         time: `${startDate.getHours().toString().padStart(2, '0')}h${startDate.getMinutes().toString().padStart(2, '0')}`,
         end: `${endDate.getHours().toString().padStart(2, '0')}h${endDate.getMinutes().toString().padStart(2, '0')}`,
-        rate: parseFloat(String(item.worker_rating)),
-        number_rate: Number(item.worker_rating_count),
+        rate: parseFloat(String(item.workerRating)),
+        number_rate: Number(item.workerRatingCount),
         starting_date: item.starting_date,
       };
     });

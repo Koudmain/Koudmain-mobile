@@ -4,7 +4,7 @@ import { IWorker } from './worker';
 
 export type Conversation = {
   id: number;
-  publication_id: number;
+  publicationId: number;
   other_user_name: string;
   other_user_avatar: string;
   last_message_content: string;
@@ -17,9 +17,9 @@ export type Conversation = {
 
 export interface IConversation {
   id: number;
-  publication_id: number;
-  worker_id: number;
-  company_id: number;
+  publicationId: number;
+  workerId: number;
+  companyId: number;
   updated_at: string;
   worker: IWorker;
   settings: IConversationSettings;
@@ -29,8 +29,8 @@ export interface IConversation {
 
 export interface IConversationSettings {
   id: number;
-  user_id: number;
-  conversation_id: number;
+  userId: number;
+  conversationId: number;
   is_pinned: boolean;
   is_deleted: boolean;
   createdAt: string;
