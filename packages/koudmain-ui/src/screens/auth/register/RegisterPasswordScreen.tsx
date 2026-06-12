@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Keyboard } from 'react-native';
+import { View, Text, Pressable, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
@@ -19,7 +19,6 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
   const email = Array.isArray(params.email) ? (params.email[0] ?? '') : (params.email ?? '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [registerFailed, setRegisterFailed] = useState(false);
   const { register, isLoading } = useSession();
 
   const isPasswordStrong = isPasswordValid(password);
@@ -80,10 +79,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
         });
         return;
       }
-      setRegisterFailed(true);
-    } catch (error) {
+      Alert.alert("Erreur", "Échec de l'inscription. Merci de réessayer.");
+    } catch (error: any) {
       console.error('Registration failed:', error);
-      setRegisterFailed(true);
+      Alert.alert("Erreur", error?.message || "Échec de l'inscription. Merci de réessayer.");
     }
   };
 
@@ -102,7 +101,6 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
                 validationState={passwordValidationState}
                 onChangeText={(value: string) => {
                   setPassword(value);
-                  setRegisterFailed(false);
                 }}
               />
               <PasswordChecker password={password} />
@@ -114,7 +112,6 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
                 validationState={confirmPasswordValidationState}
                 onChangeText={(value: string) => {
                   setConfirmPassword(value);
-                  setRegisterFailed(false);
                 }}
               />
             </View>
@@ -126,11 +123,6 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
                 disabled={!isFormValid || isLoading}
                 onPress={handleRegister}
               />
-              {registerFailed && (
-                <Text className="text-red-500 text-center mt-4 mx-2">
-                  Échec de l'inscription. Merci de réessayer.
-                </Text>
-              )}
               <Text className="text-gray-400 my-4 mx-2">
                 En créant un compte, j&apos;accepte les
                 <Text className="text-secondary-400 font-bold">

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { FormControl, Button } from '../../../components/ui/index';
 import { AuthTop } from '../../../components/auth/AuthTop';
@@ -17,8 +17,6 @@ export function RegisterVerificationCodeScreen() {
 
   const [code, setCode] = useState(['', '', '', '', '', '']);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   const { verifyEmail } = useSession();
   const inputRefs = useRef<Array<TextInput | null>>([]);
@@ -37,7 +35,6 @@ export function RegisterVerificationCodeScreen() {
     const newCode = [...code];
     newCode[index] = numericText.substring(0, 1);
     setCode(newCode);
-    setError(null);
 
     if (numericText.length === 1 && index < 5) {
       inputRefs.current[index + 1]?.focus();
@@ -57,14 +54,13 @@ export function RegisterVerificationCodeScreen() {
     if (!isCodeComplete || !userId) return;
 
     setIsVerifying(true);
-    setError(null);
     try {
       const success = await verifyEmail(parseInt(userId, 10), code.join(''));
       if (success) {
         router.replace('/');
       }
     } catch (err: any) {
-      setError(err.message || "Code invalide. Veuillez réessayer.");
+      Alert.alert("Erreur", err.message || "Code invalide. Veuillez réessayer.");
     } finally {
       setIsVerifying(false);
     }
@@ -73,21 +69,15 @@ export function RegisterVerificationCodeScreen() {
   const handleResend = async () => {
     if (!userId) return;
     try {
-      setResendMessage(null);
-      setError(null);
       const res = await authService.resendVerification(parseInt(userId, 10));
-      setResendMessage(res.message || "Code renvoyé !");
+      Alert.alert("Code envoyé", res.message || "Code renvoyé !");
     } catch (err: any) {
-      setError(err.message || "Erreur lors du renvoi du code.");
+      Alert.alert("Erreur", err.message || "Erreur lors du renvoi du code.");
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      enabled={Platform.OS === 'ios'}
-      className="flex-1 bg-white dark:bg-primary"
-    >
+    <View className='flex-1 bg-white dark:bg-primary'>
       <AuthTop title="Inscription" />
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <FormControl className="flex-1">
@@ -131,16 +121,6 @@ export function RegisterVerificationCodeScreen() {
                   Renvoyer le code
                 </Text>
               </Pressable>
-
-              {resendMessage && (
-                <Text className="text-secondary-300 text-center mt-2 text-sm">{resendMessage}</Text>
-              )}
-
-              {error && (
-                <Text className="text-red-500 text-center mt-4 mx-2">
-                  {error}
-                </Text>
-              )}
             </View>
 
             <View className="mt-auto">
@@ -164,6 +144,6 @@ export function RegisterVerificationCodeScreen() {
           </View>
         </FormControl>
       </Pressable>
-    </KeyboardAvoidingView>
+    </View>
   );
 }

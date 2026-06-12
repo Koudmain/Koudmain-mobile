@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -28,7 +29,6 @@ export default function RegisterJob() {
   const [bio, setBio] = useState('');
   const [jobs, setJobs] = useState<SkillCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -36,7 +36,7 @@ export default function RegisterJob() {
         const categories = await skillCategoryService.getAll();
         setJobs(categories);
       } catch (err) {
-        setError('Erreur lors du chargement des métiers.');
+        Alert.alert('Erreur', 'Erreur lors du chargement des métiers.');
         console.error('Error fetching jobs:', err);
       } finally {
         setLoading(false);
@@ -83,8 +83,6 @@ export default function RegisterJob() {
                   <View className="py-4">
                     <ActivityIndicator size="large" color="#0000ff" />
                   </View>
-                ) : error ? (
-                  <Text className="text-red-500">{error}</Text>
                 ) : (
                   <View className="flex-row flex-wrap mt-2">
                     {jobs.map((job) => {
