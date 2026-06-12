@@ -17,7 +17,7 @@ export default function ChatScreen() {
 
   const conversation = MOCK_CONVERSATIONS.find((c) => c.id === Number(id));
 
-  const handleSend = (text: string) => {
+  const handleSend = async (text: string) => {
     console.log('Envoi du message :', text);
   };
 
@@ -57,7 +57,7 @@ export default function ChatScreen() {
           <FlatList
             data={MOCK_MESSAGES}
             renderItem={({ item }) => <MessageBubble message={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             inverted
             contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16 }}
           />
