@@ -16,7 +16,7 @@ export type RegisterData = {
   phoneNumber?: string;
   birthDate?: string;
   workerProfile?: {
-    skillCategoryId: number;
+    skillCategoryIds: number[];
     bio?: string;
     workRadius?: number;
     address?: {

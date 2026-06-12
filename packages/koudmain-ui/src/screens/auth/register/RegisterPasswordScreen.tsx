@@ -38,9 +38,12 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
         password,
         firstName: getParam('firstName') || '',
         lastName: getParam('lastName') || '',
+        birthDate: getParam('birthDate') || undefined,
         role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
         workerProfile: appContext === 'worker' ? {
-          skillCategoryId: parseInt(getParam('selectedJobs')?.split(',')[0] || '1', 10),
+          skillCategoryIds: getParam('selectedJobs')
+            ? getParam('selectedJobs').split(',').map((id: string) => parseInt(id, 10))
+            : [1],
           bio: getParam('bio'),
           workRadius: parseInt(getParam('radius') || '10', 10),
           address: getParam('street_name') ? {

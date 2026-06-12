@@ -23,6 +23,7 @@ export default function RegisterJob() {
     password?: string;
     firstName?: string;
     lastName?: string;
+    birthDate?: string;
   }>();
 
   const [selectedJobs, setSelectedJobs] = useState<number[]>([]);

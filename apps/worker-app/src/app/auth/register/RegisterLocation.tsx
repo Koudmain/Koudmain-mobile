@@ -17,6 +17,7 @@ export default function RegisterLocation() {
     password?: string;
     firstName?: string;
     lastName?: string;
+    birthDate?: string;
     selectedJobs?: string;
     bio?: string;
   }>();
@@ -50,6 +51,7 @@ export default function RegisterLocation() {
       params: {
         firstName: params.firstName,
         lastName: params.lastName,
+        birthDate: params.birthDate,
         selectedJobs: params.selectedJobs,
         bio: params.bio,
         radius: radius.toString(),

@@ -29,23 +29,49 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   }>();
   const email = Array.isArray(emailParam) ? (emailParam[0] ?? '') : (emailParam ?? '');
   const password = Array.isArray(passwordParam) ? (passwordParam[0] ?? '') : (passwordParam ?? '');
+  const [birthDate, setBirthDate] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [ownerPosition, setOwnerPosition] = useState('');
+
   const isFirstNameValid = firstName.trim().length > 0;
   const isLastNameValid = lastName.trim().length > 0;
-  const isFormValid = isFirstNameValid && isLastNameValid;
+  const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
+  const isBirthDateValid = appContext === 'worker' ? DATE_REGEX.test(birthDate) : true;
+  const isFormValid = isFirstNameValid && isLastNameValid && isBirthDateValid;
+
   const firstNameValidationState =
     firstName.length === 0 ? 'default' : isFirstNameValid ? 'success' : 'error';
   const lastNameValidationState =
     lastName.length === 0 ? 'default' : isLastNameValid ? 'success' : 'error';
+  const birthDateValidationState =
+    birthDate.length === 0 ? 'default' : isBirthDateValid ? 'success' : 'error';
 
+  const handleBirthDateChange = (text: string) => {
+    const cleaned = text.replace(/[^0-9]/g, '');
+    let formatted = cleaned;
+    if (cleaned.length > 4) {
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}/${cleaned.slice(4, 8)}`;
+    } else if (cleaned.length > 2) {
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2)}`;
+    }
+    setBirthDate(formatted);
+  };
+
+  const convertBirthDate = (dateStr: string) => {
+    if (!dateStr) return undefined;
+    const parts = dateStr.split('/');
+    if (parts.length === 3) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return undefined;
+  };
 
   const handleContinue = async () => {
     if (appContext === 'worker') {
       router.push({
         pathname: '/auth/register/RegisterJob',
-        params: { firstName, lastName },
+        params: { firstName, lastName, birthDate: convertBirthDate(birthDate) },
       });
     } else {
       router.push({
@@ -88,6 +114,17 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                   setLastName(value);
                 }}
               />
+              {appContext === 'worker' && (
+                <LabeledUnderlinedInput
+                  label="Date de naissance"
+                  placeholder="JJ/MM/AAAA"
+                  type="text"
+                  keyboardType="numeric"
+                  value={birthDate}
+                  validationState={birthDateValidationState}
+                  onChangeText={handleBirthDateChange}
+                />
+              )}
               {appContext === 'employer' && (
                 <View className="mt-2">
                   <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-5">

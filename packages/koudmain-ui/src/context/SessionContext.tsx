@@ -16,6 +16,7 @@ interface AuthContextType {
     email: string;
     password: string;
     role: 'WORKER' | 'EMPLOYER';
+    birthDate?: string;
     workerProfile?: any;
     employerProfile?: any;
   }) => Promise<number>;
@@ -119,6 +120,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
     email: string;
     password: string;
     role: 'WORKER' | 'EMPLOYER';
+    birthDate?: string;
     workerProfile?: any;
     employerProfile?: any;
   }) => {
