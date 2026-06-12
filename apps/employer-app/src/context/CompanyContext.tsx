@@ -13,10 +13,10 @@ interface CompanyContextType {
   clearCompanies: () => void;
 }
 
-export const CompanyContext = createContext<CompanyContextType | null>(null);
+export const companyContext = createContext<CompanyContextType | null>(null);
 
 export function useCompany() {
-  const context = useContext(CompanyContext);
+  const context = useContext(companyContext);
   if (!context) {
     throw new Error('useCompany doit être utilisé dans un CompanyProvider');
   }
@@ -32,6 +32,7 @@ export function CompanyProvider({ children }: React.PropsWithChildren) {
   const clearCompanies = useCallback(() => {
     setCompanies([]);
     setActiveCompanyId(null);
+    SecureStore.deleteItemAsync('selected_company_id').catch((err) => console.error(err));
   }, []);
 
   const loadCompanies = useCallback(async (token: string) => {
@@ -43,12 +44,18 @@ export function CompanyProvider({ children }: React.PropsWithChildren) {
       const savedCompanyId = await SecureStore.getItemAsync('selected_company_id');
       const firstCompanyWithId = companiesData.find((c) => c != null && typeof c.id === 'number');
 
-      if (savedCompanyId) {
+      if (
+        savedCompanyId &&
+        companiesData.some((c) => c != null && String(c.id) === savedCompanyId)
+      ) {
         setActiveCompanyId(savedCompanyId);
       } else if (firstCompanyWithId) {
         const defaultId = String(firstCompanyWithId.id);
         setActiveCompanyId(defaultId);
         await SecureStore.setItemAsync('selected_company_id', defaultId);
+      } else {
+        setActiveCompanyId(null);
+        await SecureStore.deleteItemAsync('selected_company_id');
       }
     } catch (e) {
       console.error('Erreur lors du chargement des entreprises:', e);
@@ -71,7 +78,7 @@ export function CompanyProvider({ children }: React.PropsWithChildren) {
   }, [session, clearCompanies, loadCompanies]);
 
   return (
-    <CompanyContext.Provider
+    <companyContext.Provider
       value={{
         companies,
         activeCompanyId,
@@ -82,6 +89,6 @@ export function CompanyProvider({ children }: React.PropsWithChildren) {
       }}
     >
       {children}
-    </CompanyContext.Provider>
+    </companyContext.Provider>
   );
 }
