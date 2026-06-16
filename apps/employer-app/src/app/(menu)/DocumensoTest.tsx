@@ -25,7 +25,6 @@ function transformIpBackendUrl(hostOrUrl?: string, port: number = 3000): string 
 const DOCUMENSO_URL = transformIpBackendUrl(RAW_API_HOST, 3010);
 
 export default function SignatureWebViewScreen() {
-  // Remplace par ton IP et le token de signature généré par Documenso
   const documensoUrl = `${DOCUMENSO_URL}/sign/0jaZklJD2Zo_-xoJ8LDht`;
   console.log('Documenso URL:', documensoUrl);
 
