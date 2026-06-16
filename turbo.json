@@ -14,6 +14,7 @@
       "persistent": true
     },
     "lint:check": {
+      "cache": false,
       "outputs": []
     },
     "lint:fix": {
@@ -21,6 +22,7 @@
       "outputs": []
     },
     "format:check": {
+      "cache": false,
       "outputs": []
     },
     "format:fix": {
