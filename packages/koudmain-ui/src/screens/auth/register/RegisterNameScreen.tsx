@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
+import { PhoneInput, COUNTRIES } from '../../../components/form/PhoneInput';
 import { VStack, FormControl, Button } from '../../../components/ui/index';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 import {
   Select,
   SelectTrigger,
@@ -32,18 +34,24 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const [birthDate, setBirthDate] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [ownerPosition, setOwnerPosition] = useState('');
 
   const isFirstNameValid = firstName.trim().length > 0;
   const isLastNameValid = lastName.trim().length > 0;
+  const isPhoneNumberValid = isValidPhoneNumber(phoneNumber);
   const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
   const isBirthDateValid = appContext === 'worker' ? DATE_REGEX.test(birthDate) : true;
-  const isFormValid = isFirstNameValid && isLastNameValid && isBirthDateValid;
+  const isFormValid = isFirstNameValid && isLastNameValid && isPhoneNumberValid && isBirthDateValid;
+
+  const isPhoneEmpty = !phoneNumber || COUNTRIES.some(c => phoneNumber === c.callingCode);
 
   const firstNameValidationState =
     firstName.length === 0 ? 'default' : isFirstNameValid ? 'success' : 'error';
   const lastNameValidationState =
     lastName.length === 0 ? 'default' : isLastNameValid ? 'success' : 'error';
+  const phoneNumberValidationState =
+    isPhoneEmpty ? 'default' : isPhoneNumberValid ? 'success' : 'error';
   const birthDateValidationState =
     birthDate.length === 0 ? 'default' : isBirthDateValid ? 'success' : 'error';
 
@@ -71,12 +79,12 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     if (appContext === 'worker') {
       router.push({
         pathname: '/auth/register/RegisterJob',
-        params: { firstName, lastName, birthDate: convertBirthDate(birthDate) },
+        params: { firstName, lastName, phoneNumber, birthDate: convertBirthDate(birthDate) },
       });
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
-        params: { firstName, lastName, owner_position: ownerPosition },
+        params: { firstName, lastName, phoneNumber, owner_position: ownerPosition },
       });
     }
   };
@@ -112,6 +120,17 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                 validationState={lastNameValidationState}
                 onChangeText={(value: string) => {
                   setLastName(value);
+                }}
+              />
+              <PhoneInput
+                label="Numéro de téléphone"
+                placeholder="06 00 00 00 00"
+                type="text"
+                keyboardType="phone-pad"
+                value={phoneNumber}
+                validationState={phoneNumberValidationState}
+                onChangeText={(value: string) => {
+                  setPhoneNumber(value);
                 }}
               />
               {appContext === 'worker' && (
