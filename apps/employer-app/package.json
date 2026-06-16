@@ -74,6 +74,7 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@koudmain/eslint-config": "workspace:*",
     "@react-native-community/slider": "^5.1.2",
     "@types/react": "~19.1.0",
     "@types/supercluster": "^7.1.3",
@@ -82,9 +83,10 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "prettier": "3.8.1",
+    "react-native-signature-canvas": "^5.0.2",
     "react-native-svg-transformer": "^1.5.3",
-    "typescript": "~5.9.2",
-    "@koudmain/eslint-config": "workspace:*"
+    "react-native-webview": "^13.16.1",
+    "typescript": "~5.9.2"
   },
   "private": true
 }

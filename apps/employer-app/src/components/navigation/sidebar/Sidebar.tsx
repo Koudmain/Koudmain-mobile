@@ -59,6 +59,7 @@ export function Sidebar() {
     { label: 'Paramètre du Compte', path: '/Settings' },
     { label: 'Mes documents', path: '/contracts' },
     { label: 'Notifications', path: '/notifications' },
+    { label: 'Documenso', path: '/DocumensoTest' },
   ];
 
   const handleItemPress = (path: string | null) => {
