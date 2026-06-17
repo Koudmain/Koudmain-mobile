@@ -133,9 +133,6 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
               />
               <PhoneInput
                 label="Numéro de téléphone"
-                placeholder="06 00 00 00 00"
-                type="text"
-                keyboardType="phone-pad"
                 value={phoneNumber}
                 validationState={phoneNumberValidationState}
                 onChangeText={(value: string) => {

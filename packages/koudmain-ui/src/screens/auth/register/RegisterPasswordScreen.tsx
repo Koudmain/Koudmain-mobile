@@ -36,9 +36,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
       const userId = await register({
         email,
         password,
-        firstName: getParam('firstName') || '',
-        lastName: getParam('lastName') || '',
-        birthDate: getParam('birthDate') || undefined,
+        firstName: getParam('firstName'),
+        lastName: getParam('lastName'),
+        phoneNumber: getParam('phoneNumber'),
+        birthDate: getParam('birthDate'),
         role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
         workerProfile: appContext === 'worker' ? {
           skillCategoryIds: getParam('selectedJobs')

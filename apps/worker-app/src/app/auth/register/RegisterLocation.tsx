@@ -13,13 +13,14 @@ import { colors } from '@koudmain/ui/constants/theme';
 
 export default function RegisterLocation() {
   const params = useLocalSearchParams<{
-    email?: string;
-    password?: string;
-    firstName?: string;
-    lastName?: string;
-    birthDate?: string;
-    selectedJobs?: string;
-    bio?: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    birthDate: string;
+    selectedJobs: string;
+    bio: string;
   }>();
 
   const colorScheme = useColorScheme();
@@ -51,6 +52,7 @@ export default function RegisterLocation() {
       params: {
         firstName: params.firstName,
         lastName: params.lastName,
+        phoneNumber: params.phoneNumber,
         birthDate: params.birthDate,
         selectedJobs: params.selectedJobs,
         bio: params.bio,

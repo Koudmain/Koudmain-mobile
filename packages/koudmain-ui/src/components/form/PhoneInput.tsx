@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Input, InputField } from '../ui';
-import { AsYouType, CountryCode, getCountries, getCountryCallingCode } from 'libphonenumber-js';
+import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString, getExampleNumber } from 'libphonenumber-js';
+import examples from 'libphonenumber-js/mobile/examples'
 import {
   Select,
   SelectTrigger,
@@ -78,31 +80,70 @@ export function PhoneInput({
     success: 'data-[focus=true]:border-success',
   } as const;
 
-  let activeCountry: CountryCode = defaultCountry;
-  let localValue = value;
+  const [internalCountry, setInternalCountry] = useState<CountryCode>(defaultCountry);
 
-  if (value.startsWith('+')) {
-    const matchedCountry = COUNTRIES.find((c) => value.startsWith(c.callingCode));
-    if (matchedCountry) {
-      activeCountry = matchedCountry.code;
-      localValue = value.slice(matchedCountry.callingCode.length);
+  let activeCountry: CountryCode = internalCountry;
+  let formattedLocalValue = '';
+
+  const parsed = parsePhoneNumberFromString(value);
+  if (parsed && parsed.country) {
+    activeCountry = parsed.country;
+    if (internalCountry !== parsed.country) {
+      setInternalCountry(parsed.country);
     }
+    formattedLocalValue = parsed.formatNational();
+  } else {
+    let localValue = value;
+    if (value.startsWith('+')) {
+      const currentCountryObj = COUNTRIES.find((c) => c.code === internalCountry);
+      // This prevents NA country code (+1) from instantly reverting to the first +1 country (US/Antigua) in the list.
+      if (currentCountryObj && value.startsWith(currentCountryObj.callingCode)) {
+        activeCountry = internalCountry;
+        localValue = value.slice(currentCountryObj.callingCode.length);
+      } else {
+        const matchedCountry = COUNTRIES.find((c) => value.startsWith(c.callingCode));
+        if (matchedCountry) {
+          activeCountry = matchedCountry.code;
+          if (internalCountry !== matchedCountry.code) {
+            setInternalCountry(matchedCountry.code);
+          }
+          localValue = value.slice(matchedCountry.callingCode.length);
+        }
+      }
+    }
+    const formatter = new AsYouType(activeCountry);
+    formattedLocalValue = formatter.input(localValue);
   }
 
-  const formatter = new AsYouType(activeCountry);
-  const formattedLocalValue = formatter.input(localValue);
+  const exampleNumber = getExampleNumber(activeCountry, examples);
+  const dynamicPlaceholder = exampleNumber ? exampleNumber.formatNational() : fieldProps.placeholder || '';
 
   const handleChangeText = (text: string) => {
-    const cleaned = text.replace(/^\+/, '');
+    const cleaned = text.replace(/[^\d]/g, '');
     const currentCountry = COUNTRIES.find((c) => c.code === activeCountry);
     const callingCode = currentCountry ? currentCountry.callingCode : '+33';
-    onChangeText(callingCode + cleaned);
+
+    const asYouType = new AsYouType(activeCountry);
+    asYouType.input(text);
+    const phone = asYouType.getNumber();
+
+    if (phone && phone.isValid()) {
+      onChangeText(phone.format('E.164'));
+    } else {
+      onChangeText(callingCode + cleaned);
+    }
   };
 
   const handleCountryChange = (newCountryCode: string) => {
     const newCountry = COUNTRIES.find((c) => c.code === newCountryCode);
     if (newCountry) {
-      onChangeText(newCountry.callingCode + localValue);
+      setInternalCountry(newCountryCode as CountryCode);
+      const parsed = parsePhoneNumberFromString(value);
+      if (parsed) {
+        onChangeText(parsed.format('E.164').replace(/^\+\d+/, newCountry.callingCode));
+      } else {
+        onChangeText(newCountry.callingCode);
+      }
     }
   };
 
@@ -167,6 +208,7 @@ export function PhoneInput({
           >
             <InputField
               {...fieldProps}
+              placeholder={dynamicPlaceholder}
               value={formattedLocalValue}
               onChangeText={handleChangeText}
               keyboardType="phone-pad"
