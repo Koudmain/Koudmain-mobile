@@ -136,7 +136,7 @@ const actionsheetItemTextStyle = tva({
     },
   },
   defaultVariants: {
-    size: 'md',
+    size: 'lg',
   },
 });
 
