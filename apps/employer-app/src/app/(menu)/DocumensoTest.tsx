@@ -1,32 +1,41 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
-
-const RAW_API_HOST = process.env.EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME;
-
-function transformIpBackendUrl(hostOrUrl?: string, port: number = 3000): string {
-  if (!hostOrUrl) return `http://localhost:${port}`;
-
-  const trimmed = hostOrUrl.trim().replace(/\/$/, '');
-  if (!trimmed) return `http://localhost:${port}`;
-
-  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    return trimmed;
-  }
-
-  if (/:[0-9]+$/.test(trimmed)) {
-    return `http://${trimmed}`;
-  }
-
-  return `http://${trimmed}:${port}`;
-}
-
-const DOCUMENSO_URL = transformIpBackendUrl(RAW_API_HOST, 3010);
+import { documensoService } from '@/api/documenso';
+import { useSession } from '@koudmain/ui/context';
 
 export default function SignatureWebViewScreen() {
-  const documensoUrl = `${DOCUMENSO_URL}/sign/0jaZklJD2Zo_-xoJ8LDht`;
-  console.log('Documenso URL:', documensoUrl);
+  const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const { session } = useSession();
+
+  useEffect(() => {
+    const fetchSignatureUrl = async () => {
+      try {
+        const data = await documensoService.getSignatureUrl(session);
+
+        console.log('URL dynamique reçue du Back:', data);
+        setSignatureUrl(data.url);
+      } catch (error) {
+        console.error('Erreur lors de la récupération de l’URL:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSignatureUrl();
+  }, [session]);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-slate-50 justify-center items-center">
+        <ActivityIndicator size="large" color="#000000" />
+        <Text className="mt-4 text-slate-500 font-medium">Préparation du contrat...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-slate-50">
@@ -35,18 +44,22 @@ export default function SignatureWebViewScreen() {
       </View>
 
       <View className="flex-1 bg-white">
-        <WebView
-          source={{ uri: documensoUrl }}
-          className="flex-1"
-          domStorageEnabled={true}
-          javaScriptEnabled={true}
-          scalesPageToFit={true}
-          onNavigationStateChange={(navState) => {
-            if (navState.url.includes('/success')) {
-              console.log('Signature validée ! Tu peux fermer la vue.');
-            }
-          }}
-        />
+        {signatureUrl && (
+          <WebView
+            source={{ uri: signatureUrl }}
+            className="flex-1"
+            domStorageEnabled={true}
+            javaScriptEnabled={true}
+            scalesPageToFit={true}
+            onNavigationStateChange={(navState) => {
+              if (navState.url.includes('/success') || navState.url.includes('/completed')) {
+                console.log(
+                  '📱 Mobile : L’utilisateur a signé ! Tu peux fermer l’écran ou rediriger.',
+                );
+              }
+            }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
