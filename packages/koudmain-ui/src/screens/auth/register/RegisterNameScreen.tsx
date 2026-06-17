@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Keyboard } from 'react-native';
+import { View, Text, Pressable, Keyboard, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
@@ -92,13 +92,22 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">
       <AuthTop title="Inscription" />
-      <Pressable onPress={Keyboard.dismiss} className="flex-1">
-        <FormControl className="flex-1">
-          <VStack className="flex flex-col justify-around h-full px-10">
-            <View className="gap-4">
-              <Text className="text-primary dark:text-white text-4xl font-bold px-2">
-                Créer un compte
-              </Text>
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <Pressable onPress={Keyboard.dismiss} className="flex-1">
+            <FormControl className="flex-1">
+              <VStack className="flex flex-col justify-around flex-1 px-10 py-6">
+                <View className="gap-4">
+                  <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+                    Créer un compte
+                  </Text>
               <Text className="text-gray-500 dark:text-white mb-6">
                 Renseignez votre nom et prénom pour commencer la création de votre compte.
               </Text>
@@ -196,6 +205,8 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
           </VStack>
         </FormControl>
       </Pressable>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -14,6 +14,7 @@ import {
   SelectScrollView,
 } from '../ui/select';
 import { ChevronDownIcon } from '../ui/icon';
+import { COUNTRY_NAMES_FR } from './countries-fr';
 
 type PhoneInputProps = React.ComponentProps<typeof InputField> & {
   label: string;
@@ -25,7 +26,6 @@ type PhoneInputProps = React.ComponentProps<typeof InputField> & {
   defaultCountry?: CountryCode;
 };
 
-// Function to convert country code (e.g., 'FR') to flag emoji
 export function getFlagEmoji(countryCode: string) {
   const codePoints = countryCode
     .toUpperCase()
@@ -34,7 +34,6 @@ export function getFlagEmoji(countryCode: string) {
   return String.fromCodePoint(...codePoints);
 }
 
-// Generate the list of countries dynamically using libphonenumber-js
 export const COUNTRIES = getCountries()
   .map((code) => {
     let callingCode = '';
@@ -44,15 +43,17 @@ export const COUNTRIES = getCountries()
       // Skip country if it doesn't have a calling code
     }
 
+    let name = COUNTRY_NAMES_FR[code] || code;
+
     return {
       code,
+      name,
       flag: getFlagEmoji(code),
       callingCode,
     };
   })
   .filter((c) => c.callingCode)
-  // Sort alphabetically by ISO code
-  .sort((a, b) => a.code.localeCompare(b.code));
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 export function PhoneInput({
   label,
@@ -77,7 +78,6 @@ export function PhoneInput({
     success: 'data-[focus=true]:border-success',
   } as const;
 
-  // Resolve active country and local value
   let activeCountry: CountryCode = defaultCountry;
   let localValue = value;
 
@@ -89,12 +89,10 @@ export function PhoneInput({
     }
   }
 
-  // Format local value using AsYouType
   const formatter = new AsYouType(activeCountry);
   const formattedLocalValue = formatter.input(localValue);
 
   const handleChangeText = (text: string) => {
-    // Strip any leading '+' to avoid duplicates
     const cleaned = text.replace(/^\+/, '');
     const currentCountry = COUNTRIES.find((c) => c.code === activeCountry);
     const callingCode = currentCountry ? currentCountry.callingCode : '+33';
@@ -112,7 +110,6 @@ export function PhoneInput({
     <View className={containerClassName}>
       <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-1">{label}</Text>
       <View className="flex-row items-end gap-3 h-12">
-        {/* Country Selector */}
         <View className="w-[110px]">
           <Select
             selectedValue={activeCountry}
@@ -141,12 +138,11 @@ export function PhoneInput({
                 <SelectDragIndicatorWrapper>
                   <SelectDragIndicator />
                 </SelectDragIndicatorWrapper>
-                {/* ScrollView of all countries */}
                 <SelectScrollView className="max-h-[300px] w-full">
                   {COUNTRIES.map((c) => (
                     <SelectItem
                       key={c.code}
-                      label={`${c.flag} ${c.code} (${c.callingCode})`}
+                      label={`${c.flag} ${c.name} (${c.callingCode})`}
                       value={c.code}
                     />
                   ))}
@@ -156,7 +152,6 @@ export function PhoneInput({
           </Select>
         </View>
 
-        {/* Phone Input Field */}
         <View className="flex-1">
           <Input
             variant="underlined"
