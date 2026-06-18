@@ -1,5 +1,4 @@
 name: "Global Checks & Automation"
-
 on:
   issues:
     types: [opened]

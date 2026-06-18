@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: format-fix
         name: 🎨 Fix formatting (Prettier)
-        entry: pnpm format:fix
+        entry: pnpm format:check
         language: system
         files: \.(js|ts|jsx|tsx|json|css|md)$
         pass_filenames: false
