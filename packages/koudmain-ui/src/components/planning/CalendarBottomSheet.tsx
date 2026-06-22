@@ -148,7 +148,14 @@ export default function CalendarBottomSheet({
                         ? ['rgba(49, 49, 49, 1)', 'rgba(49, 49, 49, 0)']
                         : ['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']
                     }
-                    style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 30, zIndex: 10 }}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 30,
+                      zIndex: 10,
+                    }}
                     pointerEvents="none"
                   />
                   <LinearGradient
@@ -157,7 +164,14 @@ export default function CalendarBottomSheet({
                         ? ['rgba(49, 49, 49, 0)', 'rgba(49, 49, 49, 1)']
                         : ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)']
                     }
-                    style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 40, zIndex: 10 }}
+                    style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 40,
+                      zIndex: 10,
+                    }}
                     pointerEvents="none"
                   />
                 </>

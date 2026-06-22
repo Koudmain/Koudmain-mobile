@@ -1,12 +1,5 @@
 import { Text, View } from 'react-native';
-import {
-  Input,
-  InputField,
-  InputIcon,
-  InputSlot,
-  EyeIcon,
-  EyeOffIcon,
-} from '../ui';
+import { Input, InputField, InputIcon, InputSlot, EyeIcon, EyeOffIcon } from '../ui';
 import { useState } from 'react';
 
 type LabeledUnderlinedInputProps = React.ComponentProps<typeof InputField> & {

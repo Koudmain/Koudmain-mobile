@@ -1,9 +1,9 @@
-export * from './conversation'
+export * from './conversation';
 
-export * from './message'
+export * from './message';
 
-export * from './publication'
+export * from './publication';
 
-export * from './worker'
+export * from './worker';
 
-export * from './user'
+export * from './user';

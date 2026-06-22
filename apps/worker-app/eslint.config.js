@@ -1,19 +1,14 @@
-import { nextJsConfig } from '@koudmain/eslint-config/next-js';
+import { nativeConfig } from '@koudmain/eslint-config/native';
 import { defineConfig } from 'eslint/config';
-import expoConfig from 'eslint-config-expo/flat.js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /** @type {import("eslint").Linter.Config[]} */
 export default defineConfig([
-  ...nextJsConfig,
-  expoConfig,
-  eslintPluginPrettierRecommended,
+  ...nativeConfig,
   {
-    ignores: ['dist/*', 'node_modules/*'],
+    ignores: ['dist/*', 'node_modules/*', '.expo/*'],
   },
   {
     rules: {
-      'react/no-unescaped-entities': 'off',
       'import/no-unresolved': ['error', { ignore: ['expo-secure-store'] }],
     },
   },

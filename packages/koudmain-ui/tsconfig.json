@@ -4,6 +4,10 @@
     "strict": true,
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
+    "paths": {
+      "@koudmain/ui/*": ["./src/*"],
+      "@koudmain/ui": ["./src"]
+    }
   },
   "include": [
     "**/*.ts",

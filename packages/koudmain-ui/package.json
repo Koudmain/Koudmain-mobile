@@ -8,15 +8,26 @@
     ".": "./src/index.ts",
     "./gluestack": "./src/components/ui/index.ts",
     "./screens": "./src/screens/index.ts",
-    "./*": ["./src/*.tsx", "./src/*.ts"]
+    "./*": [
+      "./src/*.tsx",
+      "./src/*.ts"
+    ]
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "lint:check": "eslint \"src/**/*.{ts,tsx,js}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,js}\" --fix",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js}\"",
+    "format:fix": "prettier --write \"src/**/*.{ts,tsx,js}\"",
+    "check-types": "tsc --noEmit",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@koudmain/eslint-config": "workspace:*",
     "@types/react": "~19.1.0",
     "@types/react-dom": "~19.1.0",
+    "eslint": "^9.25.0",
+    "prettier": "3.8.1",
     "react": "19.1.4",
     "react-native": "*",
     "typescript": "5.9.2"
