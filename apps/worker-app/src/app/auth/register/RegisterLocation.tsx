@@ -119,10 +119,7 @@ export default function RegisterLocation() {
                   <Text className="text-primary dark:text-white font-semibold">50 km</Text>
                 </View>
 
-                <View
-                  className="mt-4 border border-gray-200 dark:border-gray-700"
-                  style={{ height: 350, borderRadius: 16, overflow: 'hidden' }}
-                >
+                <View className="mt-4 border border-gray-200 dark:border-gray-700 h-[350px] rounded-2xl overflow-hidden">
                   <MapView
                     provider={PROVIDER_GOOGLE}
                     customMapStyle={currentMapStyle}
