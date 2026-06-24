@@ -2,9 +2,9 @@ import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native'
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
-import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
-import { VStack, FormControl, Button } from '../../../components/ui/index';
-import { AuthTop } from '../../../components/auth/AuthTop';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

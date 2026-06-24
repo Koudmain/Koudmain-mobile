@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { FormControl, Button } from '../../../components/ui/index';
-import { AuthTop } from '../../../components/auth/AuthTop';
+import { FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { authService } from '@koudmain/ui/api/auth.api';
 

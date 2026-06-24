@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { SvgProps } from 'react-native-svg';
 
-import LabeledUnderlinedInput from '../../components/form/LabeledUnderlinedInput';
-import { VStack, FormControl, Button, Divider } from '../../components/ui/index';
-import { AuthTop } from '../../components/auth/AuthTop';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { VStack, FormControl, Button, Divider } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

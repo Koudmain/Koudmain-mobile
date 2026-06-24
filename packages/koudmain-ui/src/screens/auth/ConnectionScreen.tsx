@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Text, View, Image, useColorScheme, ImageSourcePropType } from 'react-native';
 
-import { Button } from '../../components/ui/index';
+import { Button } from '@koudmain/ui/components/ui/index';
 
 type ConnectionScreenProps = {
   logoLight: ImageSourcePropType;

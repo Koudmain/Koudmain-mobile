@@ -2,9 +2,9 @@ import { View, Text, Pressable, Keyboard, KeyboardAvoidingView, Platform, Scroll
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
-import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
-import { PhoneInput, COUNTRIES } from '../../../components/form/PhoneInput';
-import { VStack, FormControl, Button } from '../../../components/ui/index';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { PhoneInput, COUNTRIES } from '@koudmain/ui/components/form/PhoneInput';
+import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import {
   Select,

@@ -2,13 +2,13 @@ import { View, Text, Pressable, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
-import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
-import { VStack, FormControl, Button } from '../../../components/ui/index';
-import { AuthTop } from '../../../components/auth/AuthTop';
-import { PasswordChecker, isPasswordValid } from '../../../components/auth/PasswordChecker';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { PasswordChecker, isPasswordValid } from '@koudmain/ui/components/auth/PasswordChecker';
 
 import { useSession } from '@koudmain/ui/context/SessionContext';
-import { OwnerPosition } from '../../../api';
+import { OwnerPosition } from '@koudmain/ui/api';
 
 type RegisterPasswordScreenProps = {
   appContext: 'employer' | 'worker';
