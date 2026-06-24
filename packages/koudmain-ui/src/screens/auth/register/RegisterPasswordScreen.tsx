@@ -59,10 +59,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
         } : undefined,
         employerProfile: appContext === 'employer' ? {
           companyName: getParam('company_name') || 'Entreprise inconnue',
-          establishmentType: getParam('establishment_type') || 'Autre',
+          companyType: getParam('company_type') || 'Autre',
           ownerPosition: (getParam('owner_position') as OwnerPosition) || 'OWNER',
-          desiredTradeIds: getParam('desiredTradeIds')
-            ? getParam('desiredTradeIds').split(',').map((id: string) => parseInt(id, 10))
+          desiredJobIds: getParam('desiredJobIds')
+            ? getParam('desiredJobIds').split(',').map((id: string) => parseInt(id, 10))
             : [],
           address: getParam('street_name') ? {
             street_number: getParam('street_number') || undefined,

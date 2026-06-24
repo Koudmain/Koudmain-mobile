@@ -98,7 +98,7 @@ export default function RegisterNeeds() {
                 onPress={() =>
                   router.push({
                     pathname: '/auth/register/RegisterEmail',
-                    params: { ...params, desiredTradeIds: selectedJobs.join(',') },
+                    params: { ...params, desiredJobIds: selectedJobs.join(',') },
                   })
                 }
               />

@@ -31,9 +31,9 @@ export type RegisterData = {
   };
   employerProfile?: {
     companyName: string;
-    establishmentType: string;
+    companyType: string;
     ownerPosition: OwnerPosition;
-    desiredTradeIds: number[];
+    desiredJobIds: number[];
     address?: {
       street_number?: string;
       street_name: string;

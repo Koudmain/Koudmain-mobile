@@ -97,7 +97,7 @@ export default function RegisterEstablishment() {
                       params: {
                         ...params,
                         company_name: companyName,
-                        establishment_type: selectedType,
+                        company_type: selectedType,
                         street_number: addressData?.street_number || '',
                         street_name: addressData?.street_name || '',
                         zip_code: addressData?.zip_code || '',
