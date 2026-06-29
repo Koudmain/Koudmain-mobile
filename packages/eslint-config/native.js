@@ -25,15 +25,11 @@ export const nativeConfig = defineConfig([
     settings: { react: { version: 'detect' } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
-      // New JSX transform makes React-in-scope unnecessary.
       'react/react-in-jsx-scope': 'off',
       'react/no-unescaped-entities': 'off',
-      // TypeScript already validates component props.
       'react/prop-types': 'off',
     },
   },
-  // Filename casing is a nudge, not a blocker: keep it as a warning so it
-  // never blocks a commit (expo-router routes use lower/camel case).
   {
     files: ['**/*.ts'],
     plugins: { unicorn: pluginUnicorn },
@@ -56,7 +52,6 @@ export const nativeConfig = defineConfig([
   },
   eslintPluginPrettierRecommended,
   {
-    // Generated gluestack-ui components are not hand-written code.
     ignores: ['dist/**', '.expo/**', 'node_modules/**', '**/src/components/ui/**'],
   },
 ]);

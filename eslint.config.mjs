@@ -6,7 +6,7 @@ import { defineConfig } from "eslint/config";
  *
  * Used when ESLint runs from the repository root (e.g. the pre-commit hook,
  * which passes only the staged files). A single config here lets us lint
- * files from every workspace — apps/* and packages/* — in one pass without
+ * files from every workspace - apps/* and packages/* - in one pass without
  * scanning the whole repo.
  *
  * @type {import("eslint").Linter.Config[]}
@@ -18,17 +18,13 @@ export default defineConfig([
       "**/dist/**",
       "**/.expo/**",
       "**/.turbo/**",
-      // Generated gluestack-ui components.
       "**/src/components/ui/**",
-      // Config-only packages have no source to lint.
       "packages/eslint-config/**",
       "packages/typescript-config/**",
     ],
   },
   ...nativeConfig,
   {
-    // From the repo root the import resolver must know every workspace's
-    // tsconfig so per-package path aliases (e.g. "@/...") resolve correctly.
     settings: {
       "import/resolver": {
         typescript: {
