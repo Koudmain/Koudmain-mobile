@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import * as SecureStore from 'expo-secure-store';
 import { User } from '../types/user';
 import { userService } from '../api/user.api';
-import { authService } from '../api/auth.api';
+import { authService, RegisterData } from '../api/auth.api';
 import { configureAuthRefresh } from '../utils/api';
 
 const ACCESS_TOKEN_KEY = 'session';
@@ -10,17 +10,7 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
-  register: (data: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    phoneNumber: string;
-    role: 'WORKER' | 'EMPLOYER';
-    birthDate: string;
-    workerProfile?: any;
-    employerProfile?: any;
-  }) => Promise<number>;
+  register: (data: RegisterData) => Promise<number>;
   verifyEmail: (userId: number, code: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
@@ -115,17 +105,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
     }
   };
 
-  const register = async (data: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    phoneNumber: string;
-    role: 'WORKER' | 'EMPLOYER';
-    birthDate: string;
-    workerProfile?: any;
-    employerProfile?: any;
-  }) => {
+  const register = async (data: RegisterData) => {
     try {
       const res = await authService.register(data);
       return res.userId;
