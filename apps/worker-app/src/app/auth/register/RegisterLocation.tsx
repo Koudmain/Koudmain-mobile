@@ -33,10 +33,10 @@ export default function RegisterLocation() {
 
   const [addressData, setAddressData] = useState<AddressData | null>(null);
   const [radius, setRadius] = useState(10);
-  // Paris coordinates by default
+  // Lyon coordinates by default
   const [region, setRegion] = useState({
-    latitude: 48.8566,
-    longitude: 2.3522,
+    latitude: 45.758,
+    longitude: 4.832,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   });
