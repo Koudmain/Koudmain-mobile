@@ -7,7 +7,7 @@ import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlin
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 
-const ESTABLISHMENT_TYPES = [
+const COMPANY_TYPES = [
   'Café / Bar',
   'Restaurant',
   'Hôtel',
@@ -60,7 +60,7 @@ export default function RegisterEstablishment() {
                     Type d'établissement
                   </Text>
                   <View className="flex-row flex-wrap justify-between">
-                    {ESTABLISHMENT_TYPES.map((type) => {
+                    {COMPANY_TYPES.map((type) => {
                       const isSelected = selectedType === type;
                       return (
                         <View key={type} className="w-[48%] mb-2">
