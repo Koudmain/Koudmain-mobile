@@ -47,10 +47,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
             : [1],
           bio: getParam('bio'),
           workRadius: parseInt(getParam('radius') || '10', 10),
-          address: getParam('street_name') ? {
-            street_number: getParam('street_number') || undefined,
-            street_name: getParam('street_name') || '',
-            zip_code: getParam('zip_code') || '',
+          address: getParam('streetName') ? {
+            streetNumber: getParam('streetNumber') || undefined,
+            streetName: getParam('streetName') || '',
+            zipCode: getParam('zipCode') || '',
             city: getParam('city') || '',
             country: getParam('country') || 'France',
             latitude: parseFloat(getParam('latitude') || '0'),
@@ -58,16 +58,16 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
           } : undefined,
         } : undefined,
         employerProfile: appContext === 'employer' ? {
-          companyName: getParam('company_name') || 'Entreprise inconnue',
-          companyType: getParam('company_type') || 'Autre',
-          ownerPosition: (getParam('owner_position') as OwnerPosition) || 'OWNER',
+          companyName: getParam('companyName') || 'Entreprise inconnue',
+          companyType: getParam('companyType') || 'Autre',
+          ownerPosition: (getParam('ownerPosition') as OwnerPosition) || 'OWNER',
           desiredJobIds: getParam('desiredJobIds')
             ? getParam('desiredJobIds').split(',').map((id: string) => parseInt(id, 10))
             : [],
-          address: getParam('street_name') ? {
-            street_number: getParam('street_number') || undefined,
-            street_name: getParam('street_name') || '',
-            zip_code: getParam('zip_code') || '',
+          address: getParam('streetName') ? {
+            streetNumber: getParam('streetNumber') || undefined,
+            streetName: getParam('streetName') || '',
+            zipCode: getParam('zipCode') || '',
             city: getParam('city') || '',
             country: getParam('country') || 'France',
             latitude: parseFloat(getParam('latitude') || '0'),

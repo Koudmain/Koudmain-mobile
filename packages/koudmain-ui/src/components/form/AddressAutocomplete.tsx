@@ -3,14 +3,14 @@ import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'rea
 import { Input, InputField, InputSlot } from '../ui';
 
 export type AddressData = {
-  street_number?: string;
-  street_name: string;
-  zip_code: string;
+  streetNumber?: string;
+  streetName: string;
+  zipCode: string;
   city: string;
   country?: string;
   latitude: number;
   longitude: number;
-  display_name: string;
+  displayName: string;
 };
 
 interface AddressAutocompleteProps {
@@ -81,14 +81,14 @@ export function AddressAutocomplete({ onSelect, placeholder = 'Rechercher une ad
     const addressDetails = item.address || {};
 
     const addressData: AddressData = {
-      street_number: addressDetails.house_number || '',
-      street_name: addressDetails.road || addressDetails.pedestrian || '',
-      zip_code: addressDetails.postcode || '',
+      streetNumber: addressDetails.house_number || '',
+      streetName: addressDetails.road || addressDetails.pedestrian || '',
+      zipCode: addressDetails.postcode || '',
       city: addressDetails.city || addressDetails.town || addressDetails.village || '',
       country: addressDetails.country || 'France',
       latitude: parseFloat(item.lat),
       longitude: parseFloat(item.lon),
-      display_name: item.short_name,
+      displayName: item.short_name,
     };
 
     onSelect(addressData);

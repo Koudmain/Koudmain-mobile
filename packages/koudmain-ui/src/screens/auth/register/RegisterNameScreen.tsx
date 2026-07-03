@@ -84,7 +84,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
-        params: { firstName, lastName, phoneNumber, owner_position: ownerPosition },
+        params: { firstName, lastName, phoneNumber, ownerPosition },
       });
     }
   };

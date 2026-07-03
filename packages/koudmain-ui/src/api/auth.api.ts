@@ -20,9 +20,9 @@ export type RegisterData = {
     bio?: string;
     workRadius?: number;
     address?: {
-      street_number?: string;
-      street_name: string;
-      zip_code: string;
+      streetNumber?: string;
+      streetName: string;
+      zipCode: string;
       city: string;
       country?: string;
       latitude?: number;
@@ -35,9 +35,9 @@ export type RegisterData = {
     ownerPosition: OwnerPosition;
     desiredJobIds: number[];
     address?: {
-      street_number?: string;
-      street_name: string;
-      zip_code: string;
+      streetNumber?: string;
+      streetName: string;
+      zipCode: string;
       city: string;
       country?: string;
       latitude?: number;
