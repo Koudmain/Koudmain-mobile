@@ -17,11 +17,22 @@ jobs:
   force-ci:
     name: "Force CI"
     if: github.event_name == 'push' || (github.event.action == 'labeled' && (github.event.label.name == 'force ci' || github.event.label.name == 'to merge'))
-    uses: Koudmain/.github/.github/workflows/orchestrator-ci.yml@main
+    uses: Koudmain/.github/.github/workflows/orchestrator-ci.yml@chore/orchestrator-ci-new-architecture
     permissions:
       pull-requests: write
     with:
       language: "node"
       run-tests: true
       run-precommit: true
+    secrets: inherit
+
+  label-cleanup:
+    name: "Label cleanup"
+    needs: [force-ci]
+    if: always() && (github.event_name == 'push' || (github.event.action == 'labeled' && (github.event.label.name == 'force ci' || github.event.label.name == 'to merge')))
+    uses: Koudmain/.github/.github/workflows/reusable-label-cleanup.yml@chore/orchestrator-ci-new-architecture
+    permissions:
+      pull-requests: write
+    with:
+      ci-failed: ${{ contains(needs.*.result, 'failure') }}
     secrets: inherit
