@@ -31,7 +31,11 @@ interface SharedCalendarProps {
   formatDayEvents: (events: any[], dateString: string) => any[];
 }
 
-export default function SharedCalendar({ events, renderPopUp, formatDayEvents }: SharedCalendarProps) {
+export default function SharedCalendar({
+  events,
+  renderPopUp,
+  formatDayEvents,
+}: SharedCalendarProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [selected, setSelected] = useState('');
@@ -70,8 +74,13 @@ export default function SharedCalendar({ events, renderPopUp, formatDayEvents }:
     let newMonth = currentMonth + monthDelta;
     let newYear = currentYear;
 
-    if (newMonth > 12) { newMonth = 1; newYear += 1; }
-    else if (newMonth < 1) { newMonth = 12; newYear -= 1; }
+    if (newMonth > 12) {
+      newMonth = 1;
+      newYear += 1;
+    } else if (newMonth < 1) {
+      newMonth = 12;
+      newYear -= 1;
+    }
 
     setCurrentMonth(newMonth);
     setCurrentYear(newYear);
@@ -124,9 +133,7 @@ export default function SharedCalendar({ events, renderPopUp, formatDayEvents }:
           setSelected(day.dateString);
           setBottomSheetVisible(true);
           setBottomSheetEvents(
-            markedDatesList.includes(day.dateString)
-              ? formatDayEvents(events, day.dateString)
-              : [],
+            markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
           );
         }}
         markedDates={{
@@ -145,7 +152,10 @@ export default function SharedCalendar({ events, renderPopUp, formatDayEvents }:
 
       {renderPopUp({
         isVisible: isBottomSheetVisible,
-        onClose: () => { setBottomSheetVisible(false); setSelected(''); },
+        onClose: () => {
+          setBottomSheetVisible(false);
+          setSelected('');
+        },
         selectedDate: selected,
         events: bottomSheetEvents,
       })}

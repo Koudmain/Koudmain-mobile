@@ -1,2 +1,2 @@
-export * from './AuthTop'
+export * from './AuthTop';
 export * from './PasswordChecker';

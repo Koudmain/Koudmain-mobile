@@ -1,11 +1,11 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginReact from "eslint-plugin-react";
-import globals from "globals";
-import { config as baseConfig } from "./base.js";
-import pluginUnicorn from "eslint-plugin-unicorn";
+import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import tseslint from 'typescript-eslint';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import pluginReact from 'eslint-plugin-react';
+import globals from 'globals';
+import { config as baseConfig } from './base.js';
+import pluginUnicorn from 'eslint-plugin-unicorn';
 
 /**
  * A custom ESLint configuration for libraries that use React.
@@ -28,34 +28,31 @@ export const config = [
   },
   {
     plugins: {
-      "react-hooks": pluginReactHooks,
+      'react-hooks': pluginReactHooks,
     },
-    settings: { react: { version: "detect" } },
+    settings: { react: { version: 'detect' } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
       // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
+      'react/react-in-jsx-scope': 'off',
     },
   },
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     plugins: { unicorn: pluginUnicorn },
     rules: {
-      "unicorn/filename-case": ["error", { case: "camelCase" }],
+      'unicorn/filename-case': ['error', { case: 'camelCase' }],
     },
   },
   {
-    files: ["**/*.tsx"],
+    files: ['**/*.tsx'],
     plugins: { unicorn: pluginUnicorn },
     rules: {
-      "unicorn/filename-case": [
-        "error",
+      'unicorn/filename-case': [
+        'error',
         {
-          case: "pascalCase",
-          ignore: [
-            "^_layout\\.tsx$",
-            "^\\[.*\\]\\.tsx$"
-          ],
+          case: 'pascalCase',
+          ignore: ['^_layout\\.tsx$', '^\\[.*\\]\\.tsx$'],
         },
       ],
     },
