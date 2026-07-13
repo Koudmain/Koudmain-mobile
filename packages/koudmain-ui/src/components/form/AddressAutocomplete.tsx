@@ -18,7 +18,10 @@ interface AddressAutocompleteProps {
   placeholder?: string;
 }
 
-export function AddressAutocomplete({ onSelect, placeholder = 'Rechercher une adresse...' }: AddressAutocompleteProps) {
+export function AddressAutocomplete({
+  onSelect,
+  placeholder = 'Rechercher une adresse...',
+}: AddressAutocompleteProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +44,7 @@ export function AddressAutocomplete({ onSelect, placeholder = 'Rechercher une ad
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(text)}&format=json&addressdetails=1&limit=5&countrycodes=fr`,
-        { headers: { 'User-Agent': 'KoudmainApp/1.0' } }
+        { headers: { 'User-Agent': 'KoudmainApp/1.0' } },
       );
       const data = await response.json();
 

@@ -9,10 +9,7 @@ interface MessageInputProps {
   placeholder?: string;
 }
 
-export function MessageInput({
-  onSend,
-  placeholder = 'Votre message...',
-}: MessageInputProps) {
+export function MessageInput({ onSend, placeholder = 'Votre message...' }: MessageInputProps) {
   const [value, setValue] = useState('');
   const [isSending, setIsSending] = useState(false);
 

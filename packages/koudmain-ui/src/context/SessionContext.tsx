@@ -36,7 +36,12 @@ interface SessionProviderProps {
   onSessionCleared?: () => Promise<void>;
 }
 
-export function SessionProvider({ children, targetApp, onSessionLoaded, onSessionCleared }: SessionProviderProps) {
+export function SessionProvider({
+  children,
+  targetApp,
+  onSessionLoaded,
+  onSessionCleared,
+}: SessionProviderProps) {
   const [session, setSession] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -119,7 +124,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
     try {
       const response = await authService.verifyEmail(userId, code);
       if (!response?.accessToken || !response?.refreshToken) {
-        throw new Error("Jetons invalides après vérification.");
+        throw new Error('Jetons invalides après vérification.');
       }
 
       const token = response.accessToken;
@@ -137,7 +142,7 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
       }
       return true;
     } catch (error) {
-      console.error("Erreur vérification email:", error);
+      console.error('Erreur vérification email:', error);
       throw error;
     }
   };
@@ -167,7 +172,8 @@ export function SessionProvider({ children, targetApp, onSessionLoaded, onSessio
         await onSessionLoaded(token);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
+      const errorMessage =
+        error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
       console.error('Erreur de connexion détaillée:', errorMessage);
       await clearSession();
       throw error;

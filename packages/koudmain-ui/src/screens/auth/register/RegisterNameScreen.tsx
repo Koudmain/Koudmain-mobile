@@ -1,4 +1,12 @@
-import { View, Text, Pressable, Keyboard, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
@@ -44,14 +52,17 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const isBirthDateValid = appContext === 'worker' ? DATE_REGEX.test(birthDate) : true;
   const isFormValid = isFirstNameValid && isLastNameValid && isPhoneNumberValid && isBirthDateValid;
 
-  const isPhoneEmpty = !phoneNumber || COUNTRIES.some(c => phoneNumber === c.callingCode);
+  const isPhoneEmpty = !phoneNumber || COUNTRIES.some((c) => phoneNumber === c.callingCode);
 
   const firstNameValidationState =
     firstName.length === 0 ? 'default' : isFirstNameValid ? 'success' : 'error';
   const lastNameValidationState =
     lastName.length === 0 ? 'default' : isLastNameValid ? 'success' : 'error';
-  const phoneNumberValidationState =
-    isPhoneEmpty ? 'default' : isPhoneNumberValid ? 'success' : 'error';
+  const phoneNumberValidationState = isPhoneEmpty
+    ? 'default'
+    : isPhoneNumberValid
+      ? 'success'
+      : 'error';
   const birthDateValidationState =
     birthDate.length === 0 ? 'default' : isBirthDateValid ? 'success' : 'error';
 
@@ -108,100 +119,110 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
                   <Text className="text-primary dark:text-white text-4xl font-bold px-2">
                     Créer un compte
                   </Text>
-              <Text className="text-gray-500 dark:text-white mb-6">
-                Renseignez votre nom et prénom pour commencer la création de votre compte.
-              </Text>
-              <LabeledUnderlinedInput
-                label="Prénom"
-                placeholder="John"
-                type="text"
-                value={firstName}
-                validationState={firstNameValidationState}
-                onChangeText={(value: string) => {
-                  setFirstName(value);
-                }}
-              />
-              <LabeledUnderlinedInput
-                label="Nom"
-                placeholder="Doe"
-                type="text"
-                value={lastName}
-                validationState={lastNameValidationState}
-                onChangeText={(value: string) => {
-                  setLastName(value);
-                }}
-              />
-              <PhoneInput
-                label="Numéro de téléphone"
-                value={phoneNumber}
-                validationState={phoneNumberValidationState}
-                onChangeText={(value: string) => {
-                  setPhoneNumber(value);
-                }}
-              />
-              {appContext === 'worker' && (
-                <LabeledUnderlinedInput
-                  label="Date de naissance"
-                  placeholder="JJ/MM/AAAA"
-                  type="text"
-                  keyboardType="numeric"
-                  value={birthDate}
-                  validationState={birthDateValidationState}
-                  onChangeText={handleBirthDateChange}
-                />
-              )}
-              {appContext === 'employer' && (
-                <View className="mt-2">
-                  <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-5">
-                    Votre fonction
+                  <Text className="text-gray-500 dark:text-white mb-6">
+                    Renseignez votre nom et prénom pour commencer la création de votre compte.
                   </Text>
-                  <Select
-                    selectedValue={ownerPosition}
-                    onValueChange={(value) => setOwnerPosition(value)}
-                  >
-                    <SelectTrigger variant="outline" size="xl" className="justify-between w-full">
-                      <SelectInput placeholder="Sélectionnez votre fonction" className="flex-1" />
-                      <SelectIcon className="mr-3" as={ChevronDownIcon} />
-                    </SelectTrigger>
-                    <SelectPortal>
-                      <SelectBackdrop />
-                      <SelectContent>
-                        <SelectDragIndicatorWrapper>
-                          <SelectDragIndicator />
-                        </SelectDragIndicatorWrapper>
-                        <SelectItem label="Propriétaire" value="OWNER" />
-                        <SelectItem label="Directeur" value="DIRECTOR" />
-                        <SelectItem label="Manager" value="MANAGER" />
-                        <SelectItem label="RH" value="HR" />
-                        <SelectItem label="Autre" value="OTHER" />
-                      </SelectContent>
-                    </SelectPortal>
-                  </Select>
+                  <LabeledUnderlinedInput
+                    label="Prénom"
+                    placeholder="John"
+                    type="text"
+                    value={firstName}
+                    validationState={firstNameValidationState}
+                    onChangeText={(value: string) => {
+                      setFirstName(value);
+                    }}
+                  />
+                  <LabeledUnderlinedInput
+                    label="Nom"
+                    placeholder="Doe"
+                    type="text"
+                    value={lastName}
+                    validationState={lastNameValidationState}
+                    onChangeText={(value: string) => {
+                      setLastName(value);
+                    }}
+                  />
+                  <PhoneInput
+                    label="Numéro de téléphone"
+                    value={phoneNumber}
+                    validationState={phoneNumberValidationState}
+                    onChangeText={(value: string) => {
+                      setPhoneNumber(value);
+                    }}
+                  />
+                  {appContext === 'worker' && (
+                    <LabeledUnderlinedInput
+                      label="Date de naissance"
+                      placeholder="JJ/MM/AAAA"
+                      type="text"
+                      keyboardType="numeric"
+                      value={birthDate}
+                      validationState={birthDateValidationState}
+                      onChangeText={handleBirthDateChange}
+                    />
+                  )}
+                  {appContext === 'employer' && (
+                    <View className="mt-2">
+                      <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-5">
+                        Votre fonction
+                      </Text>
+                      <Select
+                        selectedValue={ownerPosition}
+                        onValueChange={(value) => setOwnerPosition(value)}
+                      >
+                        <SelectTrigger
+                          variant="outline"
+                          size="xl"
+                          className="justify-between w-full"
+                        >
+                          <SelectInput
+                            placeholder="Sélectionnez votre fonction"
+                            className="flex-1"
+                          />
+                          <SelectIcon className="mr-3" as={ChevronDownIcon} />
+                        </SelectTrigger>
+                        <SelectPortal>
+                          <SelectBackdrop />
+                          <SelectContent>
+                            <SelectDragIndicatorWrapper>
+                              <SelectDragIndicator />
+                            </SelectDragIndicatorWrapper>
+                            <SelectItem label="Propriétaire" value="OWNER" />
+                            <SelectItem label="Directeur" value="DIRECTOR" />
+                            <SelectItem label="Manager" value="MANAGER" />
+                            <SelectItem label="RH" value="HR" />
+                            <SelectItem label="Autre" value="OTHER" />
+                          </SelectContent>
+                        </SelectPortal>
+                      </Select>
+                    </View>
+                  )}
                 </View>
-              )}
-            </View>
-            <View className="mt-10">
-              <Button
-                label="Continuer"
-                variant={isFormValid ? 'primary' : 'muted'}
-                className="mx-2"
-                disabled={!isFormValid}
-                onPress={handleContinue}
-              />
-              <Text className="text-gray-400 my-4 mx-2">
-                En créant un compte, j&apos;accepte les
-                <Text className="text-secondary-400 font-bold">
-                  {' '}
-                  conditions d&apos;utilisation{' '}
-                </Text>
-                et la
-                <Text className="text-secondary-400 font-bold"> politique de confidentialité </Text>
-                de Koudmain.
-              </Text>
-            </View>
-          </VStack>
-        </FormControl>
-      </Pressable>
+                <View className="mt-10">
+                  <Button
+                    label="Continuer"
+                    variant={isFormValid ? 'primary' : 'muted'}
+                    className="mx-2"
+                    disabled={!isFormValid}
+                    onPress={handleContinue}
+                  />
+                  <Text className="text-gray-400 my-4 mx-2">
+                    En créant un compte, j&apos;accepte les
+                    <Text className="text-secondary-400 font-bold">
+                      {' '}
+                      conditions d&apos;utilisation{' '}
+                    </Text>
+                    et la
+                    <Text className="text-secondary-400 font-bold">
+                      {' '}
+                      politique de confidentialité{' '}
+                    </Text>
+                    de Koudmain.
+                  </Text>
+                </View>
+              </VStack>
+            </FormControl>
+          </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>
     </View>

@@ -1,8 +1,15 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Input, InputField } from '../ui';
-import { AsYouType, CountryCode, getCountries, getCountryCallingCode, parsePhoneNumberFromString, getExampleNumber } from 'libphonenumber-js';
-import examples from 'libphonenumber-js/mobile/examples'
+import {
+  AsYouType,
+  CountryCode,
+  getCountries,
+  getCountryCallingCode,
+  parsePhoneNumberFromString,
+  getExampleNumber,
+} from 'libphonenumber-js';
+import examples from 'libphonenumber-js/mobile/examples';
 import {
   Select,
   SelectTrigger,
@@ -116,7 +123,9 @@ export function PhoneInput({
   }
 
   const exampleNumber = getExampleNumber(activeCountry, examples);
-  const dynamicPlaceholder = exampleNumber ? exampleNumber.formatNational() : fieldProps.placeholder || '';
+  const dynamicPlaceholder = exampleNumber
+    ? exampleNumber.formatNational()
+    : fieldProps.placeholder || '';
 
   const handleChangeText = (text: string) => {
     const cleaned = text.replace(/[^\d]/g, '');
@@ -149,13 +158,12 @@ export function PhoneInput({
 
   return (
     <View className={containerClassName}>
-      <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-1">{label}</Text>
+      <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-1">
+        {label}
+      </Text>
       <View className="flex-row items-end gap-3 h-12">
         <View className="w-[110px]">
-          <Select
-            selectedValue={activeCountry}
-            onValueChange={handleCountryChange}
-          >
+          <Select selectedValue={activeCountry} onValueChange={handleCountryChange}>
             <SelectTrigger
               variant="underlined"
               size="xl"

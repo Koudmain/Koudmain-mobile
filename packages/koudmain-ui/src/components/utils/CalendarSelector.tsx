@@ -76,7 +76,7 @@ export default function CalendarSelector({
   };
 
   const getMarkedDates = () => {
-    let marked: Record<string, any> = {};
+    const marked: Record<string, any> = {};
 
     if (startDate) {
       marked[startDate] = {
@@ -93,8 +93,8 @@ export default function CalendarSelector({
         textColor: 'white',
       };
 
-      let start = new Date(startDate!);
-      let end = new Date(endDate);
+      const start = new Date(startDate!);
+      const end = new Date(endDate);
 
       while (start < end) {
         start.setDate(start.getDate() + 1);

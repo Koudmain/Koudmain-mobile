@@ -1,5 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, Pressable, Keyboard, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
@@ -60,7 +69,7 @@ export function RegisterVerificationCodeScreen() {
         router.replace('/');
       }
     } catch (err: any) {
-      Alert.alert("Erreur", err.message || "Code invalide. Veuillez réessayer.");
+      Alert.alert('Erreur', err.message || 'Code invalide. Veuillez réessayer.');
     } finally {
       setIsVerifying(false);
     }
@@ -70,14 +79,14 @@ export function RegisterVerificationCodeScreen() {
     if (!userId) return;
     try {
       const res = await authService.resendVerification(parseInt(userId, 10));
-      Alert.alert("Code envoyé", res.message || "Code renvoyé !");
+      Alert.alert('Code envoyé', res.message || 'Code renvoyé !');
     } catch (err: any) {
-      Alert.alert("Erreur", err.message || "Erreur lors du renvoi du code.");
+      Alert.alert('Erreur', err.message || 'Erreur lors du renvoi du code.');
     }
   };
 
   return (
-    <View className='flex-1 bg-white dark:bg-primary'>
+    <View className="flex-1 bg-white dark:bg-primary">
       <AuthTop title="Inscription" />
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <FormControl className="flex-1">
@@ -87,7 +96,8 @@ export function RegisterVerificationCodeScreen() {
                 Code à 6 chiffres
               </Text>
               <Text className="text-gray-400 dark:text-gray-300 mb-8 px-1">
-                Code envoyé à l'adresse <Text className="font-bold text-secondary">{email || 'votre email'}</Text>
+                Code envoyé à l'adresse{' '}
+                <Text className="font-bold text-secondary">{email || 'votre email'}</Text>
               </Text>
 
               <View className="flex-row items-center justify-center gap-2 mt-20">
@@ -99,7 +109,9 @@ export function RegisterVerificationCodeScreen() {
                       }`}
                     >
                       <TextInput
-                        ref={(ref) => { inputRefs.current[index] = ref; }}
+                        ref={(ref) => {
+                          inputRefs.current[index] = ref;
+                        }}
                         className="text-2xl font-semibold text-primary dark:text-white text-center w-full h-full"
                         keyboardType="number-pad"
                         maxLength={1}
