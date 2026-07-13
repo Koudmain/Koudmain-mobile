@@ -102,8 +102,8 @@ export const useCalendarEvents = (
           const allEvents = [...prevEvents, ...fetchedEvents];
           const uniqueEventsMap = new Map<string, PlanningApiEvent>();
           allEvents.forEach((evt) => {
-            const key = evt.publication_id
-              ? `${evt.publication_id}-${evt.starting_date}`
+            const key = evt.publicationId
+              ? `${evt.publicationId}-${evt.starting_date}`
               : JSON.stringify(evt);
             uniqueEventsMap.set(key, evt);
           });

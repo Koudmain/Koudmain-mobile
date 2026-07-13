@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { SvgProps } from 'react-native-svg';
 
-import LabeledUnderlinedInput from '../../components/form/LabeledUnderlinedInput';
-import { VStack, FormControl, Button, Divider } from '../../components/ui/index';
-import { AuthTop } from '../../components/auth/AuthTop';
-import { useSession } from '../../context/SessionContext';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { VStack, FormControl, Button, Divider } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -48,6 +48,9 @@ export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
               type="text"
               value={email}
               validationState={emailValidationState}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              autoCorrect={false}
               onChangeText={(value: string) => {
                 setEmail(value);
                 setSigninFailed(false);
@@ -87,12 +90,12 @@ export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
               variant="outline"
               className="mx-2"
               onPress={() => {
-                router.push('/auth/register/RegisterEmail');
+                router.push('/auth/register/RegisterName');
               }}
             />
             <View className="flex-row items-center justify-center gap-2 mt-10">
               <Text className="text-gray-400">Vous n&apos;avez pas de compte ?</Text>
-              <TouchableOpacity onPress={() => router.push('/auth/register/RegisterEmail')}>
+              <TouchableOpacity onPress={() => router.push('/auth/register/RegisterName')}>
                 <Text className="text-secondary-400 font-bold">S&apos;inscrire</Text>
               </TouchableOpacity>
             </View>

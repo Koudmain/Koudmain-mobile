@@ -54,7 +54,7 @@ export default function Messaging() {
     const cleanQuery = normalizeText(searchText.trim());
     const tokens = cleanQuery.length > 0 ? cleanQuery.split(/\s+/) : [];
     const filtered = conversations.filter((conv) => {
-      if (selectedPubId && conv.publication_id !== selectedPubId) {
+      if (selectedPubId && conv.publicationId !== selectedPubId) {
         return false;
       }
 
@@ -132,7 +132,7 @@ export default function Messaging() {
             }}
           />
         )}
-        ListFooterComponent={<View style={{ height: 100 }} />}
+        ListFooterComponent={<View className="h-[100px]" />}
         ListEmptyComponent={
           <View className="items-center mt-20 px-10">
             <Text className="text-neutral-500 text-center">

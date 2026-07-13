@@ -12,13 +12,13 @@ export interface PlanningEvent {
 }
 
 export interface PlanningApiEvent {
-  publication_id: number;
+  publicationId: number;
   starting_date: string;
   ending_date: string | null;
   title: string;
   salary: string;
   worker_name: string;
   worker_profile_picture: string | null;
-  worker_rating: number;
-  worker_rating_count: number;
+  workerRating: number;
+  workerRatingCount: number;
 }

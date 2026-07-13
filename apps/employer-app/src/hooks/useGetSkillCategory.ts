@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { SkillCategory } from '@/types/skill-category';
-import { getSkillCategoryAsync } from '@/api/skillCategory.api';
+import { SkillCategory, getSkillCategoryAsync } from '@koudmain/ui/api';
 
 interface UseGetSkillCategoryReturn {
   mutate_skill_category: () => Promise<SkillCategory[] | null>;

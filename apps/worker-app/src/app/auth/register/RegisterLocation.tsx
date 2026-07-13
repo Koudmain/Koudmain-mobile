@@ -1,0 +1,168 @@
+import { View, Text, Pressable, Keyboard, ScrollView, useColorScheme } from 'react-native';
+import { useState } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
+import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import Slider from '@react-native-community/slider';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
+
+import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/AddressAutocomplete';
+import { colors } from '@koudmain/ui/constants/theme';
+
+export default function RegisterLocation() {
+  const params = useLocalSearchParams<{
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+    birthDate: string;
+    selectedJobs: string;
+    bio: string;
+  }>();
+
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const currentMapStyle = isDark ? darkMapStyle : lightMapStyle;
+
+  const secondaryBase = colors.secondary.DEFAULT;
+  const circleFillColor = secondaryBase.replace('hsl', 'hsla').replace(')', ', 0.4)');
+  const circleStrokeColor = secondaryBase.replace('hsl', 'hsla').replace(')', ', 0.6)');
+
+  const [addressData, setAddressData] = useState<AddressData | null>(null);
+  const [radius, setRadius] = useState(10);
+  // Lyon coordinates by default
+  const [region, setRegion] = useState({
+    latitude: 45.758,
+    longitude: 4.832,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  });
+
+  const { isLoading } = useSession();
+  const [registerFailed] = useState(false);
+
+  const isFormValid = addressData !== null;
+
+  const handleRegister = async () => {
+    router.push({
+      pathname: '/auth/register/RegisterEmail',
+      params: {
+        firstName: params.firstName,
+        lastName: params.lastName,
+        phoneNumber: params.phoneNumber,
+        birthDate: params.birthDate,
+        selectedJobs: params.selectedJobs,
+        bio: params.bio,
+        radius: radius.toString(),
+        streetNumber: addressData?.streetNumber || '',
+        streetName: addressData?.streetName || '',
+        zipCode: addressData?.zipCode || '',
+        city: addressData?.city || '',
+        country: addressData?.country || 'France',
+        latitude: addressData?.latitude?.toString() || '',
+        longitude: addressData?.longitude?.toString() || '',
+      },
+    });
+  };
+
+  const computedDelta = Math.max(0.01, radius * 0.02);
+
+  return (
+    <View className="flex-1 bg-white dark:bg-primary h-full">
+      <AuthTop title="Inscription" />
+      <Pressable onPress={Keyboard.dismiss} className="flex-1">
+        <FormControl className="flex-1">
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+            <VStack className="flex flex-col justify-between h-full pb-10 px-3">
+              <View className="mt-6 px-5">
+                <Text className="text-primary dark:text-white text-3xl font-bold mb-2">
+                  Où souhaitez-vous travailler ?
+                </Text>
+                <AddressAutocomplete
+                  onSelect={(addr) => {
+                    setAddressData(addr);
+                    setRegion({
+                      ...region,
+                      latitude: addr.latitude,
+                      longitude: addr.longitude,
+                    });
+                  }}
+                />
+
+                <View className="mt-4">
+                  <View className="flex-row items-center justify-between">
+                    <Text className="text-primary dark:text-white font-semibold">
+                      Rayon de déplacement :
+                    </Text>
+                    <Text className="text-secondary-500 font-bold">{radius} km</Text>
+                  </View>
+                </View>
+
+                <Slider
+                  style={{ width: '100%', height: 40 }}
+                  minimumValue={1}
+                  maximumValue={50}
+                  step={1}
+                  value={radius}
+                  onValueChange={setRadius}
+                  minimumTrackTintColor={colors.secondary.DEFAULT}
+                  maximumTrackTintColor={isDark ? colors.primary[600] : colors.neutral[200]}
+                  thumbTintColor={colors.secondary.DEFAULT}
+                />
+
+                <View className="flex-row items-center justify-between mt-1 mb-6">
+                  <Text className="text-primary dark:text-white font-semibold">1 km</Text>
+                  <Text className="text-primary dark:text-white font-semibold">25 km</Text>
+                  <Text className="text-primary dark:text-white font-semibold">50 km</Text>
+                </View>
+
+                <View className="mt-4 border border-gray-200 dark:border-gray-700 h-[350px] rounded-2xl overflow-hidden">
+                  <MapView
+                    provider={PROVIDER_GOOGLE}
+                    customMapStyle={currentMapStyle}
+                    style={{ flex: 1 }}
+                    region={{
+                      ...region,
+                      latitudeDelta: computedDelta,
+                      longitudeDelta: computedDelta,
+                    }}
+                    scrollEnabled={false}
+                    zoomEnabled={false}
+                    pitchEnabled={false}
+                    rotateEnabled={false}
+                  >
+                    <Marker coordinate={region} />
+                    <Circle
+                      center={region}
+                      radius={radius * 1000}
+                      fillColor={circleFillColor}
+                      strokeColor={circleStrokeColor}
+                    />
+                  </MapView>
+                </View>
+              </View>
+
+              <View className="mt-10">
+                <Button
+                  label={isLoading ? 'Inscription...' : 'Terminer'}
+                  variant={isFormValid && !isLoading ? 'primary' : 'muted'}
+                  className="mx-2"
+                  disabled={!isFormValid || isLoading}
+                  onPress={handleRegister}
+                />
+                {registerFailed && (
+                  <Text className="text-red-500 text-center mt-4 mx-2">
+                    Échec de l'inscription. Merci de réessayer.
+                  </Text>
+                )}
+              </View>
+            </VStack>
+          </ScrollView>
+        </FormControl>
+      </Pressable>
+    </View>
+  );
+}

@@ -1,17 +1,25 @@
-import { View, Text, Pressable, Keyboard } from 'react-native';
+import { View, Text, Pressable, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
-import LabeledUnderlinedInput from '../../../components/form/LabeledUnderlinedInput';
-import { VStack, FormControl, Button } from '../../../components/ui/index';
-import { AuthTop } from '../../../components/auth/AuthTop';
-import { PasswordChecker, isPasswordValid } from '../../../components/auth/PasswordChecker';
+import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
+import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
+import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { PasswordChecker, isPasswordValid } from '@koudmain/ui/components/auth/PasswordChecker';
 
-export function RegisterPasswordScreen() {
-  const { email: emailParam } = useLocalSearchParams<{ email?: string | string[] }>();
-  const email = Array.isArray(emailParam) ? (emailParam[0] ?? '') : (emailParam ?? '');
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { OwnerPosition } from '@koudmain/ui/api';
+
+type RegisterPasswordScreenProps = {
+  appContext: 'employer' | 'worker';
+};
+
+export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenProps) {
+  const params = useLocalSearchParams<Record<string, string | string[]>>();
+  const email = Array.isArray(params.email) ? (params.email[0] ?? '') : (params.email ?? '');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { register, isLoading } = useSession();
 
   const isPasswordStrong = isPasswordValid(password);
   const doPasswordsMatch = password.length > 0 && password === confirmPassword;
@@ -20,6 +28,82 @@ export function RegisterPasswordScreen() {
     password.length === 0 ? 'default' : isPasswordStrong ? 'success' : 'error';
   const confirmPasswordValidationState =
     confirmPassword.length === 0 ? 'default' : doPasswordsMatch ? 'success' : 'error';
+
+  const handleRegister = async () => {
+    try {
+      const getParam = (key: string) =>
+        Array.isArray(params[key]) ? params[key][0] : (params[key] as string);
+
+      const userId = await register({
+        email,
+        password,
+        firstName: getParam('firstName'),
+        lastName: getParam('lastName'),
+        phoneNumber: getParam('phoneNumber'),
+        birthDate: getParam('birthDate'),
+        role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
+        workerProfile:
+          appContext === 'worker'
+            ? {
+                skillCategoryIds: getParam('selectedJobs')
+                  ? getParam('selectedJobs')
+                      .split(',')
+                      .map((id: string) => parseInt(id, 10))
+                  : [1],
+                bio: getParam('bio'),
+                workRadius: parseInt(getParam('radius') || '10', 10),
+                address: getParam('streetName')
+                  ? {
+                      streetNumber: getParam('streetNumber') || undefined,
+                      streetName: getParam('streetName') || '',
+                      zipCode: getParam('zipCode') || '',
+                      city: getParam('city') || '',
+                      country: getParam('country') || 'France',
+                      latitude: parseFloat(getParam('latitude') || '0'),
+                      longitude: parseFloat(getParam('longitude') || '0'),
+                    }
+                  : undefined,
+              }
+            : undefined,
+        employerProfile:
+          appContext === 'employer'
+            ? {
+                companyName: getParam('companyName') || 'Entreprise inconnue',
+                companyType: getParam('companyType') || 'Autre',
+                ownerPosition: (getParam('ownerPosition') as OwnerPosition) || 'OWNER',
+                desiredJobIds: getParam('desiredJobIds')
+                  ? getParam('desiredJobIds')
+                      .split(',')
+                      .map((id: string) => parseInt(id, 10))
+                  : [],
+                address: getParam('streetName')
+                  ? {
+                      streetNumber: getParam('streetNumber') || undefined,
+                      streetName: getParam('streetName') || '',
+                      zipCode: getParam('zipCode') || '',
+                      city: getParam('city') || '',
+                      country: getParam('country') || 'France',
+                      latitude: parseFloat(getParam('latitude') || '0'),
+                      longitude: parseFloat(getParam('longitude') || '0'),
+                    }
+                  : undefined,
+              }
+            : undefined,
+      });
+
+      if (userId) {
+        router.push({
+          pathname: '/auth/register/RegisterVerificationCode',
+          params: { userId: userId.toString(), email },
+        });
+        return;
+      }
+      Alert.alert('Erreur', "Échec de l'inscription. Merci de réessayer.");
+    } catch (error: any) {
+      console.error('Registration failed:', error);
+      Alert.alert('Erreur', error?.message || "Échec de l'inscription. Merci de réessayer.");
+    }
+  };
 
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">
@@ -52,16 +136,11 @@ export function RegisterPasswordScreen() {
             </View>
             <View className="mt-10">
               <Button
-                label="Continuer"
-                variant={isFormValid ? 'primary' : 'muted'}
+                label={isLoading ? 'Inscription...' : 'Terminer'}
+                variant={isFormValid && !isLoading ? 'primary' : 'muted'}
                 className="mx-2"
-                disabled={!isFormValid}
-                onPress={() =>
-                  router.push({
-                    pathname: '/auth/register/RegisterName',
-                    params: { email, password },
-                  })
-                }
+                disabled={!isFormValid || isLoading}
+                onPress={handleRegister}
               />
               <Text className="text-gray-400 my-4 mx-2">
                 En créant un compte, j&apos;accepte les

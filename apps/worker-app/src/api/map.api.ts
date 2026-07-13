@@ -10,7 +10,7 @@ export const mapService = {
     maxLng: number,
   ) => {
     return apiFetch<PublicationMap[]>(
-      `/address/map?min_lat=${minLat}&max_lat=${maxLat}&min_lng=${minLng}&max_lng=${maxLng}`,
+      `/address/map?minLat=${minLat}&maxLat=${maxLat}&minLng=${minLng}&maxLng=${maxLng}`,
       {
         method: 'GET',
         token: token ?? undefined,

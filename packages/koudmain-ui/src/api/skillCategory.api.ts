@@ -1,6 +1,19 @@
 import { apiFetch } from '@koudmain/ui/utils/api';
 import * as SecureStore from 'expo-secure-store';
-import { SkillCategory } from '@/types/skill-category';
+
+export interface SkillCategory {
+  id: number;
+  name: string;
+}
+
+export const skillCategoryService = {
+  getAll: async () => {
+    return apiFetch<SkillCategory[]>('/skill-category/get', {
+      method: 'GET',
+      skipAuthRefresh: true,
+    });
+  },
+};
 
 export const getSkillCategoryAsync = async (signal?: AbortSignal): Promise<SkillCategory[]> => {
   try {

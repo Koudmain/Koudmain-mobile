@@ -49,7 +49,13 @@ export default function CompetenceCardSelectable({
             }
           }}
         >
-          <Text style={{ color: isSelected ? 'white' : textColor, fontSize: sizeStyle.fontSize }}>
+          <Text
+            className={isSelected ? 'text-white' : 'text-primary dark:text-white'}
+            style={{
+              fontSize: sizeStyle.fontSize,
+              ...(textColor !== 'black' && !isSelected ? { color: textColor } : {}),
+            }}
+          >
             {comp}
           </Text>
         </TouchableOpacity>

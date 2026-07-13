@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import * as SecureStore from 'expo-secure-store';
 import { User } from '../types/user';
 import { userService } from '../api/user.api';
-import { authService } from '../api/auth.api';
+import { authService, RegisterData } from '../api/auth.api';
 import { configureAuthRefresh } from '../utils/api';
 
 const ACCESS_TOKEN_KEY = 'session';
@@ -10,14 +10,8 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
-  register: (data: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    isWorkerActive?: boolean;
-    isEmployerActive?: boolean;
-  }) => Promise<boolean>;
+  register: (data: RegisterData) => Promise<number>;
+  verifyEmail: (userId: number, code: string) => Promise<boolean>;
   signOut: () => Promise<void>;
   session: string | null;
   isLoading: boolean;
@@ -116,19 +110,39 @@ export function SessionProvider({
     }
   };
 
-  const register = async (data: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    isWorkerActive?: boolean;
-    isEmployerActive?: boolean;
-  }) => {
+  const register = async (data: RegisterData) => {
     try {
-      await authService.register(data);
-      return true;
+      const res = await authService.register(data);
+      return res.userId;
     } catch (error) {
       console.error("Erreur d'inscription:", error);
+      throw error;
+    }
+  };
+
+  const verifyEmail = async (userId: number, code: string) => {
+    try {
+      const response = await authService.verifyEmail(userId, code);
+      if (!response?.accessToken || !response?.refreshToken) {
+        throw new Error('Jetons invalides après vérification.');
+      }
+
+      const token = response.accessToken;
+      const refreshToken = response.refreshToken;
+
+      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
+      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+      setSession(token);
+
+      const userData = await userService.getMe(token);
+      setUser(userData);
+
+      if (onSessionLoaded) {
+        await onSessionLoaded(token);
+      }
+      return true;
+    } catch (error) {
+      console.error('Erreur vérification email:', error);
       throw error;
     }
   };
@@ -137,15 +151,15 @@ export function SessionProvider({
     try {
       const response = await authService.login(email, password, targetApp);
 
-      if (!response?.access_token || typeof response.access_token !== 'string') {
+      if (!response?.accessToken || typeof response.accessToken !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
       }
-      if (!response?.refresh_token || typeof response.refresh_token !== 'string') {
+      if (!response?.refreshToken || typeof response.refreshToken !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de refresh token valide.");
       }
 
-      const token = response.access_token;
-      const refreshToken = response.refresh_token;
+      const token = response.accessToken;
+      const refreshToken = response.refreshToken;
 
       await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
       await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
@@ -180,7 +194,7 @@ export function SessionProvider({
 
   return (
     <AuthContext.Provider
-      value={{ register, signIn, signOut, session, user, isLoading, refreshUser }}
+      value={{ register, verifyEmail, signIn, signOut, session, user, isLoading, refreshUser }}
     >
       {children}
     </AuthContext.Provider>

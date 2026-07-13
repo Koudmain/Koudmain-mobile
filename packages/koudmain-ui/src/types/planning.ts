@@ -15,15 +15,15 @@ export interface PlanningEvent {
 }
 
 export interface PlanningApiEvent {
-  publication_id: number;
+  publicationId: number;
   starting_date: string;
   ending_date: string | null;
   title: string;
   salary: string;
   company_name: string;
   company_logo: string | null;
-  company_rating: number;
-  company_rating_count: number;
+  companyRating: number;
+  companyRatingCount: number;
   application_status: string;
   city: string;
   zip: string;
