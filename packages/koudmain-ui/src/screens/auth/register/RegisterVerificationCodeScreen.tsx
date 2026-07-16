@@ -34,17 +34,18 @@ export function RegisterVerificationCodeScreen() {
   const handleCodeChange = (text: string, index: number) => {
     const numericText = text.replace(/[^0-9]/g, '');
 
-    if (numericText.length === 6 && index === 0) {
-      setCode(numericText.split(''));
+    if (numericText.length >= 6) {
+      setCode(numericText.slice(0, 6).split(''));
       Keyboard.dismiss();
       return;
     }
 
+    const newChar = numericText.length > 0 ? numericText.slice(-1) : '';
     const newCode = [...code];
-    newCode[index] = numericText.substring(0, 1);
+    newCode[index] = newChar;
     setCode(newCode);
 
-    if (numericText.length === 1 && index < 5) {
+    if (newChar.length === 1 && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -115,7 +116,7 @@ export function RegisterVerificationCodeScreen() {
                         }}
                         className="text-2xl font-semibold text-primary dark:text-white text-center w-full h-full"
                         keyboardType="number-pad"
-                        maxLength={1}
+                        maxLength={6}
                         value={digit}
                         onChangeText={(text) => handleCodeChange(text, index)}
                         onKeyPress={(e) => handleKeyPress(e, index)}
