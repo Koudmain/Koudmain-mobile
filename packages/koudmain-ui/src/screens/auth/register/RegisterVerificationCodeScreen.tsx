@@ -5,9 +5,8 @@ import {
   TextInput,
   Pressable,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   Alert,
+  TextInputKeyPressEvent,
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { FormControl, Button } from '@koudmain/ui/components/ui/index';
@@ -28,7 +27,7 @@ export function RegisterVerificationCodeScreen() {
   const [isVerifying, setIsVerifying] = useState(false);
 
   const { verifyEmail } = useSession();
-  const inputRefs = useRef<Array<TextInput | null>>([]);
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
   const isCodeComplete = code.every((digit) => digit.length === 1);
 
@@ -50,7 +49,7 @@ export function RegisterVerificationCodeScreen() {
     }
   };
 
-  const handleKeyPress = (e: any, index: number) => {
+  const handleKeyPress = (e: TextInputKeyPressEvent, index: number) => {
     if (e.nativeEvent.key === 'Backspace' && code[index] === '' && index > 0) {
       inputRefs.current[index - 1]?.focus();
       const newCode = [...code];
@@ -68,7 +67,8 @@ export function RegisterVerificationCodeScreen() {
       if (success) {
         router.replace('/');
       }
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       Alert.alert('Erreur', err.message || 'Code invalide. Veuillez réessayer.');
     } finally {
       setIsVerifying(false);
@@ -80,7 +80,8 @@ export function RegisterVerificationCodeScreen() {
     try {
       const res = await authService.resendVerification(parseInt(userId, 10));
       Alert.alert('Code envoyé', res.message || 'Code renvoyé !');
-    } catch (err: any) {
+    } catch (error) {
+      const err = error as Error;
       Alert.alert('Erreur', err.message || 'Erreur lors du renvoi du code.');
     }
   };

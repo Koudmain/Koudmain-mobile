@@ -2,19 +2,19 @@ import { useState, useCallback, useRef } from 'react';
 import { SkillCategory, getSkillCategoryAsync } from '@koudmain/ui/api';
 
 interface UseGetSkillCategoryReturn {
-  mutate_skill_category: () => Promise<SkillCategory[] | null>;
-  skills_skill_category: SkillCategory[];
-  isLoading_skill_category: boolean;
-  error_skill_category: string | null;
+  mutateSkillCategory: () => Promise<SkillCategory[] | null>;
+  skillsSkillCategory: SkillCategory[];
+  isLoadingSkillCategory: boolean;
+  errorSkillCategory: string | null;
 }
 
 export const useGetSkillCategory = (): UseGetSkillCategoryReturn => {
-  const [isLoading_skill_category, setIsLoading_skill_category] = useState(false);
-  const [error_skill_category, setError_skill_category] = useState<string | null>(null);
-  const [skills_skill_category, setSkills_skill_category] = useState<SkillCategory[]>([]);
+  const [isLoadingSkillCategory, setIsLoadingSkillCategory] = useState(false);
+  const [errorSkillCategory, setErrorSkillCategory] = useState<string | null>(null);
+  const [skillsSkillCategory, setSkillsSkillCategory] = useState<SkillCategory[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const mutate_skill_category = useCallback(async () => {
+  const mutateSkillCategory = useCallback(async () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -22,12 +22,12 @@ export const useGetSkillCategory = (): UseGetSkillCategoryReturn => {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    setIsLoading_skill_category(true);
-    setError_skill_category(null);
+    setIsLoadingSkillCategory(true);
+    setErrorSkillCategory(null);
 
     try {
       const data = await getSkillCategoryAsync(controller.signal);
-      setSkills_skill_category(data);
+      setSkillsSkillCategory(data);
       return data;
     } catch (err: unknown) {
       if (err instanceof Error && err.name === 'AbortError') {
@@ -39,12 +39,12 @@ export const useGetSkillCategory = (): UseGetSkillCategoryReturn => {
         err instanceof Error
           ? err.message
           : 'Une erreur est survenue lors de la récupération des catégories de compétences.';
-      setError_skill_category(errorMessage);
+      setErrorSkillCategory(errorMessage);
 
       console.error('Erreur lors de la récupération des catégories de compétences:', err);
       return null;
     } finally {
-      setIsLoading_skill_category(false);
+      setIsLoadingSkillCategory(false);
       if (abortControllerRef.current === controller) {
         abortControllerRef.current = null;
       }
@@ -52,9 +52,9 @@ export const useGetSkillCategory = (): UseGetSkillCategoryReturn => {
   }, []);
 
   return {
-    mutate_skill_category,
-    skills_skill_category,
-    isLoading_skill_category,
-    error_skill_category,
+    mutateSkillCategory,
+    skillsSkillCategory,
+    isLoadingSkillCategory,
+    errorSkillCategory,
   };
 };

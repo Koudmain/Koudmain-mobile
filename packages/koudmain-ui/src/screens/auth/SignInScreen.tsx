@@ -11,10 +11,10 @@ import { useSession } from '@koudmain/ui/context/SessionContext';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 type SignInScreenProps = {
-  GoogleIcon?: React.FC<SvgProps>;
+  googleIcon?: React.FC<SvgProps>;
 };
 
-export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
+export function SignInScreen({ googleIcon }: SignInScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { signIn, isLoading } = useSession();
@@ -85,7 +85,7 @@ export function SignInScreen({ GoogleIcon }: SignInScreenProps) {
               <Divider className="my-12 mr-12 bg-gray-400 w-1/4" />
             </View>
             <Button
-              icon={GoogleIcon}
+              icon={googleIcon}
               label="Connection avec Google"
               variant="outline"
               className="mx-2"

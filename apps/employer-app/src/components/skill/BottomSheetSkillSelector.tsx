@@ -6,12 +6,12 @@ import { CustomButton } from '@/components/button/LongButton';
 import CategorySection from './SkillByCategory';
 import { Skill } from '@/types/skill';
 import React, { useCallback } from 'react';
-import { SkillCategory } from '@/types/skill-category';
+import { SkillCategory } from '@/types/skillCategory';
 
 interface BottomSheetSkillSelectorProps {
-  skills_skill_category: SkillCategory[];
-  isLoading_skill_category: boolean;
-  error_skill_category: string | null;
+  skillsSkillCategory: SkillCategory[];
+  isLoadingSkillCategory: boolean;
+  errorSkillCategory: string | null;
   searchProps: SearchBarProps;
   searchQuery: string;
   tempSelectedSkills: Skill[];
@@ -21,9 +21,9 @@ interface BottomSheetSkillSelectorProps {
 }
 
 export function BottomSheetSkillSelector({
-  skills_skill_category,
-  isLoading_skill_category,
-  error_skill_category,
+  skillsSkillCategory,
+  isLoadingSkillCategory,
+  errorSkillCategory,
   searchProps,
   searchQuery,
   tempSelectedSkills,
@@ -71,22 +71,22 @@ export function BottomSheetSkillSelector({
         <Text className="text-primary text-2xl font-bold font-inter">Ajouter des compétences</Text>
       </View>
       <SearchBarBottomSheet className="rounded-[10] mb-4" onFocus={() => {}} {...searchProps} />
-      {isLoading_skill_category ? (
+      {isLoadingSkillCategory ? (
         <Text className="text-center text-gray-500">
           Chargement des catégories de compétences...
         </Text>
-      ) : error_skill_category ? (
-        <Text className="text-center text-red-500">{error_skill_category}</Text>
-      ) : skills_skill_category.length === 0 ? (
+      ) : errorSkillCategory ? (
+        <Text className="text-center text-red-500">{errorSkillCategory}</Text>
+      ) : skillsSkillCategory.length === 0 ? (
         <Text className="text-center text-gray-500">
           Aucune catégorie de compétence disponible.
         </Text>
       ) : (
         <View className="flex-column gap-2">
-          {skills_skill_category.map((skill_category) => (
+          {skillsSkillCategory.map((skillCategory) => (
             <CategorySection
-              key={skill_category.id}
-              category={skill_category}
+              key={skillCategory.id}
+              category={skillCategory}
               searchQuery={searchQuery}
               onSkillSelectionChange={handleSkillSelectionChange}
             />

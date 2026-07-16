@@ -23,7 +23,7 @@ import {
   SelectScrollView,
 } from '../ui/select';
 import { ChevronDownIcon } from '../ui/icon';
-import { COUNTRY_NAMES_FR } from './countries-fr';
+import { COUNTRY_NAMES_FR } from './countriesFr';
 
 type PhoneInputProps = React.ComponentProps<typeof InputField> & {
   label: string;
@@ -48,11 +48,11 @@ export const COUNTRIES = getCountries()
     let callingCode = '';
     try {
       callingCode = `+${getCountryCallingCode(code)}`;
-    } catch (e) {
+    } catch {
       // Skip country if it doesn't have a calling code
     }
 
-    let name = COUNTRY_NAMES_FR[code] || code;
+    const name = COUNTRY_NAMES_FR[code] || code;
 
     return {
       code,

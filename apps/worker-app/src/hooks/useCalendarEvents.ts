@@ -11,7 +11,7 @@ const parseLocalDate = (dateStr: string): Date => {
   return new Date(parseInt(yearStr, 10), parseInt(monthStr, 10) - 1, parseInt(dayStr, 10));
 };
 
-export const useCalendarEvents = (session: any, currentMonthStr: string) => {
+export const useCalendarEvents = (session: string, currentMonthStr: string) => {
   const [events, setEvents] = useState<PlanningApiEvent[]>([]);
   const loadedMonths = useRef<Set<string>>(new Set());
 
@@ -75,8 +75,13 @@ export const useCalendarEvents = (session: any, currentMonthStr: string) => {
         let fetchedEvents: PlanningApiEvent[] = [];
         if (Array.isArray(response)) {
           fetchedEvents = response;
-        } else if (response && Array.isArray((response as any).data)) {
-          fetchedEvents = (response as any).data;
+        } else if (
+          response &&
+          typeof response === 'object' &&
+          'data' in response &&
+          Array.isArray((response as { data: PlanningApiEvent[] }).data)
+        ) {
+          fetchedEvents = (response as { data: PlanningApiEvent[] }).data;
         } else if (response) {
           fetchedEvents = response as PlanningApiEvent[];
         }

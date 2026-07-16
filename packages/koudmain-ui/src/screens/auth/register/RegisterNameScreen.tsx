@@ -32,6 +32,8 @@ type RegisterNameScreenProps = {
   appContext: 'employer' | 'worker';
 };
 
+const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
+
 export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const { email: emailParam, password: passwordParam } = useLocalSearchParams<{
     email?: string | string[];
@@ -48,7 +50,6 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const isFirstNameValid = firstName.trim().length > 0;
   const isLastNameValid = lastName.trim().length > 0;
   const isPhoneNumberValid = isValidPhoneNumber(phoneNumber);
-  const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
   const isBirthDateValid = appContext === 'worker' ? DATE_REGEX.test(birthDate) : true;
   const isFormValid = isFirstNameValid && isLastNameValid && isPhoneNumberValid && isBirthDateValid;
 
@@ -90,12 +91,19 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     if (appContext === 'worker') {
       router.push({
         pathname: '/auth/register/RegisterJob',
-        params: { firstName, lastName, phoneNumber, birthDate: convertBirthDate(birthDate) },
+        params: {
+          email,
+          password,
+          firstName,
+          lastName,
+          phoneNumber,
+          birthDate: convertBirthDate(birthDate),
+        },
       });
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
-        params: { firstName, lastName, phoneNumber, ownerPosition },
+        params: { email, password, firstName, lastName, phoneNumber, ownerPosition },
       });
     }
   };

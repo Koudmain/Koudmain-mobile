@@ -8,7 +8,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useTheme, ThemeProvider } from '@koudmain/ui/context/ThemeContext';
 import { SessionProvider, useSession } from '@koudmain/ui/context/SessionContext';
-import { SplashScreenController } from '@/splash';
+import { SplashScreenController } from '@/Splash';
 
 function RootNavigator() {
   const { session } = useSession();

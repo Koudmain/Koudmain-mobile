@@ -1,4 +1,4 @@
-import { SkillCategory } from './skill-category';
+import { SkillCategory } from './skillCategory';
 
 export interface Skill {
   id: number;

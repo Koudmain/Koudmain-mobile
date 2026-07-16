@@ -5,17 +5,17 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from '../../context/ThemeContext';
 import { colors } from '../../constants/theme';
 
+const TOGGLE_WIDTH = 96;
+const TOGGLE_HEIGHT = 36;
+const HANDLE_SIZE = 28;
+const SPACING = 4;
+
+const positionLeft = 0;
+const positionCenter = (TOGGLE_WIDTH - HANDLE_SIZE - SPACING * 2) / 2;
+const positionRight = TOGGLE_WIDTH - HANDLE_SIZE - SPACING * 2;
+
 export const ThemeToggle = () => {
   const { themePreference, colorMode, setThemePreference } = useTheme();
-
-  const TOGGLE_WIDTH = 96;
-  const TOGGLE_HEIGHT = 36;
-  const HANDLE_SIZE = 28;
-  const SPACING = 4;
-
-  const positionLeft = 0;
-  const positionCenter = (TOGGLE_WIDTH - HANDLE_SIZE - SPACING * 2) / 2;
-  const positionRight = TOGGLE_WIDTH - HANDLE_SIZE - SPACING * 2;
 
   const inactiveIconColor = colorMode === 'dark' ? colors.typography.gray : colors.primary.disabled;
 

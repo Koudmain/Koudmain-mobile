@@ -27,7 +27,7 @@ export const ConversationItem = ({
   className,
 }: ConversationItemProps) => {
   const hasUnread = false; // Placeholder, replace with future unread logic
-  const unread_count = 0; // Placeholder, replace with future unread count
+  const unreadCount = 0; // Placeholder, replace with future unread count
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
@@ -119,7 +119,7 @@ export const ConversationItem = ({
             {hasUnread && (
               <View className="bg-primary-500 min-w-[20px] h-5 px-1.5 rounded-full items-center justify-center">
                 <Text className="text-white text-[10px] font-bold">
-                  {unread_count > 9 ? '9+' : unread_count}
+                  {unreadCount > 9 ? '9+' : unreadCount}
                 </Text>
               </View>
             )}

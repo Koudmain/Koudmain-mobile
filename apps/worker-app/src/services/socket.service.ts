@@ -36,7 +36,7 @@ class SocketService {
         }
       };
 
-      this.socket.onerror = (e: any) => {
+      this.socket.onerror = (e: Event) => {
         console.error('Erreur de connexion WebSocket. Vérifiez le port 4000 et votre Firewall.');
       };
 

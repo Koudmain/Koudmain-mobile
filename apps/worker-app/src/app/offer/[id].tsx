@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { MOCK_OFFER_DATA } from '@/constants/fake_data';
+import { MOCK_OFFER_DATA } from '@/constants/fakeData';
 
 // Components
 import { OfferHeader } from '@/components/offer/OfferHeader';

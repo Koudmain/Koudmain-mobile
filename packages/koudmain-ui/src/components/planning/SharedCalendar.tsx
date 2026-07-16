@@ -3,8 +3,9 @@ import { Calendar } from 'react-native-calendars';
 import { Dimensions, useColorScheme, View } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { colors } from '../../constants/theme';
-import CustomDay from './CustomDay';
+import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
+import { PlanningEvent } from '../../types/planning';
 
 const TITLE_AND_PADDING_HEIGHT = 110;
 const ESTIMATED_HEADER_HEIGHT = 85;
@@ -21,14 +22,14 @@ export function getNumberOfWeeks(year: number, month: number): number {
 }
 
 interface SharedCalendarProps {
-  events: any[];
+  events: PlanningEvent[];
   renderPopUp: (props: {
     isVisible: boolean;
     onClose: () => void;
     selectedDate: string;
-    events: any[];
+    events: PlanningEvent[];
   }) => React.ReactNode;
-  formatDayEvents: (events: any[], dateString: string) => any[];
+  formatDayEvents: (events: PlanningEvent[], dateString: string) => PlanningEvent[];
 }
 
 export default function SharedCalendar({
@@ -46,7 +47,7 @@ export default function SharedCalendar({
     getNumberOfWeeks(today.getFullYear(), today.getMonth() + 1),
   );
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-  const [bottomSheetEvents, setBottomSheetEvents] = useState<any[]>([]);
+  const [bottomSheetEvents, setBottomSheetEvents] = useState<PlanningEvent[]>([]);
 
   const markedDatesList = Array.from(
     new Set(
@@ -66,7 +67,9 @@ export default function SharedCalendar({
   const cellHeight = availableHeightForCells / weeksInMonth;
 
   const renderDay = useCallback(
-    (props: any) => <CustomDay props={props} cellHeight={cellHeight} isDark={isDark} />,
+    (props: CalendarDayProps) => (
+      <CustomDay props={props} cellHeight={cellHeight} isDark={isDark} />
+    ),
     [cellHeight, isDark],
   );
 

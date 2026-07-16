@@ -10,7 +10,7 @@ export const planningService = {
       });
       url += `?${params.toString()}`;
     }
-    return apiFetch<any>(url, {
+    return apiFetch<unknown>(url, {
       method: 'GET',
       token,
     });

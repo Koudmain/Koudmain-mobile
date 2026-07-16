@@ -12,7 +12,7 @@ const parseLocalDate = (dateStr: string): Date => {
 };
 
 export const useCalendarEvents = (
-  session: any,
+  session: string,
   currentMonthStr: string,
   activeCompanyId: string | number | null,
 ) => {
@@ -90,8 +90,13 @@ export const useCalendarEvents = (
         let fetchedEvents: PlanningApiEvent[] = [];
         if (Array.isArray(response)) {
           fetchedEvents = response;
-        } else if (response && Array.isArray((response as any).data)) {
-          fetchedEvents = (response as any).data;
+        } else if (
+          response &&
+          typeof response === 'object' &&
+          'data' in response &&
+          Array.isArray((response as { data: PlanningApiEvent[] }).data)
+        ) {
+          fetchedEvents = (response as { data: PlanningApiEvent[] }).data;
         } else if (response) {
           fetchedEvents = response as PlanningApiEvent[];
         }

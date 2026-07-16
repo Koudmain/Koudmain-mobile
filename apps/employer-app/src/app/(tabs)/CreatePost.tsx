@@ -24,18 +24,14 @@ export default function CreatePost() {
   const [competencesList, setCompetencesList] = useState<Skill[]>([]);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const {
-    mutate_skill_category,
-    skills_skill_category,
-    isLoading_skill_category,
-    error_skill_category,
-  } = useGetSkillCategory();
+  const { mutateSkillCategory, skillsSkillCategory, isLoadingSkillCategory, errorSkillCategory } =
+    useGetSkillCategory();
 
   // Trigger the API fetch when opening the bottom sheet
   const handleOpenBottomSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
-    void mutate_skill_category();
-  }, [mutate_skill_category]);
+    void mutateSkillCategory();
+  }, [mutateSkillCategory]);
 
   // Render the backdrop only when snapPoints change
   const renderBottomSheetBackdrop = useCallback(
@@ -227,9 +223,9 @@ export default function CreatePost() {
         keyboardBlurBehavior="restore"
       >
         <BottomSheetSkillSelector
-          skills_skill_category={skills_skill_category}
-          isLoading_skill_category={isLoading_skill_category}
-          error_skill_category={error_skill_category}
+          skillsSkillCategory={skillsSkillCategory}
+          isLoadingSkillCategory={isLoadingSkillCategory}
+          errorSkillCategory={errorSkillCategory}
           searchQuery={searchQuery}
           searchProps={searchProps}
           tempSelectedSkills={tempSelectedSkills}

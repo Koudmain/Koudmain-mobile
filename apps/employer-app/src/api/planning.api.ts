@@ -13,7 +13,7 @@ export const planningService = {
       params.set('endDate', endDate.toISOString());
     }
     const url = `/planning?${params.toString()}`;
-    return apiFetch<any>(url, {
+    return apiFetch<unknown>(url, {
       method: 'GET',
       token,
     });

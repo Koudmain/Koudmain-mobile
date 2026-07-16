@@ -75,8 +75,15 @@ export default function CalendarSelector({
     }
   };
 
+  interface CalendarMarking {
+    startingDay?: boolean;
+    endingDay?: boolean;
+    color?: string;
+    textColor?: string;
+  }
+
   const getMarkedDates = () => {
-    const marked: Record<string, any> = {};
+    const marked: Record<string, CalendarMarking> = {};
 
     if (startDate) {
       marked[startDate] = {
