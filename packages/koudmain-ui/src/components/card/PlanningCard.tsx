@@ -9,7 +9,7 @@ import { colors } from '../../constants/theme';
 type PlanningCardProps = {
   id: number;
   name: string | null;
-  imageProfile: any;
+  imageProfile: string | null;
   rate: number;
   numberRate: number;
   title: string;

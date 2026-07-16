@@ -1,3 +1,4 @@
+import { ComponentProps } from 'react';
 import { colors } from '../../constants/theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { View, Text } from 'react-native';
@@ -9,7 +10,7 @@ export const SectionHeader = ({ title, icon }: { title: string; icon: string }) 
     <View className="flex-row items-center px-6 py-4 bg-white dark:bg-primary">
       {icon && (
         <MaterialCommunityIcons
-          name={icon as any}
+          name={icon as ComponentProps<typeof MaterialCommunityIcons>['name']}
           size={18}
           className="mr-2 text-primary-500"
           color={colors.primary.disabled}

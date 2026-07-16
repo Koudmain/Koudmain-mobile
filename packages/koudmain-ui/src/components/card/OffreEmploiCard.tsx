@@ -1,5 +1,12 @@
 import { Card, Heading, Text } from '../ui';
-import { Image, ScrollView, View, Pressable, useColorScheme } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  View,
+  Pressable,
+  useColorScheme,
+  ImageSourcePropType,
+} from 'react-native';
 import CompetenceCard from './CompetenceCard';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,7 +23,7 @@ import { router } from 'expo-router';
 type OffreEmploiCardProps = {
   id: number;
   name: string;
-  imageProfile: any;
+  imageProfile: ImageSourcePropType;
   city: string;
   zip: string;
   rate: number;

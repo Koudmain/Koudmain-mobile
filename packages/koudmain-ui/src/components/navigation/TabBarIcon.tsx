@@ -15,7 +15,11 @@ export const ICON_DIMENSIONS = {
 };
 
 interface TabBarIconProps {
-  iconLibrary?: any;
+  iconLibrary?: React.ComponentType<{
+    name: string;
+    size: number;
+    color: string;
+  }>;
   iconName?: string;
   svgComponent?: React.ComponentType<SvgProps & { color?: string }>;
   color: string;

@@ -13,6 +13,29 @@ export type AddressData = {
   displayName: string;
 };
 
+interface NominatimAddress {
+  house_number?: string;
+  road?: string;
+  pedestrian?: string;
+  postcode?: string;
+  city?: string;
+  town?: string;
+  village?: string;
+  country?: string;
+}
+
+interface NominatimSearchResult {
+  place_id: number | string;
+  lat: string;
+  lon: string;
+  display_name: string;
+  address?: NominatimAddress;
+}
+
+interface FormattedAddressResult extends NominatimSearchResult {
+  short_name: string;
+}
+
 interface AddressAutocompleteProps {
   onSelect: (address: AddressData) => void;
   placeholder?: string;
@@ -23,7 +46,7 @@ export function AddressAutocomplete({
   placeholder = 'Rechercher une adresse...',
 }: AddressAutocompleteProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<FormattedAddressResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -48,26 +71,28 @@ export function AddressAutocomplete({
       );
       const data = await response.json();
 
-      const formattedData = data.map((item: any) => {
-        const addr = item.address || {};
-        const streetNum = addr.house_number ? `${addr.house_number} ` : '';
-        const street = addr.road || addr.pedestrian || '';
-        const zip = addr.postcode ? `${addr.postcode} ` : '';
-        const city = addr.city || addr.town || addr.village || '';
+      const formattedData = (data as NominatimSearchResult[]).map(
+        (item): FormattedAddressResult => {
+          const addr = item.address || {};
+          const streetNum = addr.house_number ? `${addr.house_number} ` : '';
+          const street = addr.road || addr.pedestrian || '';
+          const zip = addr.postcode ? `${addr.postcode} ` : '';
+          const city = addr.city || addr.town || addr.village || '';
 
-        const line1 = `${streetNum}${street}`.trim();
-        const line2 = `${zip}${city}`.trim();
+          const line1 = `${streetNum}${street}`.trim();
+          const line2 = `${zip}${city}`.trim();
 
-        let shortName = item.display_name;
-        if (line1 && line2) {
-          shortName = `${line1}, ${line2}`;
-        } else if (line1) {
-          shortName = line1;
-        } else if (line2) {
-          shortName = line2;
-        }
-        return { ...item, short_name: shortName };
-      });
+          let shortName = item.display_name;
+          if (line1 && line2) {
+            shortName = `${line1}, ${line2}`;
+          } else if (line1) {
+            shortName = line1;
+          } else if (line2) {
+            shortName = line2;
+          }
+          return { ...item, short_name: shortName };
+        },
+      );
 
       setResults(formattedData);
     } catch (error) {
@@ -77,7 +102,7 @@ export function AddressAutocomplete({
     }
   };
 
-  const handleSelect = (item: any) => {
+  const handleSelect = (item: FormattedAddressResult) => {
     setQuery(item.short_name);
     setShowDropdown(false);
 
