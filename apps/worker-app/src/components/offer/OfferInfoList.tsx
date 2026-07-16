@@ -20,9 +20,17 @@ export function OfferInfoList({ items }: OfferInfoListProps) {
         <View key={index} className="flex-row items-center gap-x-4">
           <View className="w-8 items-center justify-center">
             {item.iconLibrary === 'Feather' ? (
-              <Feather name={item.icon as any} size={24} color={colors.secondary.DEFAULT} />
+              <Feather
+                name={item.icon as keyof typeof Feather.glyphMap}
+                size={24}
+                color={colors.secondary.DEFAULT}
+              />
             ) : (
-              <FontAwesome6 name={item.icon as any} size={24} color={colors.secondary.DEFAULT} />
+              <FontAwesome6
+                name={item.icon as keyof typeof FontAwesome6.glyphMap}
+                size={24}
+                color={colors.secondary.DEFAULT}
+              />
             )}
           </View>
           <Text className="text-lg text-primary dark:text-white flex-1">{item.text}</Text>

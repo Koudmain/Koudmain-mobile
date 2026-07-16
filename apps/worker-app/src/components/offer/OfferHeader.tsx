@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text, Pressable, Image } from 'react-native';
+import { View, Text, Pressable, Image, ImageSourcePropType } from 'react-native';
 import { Feather, FontAwesome6 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { router } from 'expo-router';
 
 interface OfferHeaderProps {
   title: string;
-  imageSource: any;
-  logoSource?: any;
+  imageSource: ImageSourcePropType;
+  logoSource?: ImageSourcePropType;
 }
 
 export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps) {

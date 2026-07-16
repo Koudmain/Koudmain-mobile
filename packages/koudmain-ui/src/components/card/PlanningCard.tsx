@@ -9,9 +9,9 @@ import { colors } from '../../constants/theme';
 type PlanningCardProps = {
   id: number;
   name: string | null;
-  image_profile: any;
+  imageProfile: string | null;
   rate: number;
-  number_rate: number;
+  numberRate: number;
   title: string;
   wage: number;
   begin: string;
@@ -20,9 +20,9 @@ type PlanningCardProps = {
 
 export default function PlanningCard({
   name,
-  image_profile,
+  imageProfile,
   rate,
-  number_rate,
+  numberRate,
   title,
   wage,
   begin,
@@ -32,8 +32,8 @@ export default function PlanningCard({
     <Pressable>
       <Card className="w-full pt-4 px-4 rounded-[20] bg-background-light dark:bg-background-dark">
         <View className="flex-row items-center flex-1 mr-3">
-          {image_profile ? (
-            <Image source={{ uri: image_profile }} className="w-14 h-14 rounded-full mr-3" />
+          {imageProfile ? (
+            <Image source={{ uri: imageProfile }} className="w-14 h-14 rounded-full mr-3" />
           ) : (
             <View className="w-14 h-14 rounded-full mr-3 bg-gray-300 items-center justify-center">
               <FontAwesome5 name="user" size={30} color={colors.typography.white} />
@@ -49,7 +49,7 @@ export default function PlanningCard({
             <View className="flex-row items-center mt-1">
               <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />
               <Text className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                {rate} ({number_rate})
+                {rate} ({numberRate})
               </Text>
             </View>
           </View>

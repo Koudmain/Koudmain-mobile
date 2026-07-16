@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { useEffect } from 'react';
 import { useGetSkillByCategoryId } from '@/hooks/useGetSkillByCategoryId';
 import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
-import { SkillCategory } from '@/types/skill-category';
+import { SkillCategory } from '@/types/skillCategory';
 import { Skill } from '@/types/skill';
 
 const CategorySection = ({
@@ -15,11 +15,11 @@ const CategorySection = ({
   onSkillSelectionChange?: (skill: Skill, selected: boolean) => void;
   searchQuery?: string;
 }) => {
-  const { mutate_skill, skills_skill, isLoading_skill, error_skill } = useGetSkillByCategoryId();
+  const { mutateSkill, skillsSkill, isLoadingSkill, errorSkill } = useGetSkillByCategoryId();
 
   useEffect(() => {
-    void mutate_skill(category.id);
-  }, [category.id, mutate_skill]);
+    void mutateSkill(category.id);
+  }, [category.id, mutateSkill]);
 
   const removeAccents = (str: string) => {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -27,11 +27,11 @@ const CategorySection = ({
 
   const normalizedSearchQuery = removeAccents(searchQuery.toLowerCase().trim());
 
-  const filteredSkills = skills_skill.filter((skill: Skill) =>
+  const filteredSkills = skillsSkill.filter((skill: Skill) =>
     removeAccents(skill.name.toLowerCase()).includes(normalizedSearchQuery),
   );
 
-  if (!isLoading_skill && !error_skill && filteredSkills.length === 0 && searchQuery.length > 0) {
+  if (!isLoadingSkill && !errorSkill && filteredSkills.length === 0 && searchQuery.length > 0) {
     return null;
   }
 
@@ -44,10 +44,10 @@ const CategorySection = ({
         className="mt-2 mb-4"
         contentContainerStyle={{ flexDirection: 'row', gap: 8 }}
       >
-        {isLoading_skill ? (
+        {isLoadingSkill ? (
           <Text className="text-center text-gray-500">Chargement des compétences...</Text>
-        ) : error_skill ? (
-          <Text className="text-center text-red-500">{error_skill}</Text>
+        ) : errorSkill ? (
+          <Text className="text-center text-red-500">{errorSkill}</Text>
         ) : filteredSkills.length === 0 ? (
           <Text className="text-center text-gray-500">
             Aucune compétence pour la catégorie {category.name}.

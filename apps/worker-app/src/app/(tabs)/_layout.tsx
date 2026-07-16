@@ -11,34 +11,34 @@ import { MapIcon } from '@/svg/MapIcon';
 const TABS_CONFIG = [
   {
     name: 'Offers',
-    IconLibrary: FontAwesome6,
+    iconLibrary: FontAwesome6,
     iconName: 'newspaper',
     label: 'offers',
     isLarge: false,
   },
   {
     name: 'Planning',
-    IconLibrary: Feather,
+    iconLibrary: Feather,
     iconName: 'calendar',
     label: 'planning',
     isLarge: false,
   },
   {
     name: 'Map',
-    SvgComponent: MapIcon,
+    svgComponent: MapIcon,
     label: 'Publier',
     isLarge: true,
   },
   {
     name: 'Messaging',
-    IconLibrary: FontAwesome6,
+    iconLibrary: FontAwesome6,
     iconName: 'message',
     label: 'messaging',
     isLarge: false,
   },
   {
     name: 'Profile',
-    IconLibrary: Feather,
+    iconLibrary: Feather,
     iconName: 'menu',
     label: 'Menu',
     isLarge: false,
@@ -90,8 +90,8 @@ export default function TabLayout() {
               tabBarButton: (props) => <TabBarHitBox props={props} size={size} />,
               tabBarIcon: ({ color }) => (
                 <TabBarIcon
-                  IconLibrary={tab.IconLibrary}
-                  SvgComponent={tab.SvgComponent}
+                  iconLibrary={tab.iconLibrary}
+                  svgComponent={tab.svgComponent}
                   iconName={tab.iconName}
                   color={color}
                   isLarge={tab.isLarge}

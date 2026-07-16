@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
   View,
   useColorScheme,
+  GestureResponderEvent,
+  PanResponderGestureState,
 } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { PlanningEvent } from '../../types/planning';
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -18,8 +21,8 @@ interface CalendarBottomSheetProps {
   isVisible: boolean;
   onClose: () => void;
   selectedDate: string;
-  events: any[];
-  renderContent: (events: any[], isDark: boolean) => React.ReactNode;
+  events: PlanningEvent[];
+  renderContent: (events: PlanningEvent[], isDark: boolean) => React.ReactNode;
 }
 
 export default function CalendarBottomSheet({
@@ -65,7 +68,11 @@ export default function CalendarBottomSheet({
   }, [isVisible, isFocused, translateY, bottomSheetHeight]);
 
   const dragHandleHeight = 548;
-  const isDragHandleGesture = (evt: any, gestureState: any, requireMovement = false) => {
+  const isDragHandleGesture = (
+    evt: GestureResponderEvent,
+    gestureState: PanResponderGestureState,
+    requireMovement = false,
+  ) => {
     const sheetTop = screenHeight - bottomSheetHeight;
     const touchStartsInHandle = evt.nativeEvent.pageY <= sheetTop + dragHandleHeight;
     const isPredominantlyVertical = Math.abs(gestureState.dy) > Math.abs(gestureState.dx);

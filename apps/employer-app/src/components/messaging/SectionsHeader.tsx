@@ -9,7 +9,7 @@ function SectionHeader({ title, icon }: { title: string; icon: string }) {
     <View className="flex-row items-center px-6 py-4 bg-white dark:bg-primary">
       {icon && (
         <MaterialCommunityIcons
-          name={icon as any}
+          name={icon as keyof typeof MaterialCommunityIcons.glyphMap}
           size={18}
           className="mr-2 text-primary-500"
           color={colors.primary.disabled}

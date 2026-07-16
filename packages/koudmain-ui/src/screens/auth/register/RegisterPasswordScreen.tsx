@@ -99,9 +99,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
         return;
       }
       Alert.alert('Erreur', "Échec de l'inscription. Merci de réessayer.");
-    } catch (error: any) {
-      console.error('Registration failed:', error);
-      Alert.alert('Erreur', error?.message || "Échec de l'inscription. Merci de réessayer.");
+    } catch (error) {
+      const err = error as Error;
+      console.error('Registration failed:', err);
+      Alert.alert('Erreur', err.message || "Échec de l'inscription. Merci de réessayer.");
     }
   };
 

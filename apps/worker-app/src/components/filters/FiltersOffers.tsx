@@ -39,7 +39,7 @@ function FiltersOffers({ selectedIds, onChange }: FiltersOffersProps) {
           <FilterChip
             key={cat.id}
             label={cat.label}
-            IconLibrary={cat.icon}
+            iconLibrary={cat.icon}
             iconName={cat.iconName}
             isActive={selectedIds.includes(cat.id)}
             onPress={() =>

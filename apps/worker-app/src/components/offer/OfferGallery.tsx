@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, ImageSourcePropType } from 'react-native';
 
 interface OfferGalleryProps {
-  images: any[];
+  images: ImageSourcePropType[];
 }
 
 export function OfferGallery({ images }: OfferGalleryProps) {

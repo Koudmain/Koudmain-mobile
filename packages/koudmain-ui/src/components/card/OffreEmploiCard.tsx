@@ -1,5 +1,12 @@
 import { Card, Heading, Text } from '../ui';
-import { Image, ScrollView, View, Pressable, useColorScheme } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  View,
+  Pressable,
+  useColorScheme,
+  ImageSourcePropType,
+} from 'react-native';
 import CompetenceCard from './CompetenceCard';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,11 +23,11 @@ import { router } from 'expo-router';
 type OffreEmploiCardProps = {
   id: number;
   name: string;
-  image_profile: any;
+  imageProfile: ImageSourcePropType;
   city: string;
   zip: string;
   rate: number;
-  number_rate: number;
+  numberRate: number;
   title: string;
   wage: number;
   date: string;
@@ -33,11 +40,11 @@ type OffreEmploiCardProps = {
 export default function OffreEmploiCard({
   id,
   name,
-  image_profile,
+  imageProfile,
   city,
   zip,
   rate,
-  number_rate,
+  numberRate,
   title,
   wage,
   date,
@@ -53,7 +60,7 @@ export default function OffreEmploiCard({
     <Card className="w-full p-0 pt-4 pb-2 rounded-[20] mb-4 dark:bg-primary">
       <View className="flex-row px-4 justify-between items-start">
         <View className="flex-row items-center flex-1 mr-3">
-          <Image source={image_profile} className="w-14 h-14 rounded-full mr-3" />
+          <Image source={imageProfile} className="w-14 h-14 rounded-full mr-3" />
           <View className="flex-1">
             <Heading className="text-base font-bold">{name}</Heading>
             <View className="flex-row items-center mt-1">
@@ -63,7 +70,7 @@ export default function OffreEmploiCard({
               <View className="flex-row items-center ml-4">
                 <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />
                 <Text className="text-xs text-gray-500 dark:text-white/80 ml-1">
-                  {rate} ({number_rate})
+                  {rate} ({numberRate})
                 </Text>
               </View>
             </View>

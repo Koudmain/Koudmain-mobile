@@ -1,4 +1,4 @@
-import CalendarComponent from '@/components/planning/calendar';
+import CalendarComponent from '@/components/planning/Calendar';
 import { colors } from '@/constants/theme';
 import { Text, View, ScrollView, useColorScheme } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';

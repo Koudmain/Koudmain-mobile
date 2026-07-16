@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Pressable, Text, useColorScheme, View } from 'react-native';
 
-import { LIST_FAV } from '@/constants/fake_data';
+import { LIST_FAV } from '@/constants/fakeData';
 
 import OffreEmploiCard from '@koudmain/ui/components/card/OffreEmploiCard';
 import FiltersOffers from '@/components/filters/FiltersOffers';
@@ -75,11 +75,11 @@ export default function YourOffers() {
               key={`${offre.name}-${offre.date}-${index}`}
               id={offre.id}
               name={offre.name}
-              image_profile={offre.image_profile}
+              imageProfile={offre.image_profile}
               city={offre.city}
               zip={offre.zip}
               rate={offre.rate}
-              number_rate={offre.number_rate}
+              numberRate={offre.number_rate}
               title={offre.title}
               wage={offre.wage}
               date={offre.date}

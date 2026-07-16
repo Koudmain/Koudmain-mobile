@@ -15,17 +15,21 @@ export const ICON_DIMENSIONS = {
 };
 
 interface TabBarIconProps {
-  IconLibrary?: any;
+  iconLibrary?: React.ComponentType<{
+    name: string;
+    size: number;
+    color: string;
+  }>;
   iconName?: string;
-  SvgComponent?: React.ComponentType<SvgProps & { color?: string }>;
+  svgComponent?: React.ComponentType<SvgProps & { color?: string }>;
   color: string;
   isLarge?: boolean;
 }
 
 export function TabBarIcon({
-  IconLibrary,
+  iconLibrary,
   iconName,
-  SvgComponent,
+  svgComponent,
   color,
   isLarge,
 }: TabBarIconProps) {
@@ -39,11 +43,19 @@ export function TabBarIcon({
         shadow-md ${isLarge && isActive ? 'shadow-secondary/60' : 'shadow-primary/60 dark:shadow-white/20'}
         border-0 ${isLarge && isActive ? 'border-secondary/20' : 'border-primary/20 dark:shadow-white/10'}`}
     >
-      {SvgComponent ? (
-        <SvgComponent width={dimensions.icon} height={dimensions.icon} color={color} />
-      ) : IconLibrary && iconName ? (
-        <IconLibrary name={iconName} size={dimensions.icon} color={color} />
-      ) : null}
+      {svgComponent
+        ? React.createElement(svgComponent, {
+            width: dimensions.icon,
+            height: dimensions.icon,
+            color: color,
+          })
+        : iconLibrary && iconName
+          ? React.createElement(iconLibrary, {
+              name: iconName,
+              size: dimensions.icon,
+              color: color,
+            })
+          : null}
     </View>
   );
 }

@@ -9,11 +9,11 @@ import { useSidebar } from '@/context/SidebarContext';
 import { PlusIcon } from '@/svg/PlusIcon';
 
 const TABS_CONFIG = [
-  { name: 'index', IconLibrary: FontAwesome6, iconName: 'newspaper', label: 'Accueil' },
-  { name: 'Planning', IconLibrary: Feather, iconName: 'calendar', label: 'Planning' },
-  { name: 'CreatePost', SvgComponent: PlusIcon, label: 'Publier', isLarge: true },
-  { name: 'Messaging', IconLibrary: FontAwesome6, iconName: 'message', label: 'Messages' },
-  { name: 'Profile', IconLibrary: Feather, iconName: 'menu', label: 'Menu' },
+  { name: 'index', iconLibrary: FontAwesome6, iconName: 'newspaper', label: 'Accueil' },
+  { name: 'Planning', iconLibrary: Feather, iconName: 'calendar', label: 'Planning' },
+  { name: 'CreatePost', svgComponent: PlusIcon, label: 'Publier', isLarge: true },
+  { name: 'Messaging', iconLibrary: FontAwesome6, iconName: 'message', label: 'Messages' },
+  { name: 'Profile', iconLibrary: Feather, iconName: 'menu', label: 'Menu' },
 ];
 
 export default function TabLayout() {
@@ -62,9 +62,9 @@ export default function TabLayout() {
               tabBarButton: (props) => <TabBarHitBox props={props} size={size} />,
               tabBarIcon: ({ color }) => (
                 <TabBarIcon
-                  IconLibrary={tab.IconLibrary}
+                  iconLibrary={tab.iconLibrary}
                   iconName={tab.iconName}
-                  SvgComponent={tab.SvgComponent}
+                  svgComponent={tab.svgComponent}
                   color={color}
                   isLarge={tab.isLarge}
                 />

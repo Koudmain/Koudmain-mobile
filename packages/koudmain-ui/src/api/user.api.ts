@@ -11,7 +11,7 @@ export const userService = {
 
   uploadAvatar: async (token: string, fileUri: string) => {
     const formData = new FormData();
-    // @ts-ignore React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
+    // @ts-expect-error React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
     formData.append('image', {
       uri: fileUri,
       type: 'image/jpeg',
@@ -39,7 +39,7 @@ export const userService = {
       const match = /\.(\w+)$/.exec(filename || '');
       const type = match ? `image/${match[1]}` : `image`;
 
-      // @ts-ignore React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
+      // @ts-expect-error React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
       formData.append('image', {
         uri: data.imageUri,
         name: filename,

@@ -6,18 +6,22 @@ import { colors } from '../../constants/theme';
 
 interface FilterChipProps {
   label: string;
-  IconLibrary?: any;
+  iconLibrary?: React.ComponentType<{
+    name: string;
+    size: number;
+    color: string;
+  }>;
   iconName?: string;
-  SvgComponent?: React.FC<SvgProps>;
+  svgComponent?: React.FC<SvgProps>;
   isActive: boolean;
   onPress: () => void;
 }
 
 const FilterChip = ({
   label,
-  IconLibrary,
+  iconLibrary,
   iconName,
-  SvgComponent,
+  svgComponent,
   isActive,
   onPress,
 }: FilterChipProps) => {
@@ -43,11 +47,11 @@ const FilterChip = ({
       className={`flex-row items-center px-4 py-2 mr-2 rounded-full border ${borderColor} ${bgColor}`}
     >
       <View className="mr-2">
-        {SvgComponent ? (
-          <SvgComponent width={20} height={20} fill={currentColor} />
-        ) : IconLibrary && iconName ? (
-          <IconLibrary name={iconName} size={20} color={currentColor} />
-        ) : null}
+        {svgComponent
+          ? React.createElement(svgComponent, { width: 20, height: 20, fill: currentColor })
+          : iconLibrary && iconName
+            ? React.createElement(iconLibrary, { name: iconName, size: 20, color: currentColor })
+            : null}
       </View>
 
       <Text className={`text-base font-medium ${textColor}`}>{label}</Text>

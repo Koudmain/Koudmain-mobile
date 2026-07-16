@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useTheme, ThemeProvider } from '@koudmain/ui/context/ThemeContext';
 import { SessionProvider, useSession } from '@koudmain/ui/context/SessionContext';
 import { CompanyProvider } from '@/context/CompanyContext';
-import { SplashScreenController } from '@/splash';
+import { SplashScreenController } from '@/Splash';
 import { useEffect } from 'react';
 import { socketService } from '@/services/socket.service';
 

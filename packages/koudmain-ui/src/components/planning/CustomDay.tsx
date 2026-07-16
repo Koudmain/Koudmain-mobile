@@ -1,10 +1,28 @@
 import React from 'react';
 import { View } from 'react-native';
 import BasicDay from 'react-native-calendars/src/calendar/day/basic';
+import { DateData } from 'react-native-calendars';
 import { colors } from '../../constants/theme';
 
+export interface CalendarDayProps {
+  date: DateData;
+  state?: 'selected' | 'disabled' | 'today' | '';
+  marking?: {
+    selected?: boolean;
+    marked?: boolean;
+    disabled?: boolean;
+    disableTouchEvent?: boolean;
+    textColor?: string;
+    dotColor?: string;
+    color?: string;
+  };
+  theme?: Record<string, unknown>;
+  onPress?: (date?: DateData) => void;
+  onLongPress?: (date?: DateData) => void;
+}
+
 interface CustomDayProps {
-  props: any;
+  props: CalendarDayProps;
   cellHeight: number;
   isDark: boolean;
 }

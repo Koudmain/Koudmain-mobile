@@ -39,9 +39,9 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
               <PlanningCard
                 id={event.id}
                 name={event.name}
-                image_profile={event.image_profile}
+                imageProfile={event.image_profile}
                 rate={event.rate}
-                number_rate={event.number_rate}
+                numberRate={event.number_rate}
                 title={event.title}
                 wage={event.wage}
                 begin={event.time}
