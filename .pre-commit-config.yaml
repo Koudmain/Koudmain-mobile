@@ -12,7 +12,7 @@ repos:
 
       - id: lint-check
         name: Check code quality (ESLint)
-        entry: pnpm exec eslint --cache
+        entry: pnpm exec eslint --cache --no-warn-ignored
         language: system
         files: \.(js|ts|jsx|tsx)$
         pass_filenames: true
