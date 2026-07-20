@@ -5,15 +5,17 @@ repos:
     hooks:
       - id: format-check
         name: Check formatting (Prettier)
-        entry: npm run format:check
+        entry: npx prettier --check
         language: system
-        pass_filenames: false
+        files: \.(js|ts|jsx|tsx|json|css|md)$
+        pass_filenames: true
 
       - id: lint-check
         name: Check code quality (ESLint)
-        entry: npm run lint:check
+        entry: npx eslint --cache
         language: system
-        pass_filenames: false
+        files: \.(js|ts|jsx|tsx)$
+        pass_filenames: true
 
       - id: betterleaks-docker
         name: Detect hardcoded secrets (staged files)
