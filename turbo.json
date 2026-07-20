@@ -1,9 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": [
-    "EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME",
-    "GOOGLE_MAP_API_KEY"
-  ],
+  "globalEnv": ["EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME", "GOOGLE_MAP_API_KEY"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
