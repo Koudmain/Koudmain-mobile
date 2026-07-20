@@ -67,4 +67,16 @@ export const config = [
       '@stylistic/no-trailing-spaces': 'error',
     },
   },
+  {
+    files: [
+      '**/*.config.js',
+      '**/*.config.mjs',
+      '**/*.config.ts',
+      '**/metro.config.js',
+      '**/tailwind.config.js',
+    ],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
 ];
