@@ -1,5 +1,5 @@
-import { nativeConfig } from "@koudmain/eslint-config/native";
-import { defineConfig } from "eslint/config";
+import { nativeConfig } from '@koudmain/eslint-config/native';
+import { defineConfig } from 'eslint/config';
 
 /**
  * Root ESLint configuration.
@@ -14,29 +14,29 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
   {
     ignores: [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/.expo/**",
-      "**/.turbo/**",
-      "**/src/components/ui/**",
-      "packages/eslint-config/**",
-      "packages/typescript-config/**",
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.expo/**',
+      '**/.turbo/**',
+      '**/src/components/ui/**',
+      'packages/eslint-config/**',
+      'packages/typescript-config/**',
       // Auto-generated declaration files — must not be edited
-      "**/*.d.ts",
+      '**/*.d.ts',
     ],
   },
   ...nativeConfig,
   {
     settings: {
-      "import/resolver": {
+      'import/resolver': {
         typescript: {
           alwaysTryTypes: true,
-          project: ["apps/*/tsconfig.json", "packages/*/tsconfig.json"],
+          project: ['apps/*/tsconfig.json', 'packages/*/tsconfig.json'],
         },
       },
     },
     rules: {
-      "import/no-unresolved": ["error", { ignore: ["expo-secure-store"] }],
+      'import/no-unresolved': ['error', { ignore: ['expo-secure-store'] }],
     },
   },
 ]);
