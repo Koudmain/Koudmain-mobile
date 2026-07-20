@@ -21,6 +21,8 @@ export default defineConfig([
       "**/src/components/ui/**",
       "packages/eslint-config/**",
       "packages/typescript-config/**",
+      // Auto-generated declaration files — must not be edited
+      "**/*.d.ts",
     ],
   },
   ...nativeConfig,
