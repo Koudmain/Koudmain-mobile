@@ -12,8 +12,8 @@
     "lint:expo": "expo lint",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,js}\" --fix",
     "lint:check": "eslint \"src/**/*.{ts,tsx,js}\"",
-    "format:fix": "prettier --write \"src/**/*.{ts,tsx,js}\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,js}\"",
+    "format:fix": "prettier --write \"src/**/*.{ts,tsx,js}\" \"*.{ts,tsx,js,d.ts}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,js}\" \"*.{ts,tsx,js,d.ts}\"",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .expo dist node_modules/.cache"
   },

@@ -20,8 +20,8 @@
     "build:employer": "turbo run build --filter=@koudmain/employer",
     "lint:check": "turbo run lint:check",
     "lint:fix": "turbo run lint:fix",
-    "format:check": "turbo run format:check",
-    "format:fix": "turbo run format:fix",
+    "format:check": "prettier --check \"./*.{json,yaml,md,js,ts}\" && turbo run format:check",
+    "format:fix": "prettier --write \"./*.{json,yaml,md,js,ts}\" && turbo run format:fix",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules"
   },
