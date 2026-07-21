@@ -1,4 +1,4 @@
-import { config } from "@koudmain/eslint-config/react-internal";
+import { nativeConfig } from '@koudmain/eslint-config/native';
 
-/** @type {import("eslint").Linter.Config} */
-export default config;
+/** @type {import("eslint").Linter.Config[]} */
+export default nativeConfig;

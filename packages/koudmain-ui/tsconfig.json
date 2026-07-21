@@ -5,13 +5,14 @@
     "baseUrl": ".",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": ["./src/*"],
-      "@koudmain/ui": ["../../packages/koudmain-ui/src"]
+      "@koudmain/ui/*": ["./src/*"],
+      "@koudmain/ui": ["./src"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "process-env.d.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"

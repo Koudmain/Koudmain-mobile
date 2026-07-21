@@ -1,3 +1,6 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
+allowBuilds:
+  react-native-calendar-strip: true
+  unrs-resolver: true

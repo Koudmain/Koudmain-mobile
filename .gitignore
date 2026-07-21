@@ -6,6 +6,7 @@ node_modules
 */node_modules/*
 .pnp
 .pnp.js
+.pnpm-store
 
 # Local env files
 .env
@@ -16,6 +17,9 @@ node_modules
 
 # Testing
 coverage
+
+# Linter / formatter caches
+.eslintcache
 
 # Turbo
 .turbo
@@ -38,3 +42,6 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Expo
+.expo

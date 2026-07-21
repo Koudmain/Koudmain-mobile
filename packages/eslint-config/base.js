@@ -1,8 +1,7 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
+import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import turboPlugin from 'eslint-plugin-turbo';
+import tseslint from 'typescript-eslint';
 
 /**
  * A shared ESLint configuration for the repository.
@@ -18,15 +17,66 @@ export const config = [
       turbo: turboPlugin,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+      'turbo/no-undeclared-env-vars': 'warn',
     },
   },
   {
+    ignores: ['dist/**'],
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parser: tseslint.parser,
+    },
     plugins: {
-      onlyWarn,
+      '@typescript-eslint': tseslint.plugin,
+    },
+    rules: {
+      '@typescript-eslint/naming-convention': [
+        'error',
+        {
+          selector: 'variableLike',
+          format: ['camelCase'],
+          filter: {
+            regex: '^_$',
+            match: false,
+          },
+        },
+        {
+          selector: 'variable',
+          modifiers: ['const', 'global'],
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+        },
+        {
+          selector: 'function',
+          format: ['camelCase', 'PascalCase'],
+        },
+        {
+          selector: 'typeLike',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'enumMember',
+          format: ['UPPER_CASE'],
+        },
+      ],
     },
   },
   {
-    ignores: ["dist/**"],
+    rules: {
+      '@stylistic/no-trailing-spaces': 'error',
+    },
+  },
+  {
+    files: [
+      '**/*.config.js',
+      '**/*.config.mjs',
+      '**/*.config.ts',
+      '**/metro.config.js',
+      '**/tailwind.config.js',
+    ],
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
   },
 ];
