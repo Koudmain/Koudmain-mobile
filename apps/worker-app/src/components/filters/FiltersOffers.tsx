@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-import FilterChip from '@/components/card/FilterChipCard';
+import FilterChip from '@koudmain/ui/components/card/FilterChipCard';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
@@ -9,7 +9,7 @@ type FiltersOffersProps = {
   onChange: (ids: string[]) => void;
 };
 
-const FiltersOffers = ({ selectedIds, onChange }: FiltersOffersProps) => {
+function FiltersOffers({ selectedIds, onChange }: FiltersOffersProps) {
   const categories = [
     {
       id: 'cuisine',
@@ -39,7 +39,7 @@ const FiltersOffers = ({ selectedIds, onChange }: FiltersOffersProps) => {
           <FilterChip
             key={cat.id}
             label={cat.label}
-            IconLibrary={cat.icon}
+            iconLibrary={cat.icon}
             iconName={cat.iconName}
             isActive={selectedIds.includes(cat.id)}
             onPress={() =>
@@ -54,6 +54,6 @@ const FiltersOffers = ({ selectedIds, onChange }: FiltersOffersProps) => {
       </ScrollView>
     </View>
   );
-};
+}
 
 export default FiltersOffers;

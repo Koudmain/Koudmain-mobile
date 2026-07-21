@@ -1,7 +1,7 @@
 import { View, TouchableOpacity } from 'react-native';
 import Reanimated, { SharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated';
 import { Ionicons, Octicons } from '@expo/vector-icons';
-import { Conversation } from '@/types/conversation';
+import { IConversation } from '@/types/conversation';
 
 const ButtonRightAction = ({
   prog,
@@ -13,7 +13,7 @@ const ButtonRightAction = ({
   isDark,
 }: {
   prog: SharedValue<number>;
-  conversation: Conversation;
+  conversation: IConversation;
   onMore?: (id: number) => void;
   onPin?: (id: number) => void;
   onArchive?: (id: number) => void;
@@ -35,7 +35,7 @@ const ButtonRightAction = ({
   }));
 
   return (
-    <View style={{ width: totalWidth, flexDirection: 'row', overflow: 'hidden' }}>
+    <View className="flex-row overflow-hidden" style={{ width: totalWidth }}>
       <Reanimated.View style={[{ width: 75 }, stylePlus]}>
         <TouchableOpacity
           className="flex-1 bg-neutral-200 dark:bg-neutral-800 items-center justify-center"
@@ -56,7 +56,11 @@ const ButtonRightAction = ({
             closeSwipe();
           }}
         >
-          <Octicons name={conversation.is_pinned ? 'pin-slash' : 'pin'} size={24} color="white" />
+          <Octicons
+            name={conversation.settings.is_pinned ? 'pin-slash' : 'pin'}
+            size={24}
+            color="white"
+          />
         </TouchableOpacity>
       </Reanimated.View>
 

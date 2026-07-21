@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, useColorScheme, KeyboardAvoidingView, Platform, FlatList } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { MOCK_CONVERSATIONS } from '@/constants/fakeConversations';
-import { HeaderChat } from '@/components/messaging/chat/HeaderChat';
+import { HeaderChat } from '@koudmain/ui/components/messaging/chat/HeaderChat';
 import { colors } from '@/constants/theme';
 import { MOCK_MESSAGES } from '@/constants/fakeMessages';
-import MessageBubble from '@/components/messaging/chat/MessageBubble';
-import MessageInput from '@/components/messaging/chat/MessageInput';
+import { MessageBubble } from '@koudmain/ui/components/messaging/chat/MessageBubble';
+import { MessageInput } from '@koudmain/ui/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ChatScreen() {
@@ -17,7 +17,7 @@ export default function ChatScreen() {
 
   const conversation = MOCK_CONVERSATIONS.find((c) => c.id === Number(id));
 
-  const handleSend = (text: string) => {
+  const handleSend = async (text: string) => {
     console.log('Envoi du message :', text);
   };
 
@@ -57,7 +57,7 @@ export default function ChatScreen() {
           <FlatList
             data={MOCK_MESSAGES}
             renderItem={({ item }) => <MessageBubble message={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             inverted
             contentContainerStyle={{ paddingVertical: 20, paddingHorizontal: 16 }}
           />

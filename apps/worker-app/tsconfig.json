@@ -3,14 +3,12 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@/*": [
-        "./src/*",
-        "./*"
-      ],
-      "tailwind.config": [
-        "./tailwind.config.js"
-      ]
+      "@/*": ["./src/*", "./*"],
+      "@koudmain/ui/*": ["../../packages/koudmain-ui/src/*"],
+      "tailwind.config": ["./tailwind.config.js"],
+      "@koudmain/ui": ["../../packages/koudmain-ui/src"]
     },
     "jsx": "react-native"
   },

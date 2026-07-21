@@ -1,10 +1,13 @@
 import React from 'react';
 import { View, Image } from 'react-native';
-import { Heading } from '@/components/ui/heading';
-import { useSession } from '@/context/SessionContext';
+import { Text, Heading } from '@koudmain/ui/gluestack';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
+import { CompanySelector } from './CompanySelector';
 
 export function UserHeader() {
   const { user } = useSession();
+  const { companies, activeCompanyId } = useCompany();
 
   return (
     <View className="items-center pb-8 border-b border-primary-disabled mb-6">
@@ -22,6 +25,16 @@ export function UserHeader() {
       <Heading size="md" className="text-primary dark:text-white text-center">
         {user?.first_name} {user?.last_name}
       </Heading>
+
+      <CompanySelector />
+      <Text
+        size="sm"
+        className="text-primary-disabled dark:text-primary-disabled text-center italic mt-1"
+      >
+        {companies && companies.length > 0
+          ? companies.find((c) => c.id.toString() === activeCompanyId)?.role
+          : 'Aucune role'}
+      </Text>
     </View>
   );
 }

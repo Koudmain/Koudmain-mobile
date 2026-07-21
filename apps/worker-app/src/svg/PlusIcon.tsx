@@ -4,7 +4,6 @@ import { colors } from '@/constants/theme';
 import { useColorScheme } from 'react-native';
 
 interface PlusIconProps extends SvgProps {
-  color?: string;
   verticalColor?: string;
   horizontalColor?: string;
 }
@@ -14,8 +13,8 @@ export function PlusIcon({ verticalColor, horizontalColor, ...props }: PlusIconP
   const isDark = colorScheme === 'dark';
 
   const computedVertical =
-    verticalColor ?? (isDark ? colors.primary.content : colors.primary.DEFAULT);
-  const computedHorizontal = horizontalColor ?? colors.secondary.DEFAULT;
+    verticalColor ?? (isDark ? colors?.primary.content : colors?.primary.DEFAULT);
+  const computedHorizontal = horizontalColor ?? colors?.secondary.DEFAULT;
 
   return (
     <Svg viewBox="0 0 100 100" {...props}>

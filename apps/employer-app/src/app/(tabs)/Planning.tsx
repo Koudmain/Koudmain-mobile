@@ -1,4 +1,4 @@
-import CalendarComponent from '@/components/planning/calendar';
+import CalendarComponent from '@/components/planning/Calendar';
 import { colors } from '@/constants/theme';
 import { Text, View, ScrollView, useColorScheme } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
@@ -14,7 +14,7 @@ export default function Planning() {
 
       <View className="flex-1 m-6 rounded-lg">
         <Shadow
-          startColor={isDark ? '#FFFFFF10' : '#00000010'}
+          startColor={isDark ? colors.shadow.dark : colors.shadow.light}
           style={{
             borderRadius: 24,
             width: '100%',

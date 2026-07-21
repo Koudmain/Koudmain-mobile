@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [],
-  presets: [require("nativewind/preset")],
+  presets: [require('nativewind/preset')],
   darkMode: 'class',
   theme: {
     screens: {
@@ -46,11 +46,11 @@ module.exports = {
       96: '24rem',
     },
     borderRadius: {
-      'none': '0',
-      'sm': '.125rem',
+      none: '0',
+      sm: '.125rem',
       DEFAULT: '.25rem',
-      'lg': '.5rem',
-      'full': '9999px'
+      lg: '.5rem',
+      full: '9999px',
     },
     fontFamily: {
       // For the Koudmain project we're currently using 2 fonts:
@@ -61,12 +61,12 @@ module.exports = {
       jakarta: ['Plus Jakarta Sans'],
     },
     opacity: {
-      '0': '0',
-      '20': '0.2',
-      '40': '0.4',
-      '60': '0.6',
-      '80': '0.8',
-      '100': '1',
+      0: '0',
+      20: '0.2',
+      40: '0.4',
+      60: '0.6',
+      80: '0.8',
+      100: '1',
     },
     extend: {
       colors: {
@@ -76,10 +76,19 @@ module.exports = {
         // Basic colors
         primary: {
           DEFAULT: 'hsl(0, 0%, 19%)', // #313131
+          50: 'hsl(0, 0%, 95%)',
+          100: 'hsl(0, 0%, 90%)',
+          200: 'hsl(0, 0%, 80%)',
+          300: 'hsl(0, 0%, 70%)',
+          400: 'hsl(0, 0%, 60%)',
+          500: 'hsl(0, 0%, 50%)',
+          600: 'hsl(0, 0%, 40%)',
+          700: 'hsl(0, 0%, 30%)',
           hover: 'hsl(0, 0%, 25%)',
           active: 'hsl(0, 0%, 15%)',
           focus: 'hsl(0, 0%, 19%, 0.4)',
           disabled: 'hsl(0, 0%, 60%)',
+          light: 'hsl(0, 0%, 85%)',
           content: '#FFFFFF',
         },
 
@@ -104,12 +113,12 @@ module.exports = {
         success: {
           DEFAULT: '#4F8A10',
           muted: '#B4F298',
-          dark: '#3b660c',
+          dark: '#3B660C',
         },
         error: {
           DEFAULT: '#D8000C',
           muted: '#FFA4A4',
-          dark: '#b0000a',
+          dark: '#B0000A',
         },
         warning: {
           DEFAULT: '#9F6000',
@@ -122,8 +131,16 @@ module.exports = {
           dark: '#245269',
         },
         assets: {
-          moon: '#3f3f46',
-          sun: '#f59e0b',
+          moon: '#3F3F46',
+          sun: '#F59E0B',
+        },
+        utils: {
+          hearth: '#E02424',
+          star: '#FBBF24',
+        },
+        map: {
+          selected: '#2ecc71',
+          stroke: '#333',
         },
 
         // Neutral colors
@@ -144,6 +161,12 @@ module.exports = {
           card: '#FFFFFF',
           background: '#F5F5F5',
           backdrop: 'rgba(0, 0, 0, 0.5)',
+        },
+
+        // Shadow colors
+        shadow: {
+          light: '#00000010',
+          dark: '#FFFFFF10',
         },
 
         // Gluestack CSS variable-based colors

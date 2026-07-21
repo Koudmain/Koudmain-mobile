@@ -3,7 +3,7 @@ import { Conversation } from '@/types/conversation';
 export const MOCK_CONVERSATIONS: Conversation[] = [
   {
     id: 1,
-    publication_id: 103,
+    publicationId: 103,
     other_user_name: 'Jean Dupont',
     other_user_avatar: 'https://i.pravatar.cc/150?u=1',
     last_message_content: 'Est-ce que le poste est toujours disponible ?',
@@ -15,7 +15,7 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
   },
   {
     id: 2,
-    publication_id: 103,
+    publicationId: 103,
     other_user_name: 'Marie Lavoie',
     other_user_avatar: 'https://i.pravatar.cc/150?u=2',
     last_message_content: 'Merci, à demain !',
@@ -27,7 +27,7 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
   },
   {
     id: 3,
-    publication_id: 103,
+    publicationId: 103,
     other_user_name: 'Tech Solutions Inc.',
     other_user_avatar: 'https://i.pravatar.cc/150?u=3',
     last_message_content: 'Votre candidature a été retenue pour un entretien.',
@@ -39,7 +39,7 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
   },
   {
     id: 4,
-    publication_id: 104,
+    publicationId: 104,
     other_user_name: 'Lucas Bernard',
     other_user_avatar: 'https://i.pravatar.cc/150?u=4',
     last_message_content: 'Je vous envoie le contrat par mail.',
@@ -51,7 +51,7 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
   },
   {
     id: 5,
-    publication_id: 104,
+    publicationId: 104,
     other_user_name: 'Sophie Morel',
     other_user_avatar: 'https://i.pravatar.cc/150?u=5',
     last_message_content: "Désolé, j'ai eu un empêchement.",
@@ -63,7 +63,7 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
   },
   {
     id: 6,
-    publication_id: 104,
+    publicationId: 104,
     other_user_name: 'BTP Services',
     other_user_avatar: 'https://i.pravatar.cc/150?u=6',
     last_message_content: 'Le chantier commence à 8h.',

@@ -13,17 +13,23 @@
     "dev:employer": "turbo run expo-go --filter=@koudmain/employer",
     "worker": "pnpm --filter=@koudmain/worker start",
     "employer": "pnpm --filter=@koudmain/employer start",
+    "worker-go": "pnpm --filter=@koudmain/worker expo-go",
+    "employer-go": "pnpm --filter=@koudmain/employer expo-go",
     "build": "turbo run build",
     "build:worker": "turbo run build --filter=@koudmain/worker",
     "build:employer": "turbo run build --filter=@koudmain/employer",
     "lint:check": "turbo run lint:check",
     "lint:fix": "turbo run lint:fix",
-    "format:check": "turbo run format:check",
-    "format:fix": "turbo run format:fix",
+    "format:check": "prettier --check \"./*.{json,yaml,md,js,ts}\" && turbo run format:check",
+    "format:fix": "prettier --write \"./*.{json,yaml,md,js,ts}\" && turbo run format:fix",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "@koudmain/eslint-config": "workspace:*",
+    "eslint": "^9.25.0",
+    "eslint-plugin-unicorn": "^64.0.0",
+    "prettier": "3.8.1",
     "turbo": "^2.5.4"
   },
   "engines": {

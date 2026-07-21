@@ -1,6 +1,5 @@
 import { TouchableOpacity, View } from 'react-native';
-import { Text } from '@/components/ui/text';
-import { HStack } from '@/components/ui/hstack';
+import { Text, HStack } from '@koudmain/ui/gluestack';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

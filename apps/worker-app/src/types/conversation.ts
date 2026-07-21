@@ -1,6 +1,6 @@
 export type Conversation = {
   id: number;
-  publication_id: number;
+  publicationId: number;
   other_user_name: string;
   other_user_avatar: string;
   last_message_content: string;

@@ -6,8 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "koudmain",
+    "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": true
     },
@@ -39,7 +40,15 @@
           }
         }
       ],
-      "expo-font"
+      [
+        "expo-location",
+        {
+          "locationAlwaysAllowPermissionDescription": "Permettre à Koudmain d'accéder à votre position pour vous proposer des missions à proximité.",
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ],
+      "expo-font",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

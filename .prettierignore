@@ -1,0 +1,10 @@
+**/node_modules/**
+**/dist/**
+**/.expo/**
+**/.turbo/**
+**/android/**
+**/ios/**
+pnpm-lock.yaml
+package-lock.json
+# Generated gluestack-ui components
+**/src/components/ui/

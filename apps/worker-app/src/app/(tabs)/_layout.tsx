@@ -1,19 +1,48 @@
 import { Tabs } from 'expo-router';
 import { FontAwesome6, Feather } from '@expo/vector-icons';
-import { TabBarIcon, ICON_DIMENSIONS } from '@/components/navigation/TabBarIcon';
-import { TabBarGradient } from '@/components/navigation/TabBarGradient';
+import { TabBarIcon, ICON_DIMENSIONS } from '@koudmain/ui/components/navigation/TabBarIcon';
+import { TabBarGradient } from '@koudmain/ui/components/navigation/TabBarGradient';
 import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
-import { TabBarHitBox } from '@/components/navigation/TabBarHitBox';
+import { TabBarHitBox } from '@koudmain/ui/components/navigation/TabBarHitBox';
 import { useSidebar } from '@/context/SidebarContext';
-import { PlusIcon } from '@/svg/PlusIcon';
+import { MapIcon } from '@/svg/MapIcon';
 
 const TABS_CONFIG = [
-  { name: 'index', IconLibrary: FontAwesome6, iconName: 'newspaper', label: 'Accueil' },
-  { name: 'Planning', IconLibrary: Feather, iconName: 'calendar', label: 'Planning' },
-  { name: 'CreatePost', SvgComponent: PlusIcon, label: 'Publier', isLarge: true },
-  { name: 'Messaging', IconLibrary: FontAwesome6, iconName: 'message', label: 'Messages' },
-  { name: 'Profile', IconLibrary: Feather, iconName: 'menu', label: 'Menu' },
+  {
+    name: 'Offers',
+    iconLibrary: FontAwesome6,
+    iconName: 'newspaper',
+    label: 'offers',
+    isLarge: false,
+  },
+  {
+    name: 'Planning',
+    iconLibrary: Feather,
+    iconName: 'calendar',
+    label: 'planning',
+    isLarge: false,
+  },
+  {
+    name: 'Map',
+    svgComponent: MapIcon,
+    label: 'Publier',
+    isLarge: true,
+  },
+  {
+    name: 'Messaging',
+    iconLibrary: FontAwesome6,
+    iconName: 'message',
+    label: 'messaging',
+    isLarge: false,
+  },
+  {
+    name: 'Profile',
+    iconLibrary: Feather,
+    iconName: 'menu',
+    label: 'Menu',
+    isLarge: false,
+  },
 ];
 
 export default function TabLayout() {
@@ -61,9 +90,9 @@ export default function TabLayout() {
               tabBarButton: (props) => <TabBarHitBox props={props} size={size} />,
               tabBarIcon: ({ color }) => (
                 <TabBarIcon
-                  IconLibrary={tab.IconLibrary}
+                  iconLibrary={tab.iconLibrary}
+                  svgComponent={tab.svgComponent}
                   iconName={tab.iconName}
-                  SvgComponent={tab.SvgComponent}
                   color={color}
                   isLarge={tab.isLarge}
                 />

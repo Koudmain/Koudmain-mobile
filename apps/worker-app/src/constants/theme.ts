@@ -1,4 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const tailwindConfig = require('../../tailwind.config');
+import tailwindConfig from '@/tailwind.config';
 
-export const colors = tailwindConfig.theme.extend.colors;
+export const colors = (tailwindConfig?.theme?.extend?.colors || {}) as Record<
+  string,
+  string | Record<string, string>
+>;

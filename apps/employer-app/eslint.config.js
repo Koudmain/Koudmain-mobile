@@ -1,12 +1,15 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
-const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
+import { nativeConfig } from '@koudmain/eslint-config/native';
+import { defineConfig } from 'eslint/config';
 
-module.exports = defineConfig([
-  expoConfig,
-  eslintPluginPrettierRecommended,
+/** @type {import("eslint").Linter.Config[]} */
+export default defineConfig([
+  ...nativeConfig,
   {
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'node_modules/*', '.expo/*', '*.d.ts'],
+  },
+  {
+    rules: {
+      'import/no-unresolved': ['error', { ignore: ['expo-secure-store'] }],
+    },
   },
 ]);
