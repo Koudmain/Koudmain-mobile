@@ -18,7 +18,6 @@
     "**/*.d.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts",
-    "../../packages/koudmain-ui/src/api/documenso.api.ts"
+    "nativewind-env.d.ts"
   ]
 }
