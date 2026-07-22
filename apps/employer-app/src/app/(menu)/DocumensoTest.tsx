@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { WebView } from 'react-native-webview';
-import { documensoService } from '@/api/documenso';
+import { documensoService } from '@koudmain/ui/api/documenso.api';
 import { useSession } from '@koudmain/ui/context';
+import WebViewSignature from '@koudmain/ui/components/webview/WebviewSignature';
 
 export default function SignatureWebViewScreen() {
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null);
@@ -16,7 +16,6 @@ export default function SignatureWebViewScreen() {
       try {
         const data = await documensoService.getSignatureUrl(session);
 
-        console.log('URL dynamique reçue du Back:', data);
         setSignatureUrl(data.url);
       } catch (error) {
         console.error('Erreur lors de la récupération de l’URL:', error);
@@ -44,20 +43,7 @@ export default function SignatureWebViewScreen() {
       </View>
 
       <View className="flex-1 bg-white">
-        {signatureUrl && (
-          <WebView
-            source={{ uri: signatureUrl }}
-            className="flex-1"
-            domStorageEnabled={true}
-            javaScriptEnabled={true}
-            scalesPageToFit={true}
-            onNavigationStateChange={(navState) => {
-              if (navState.url.includes('/success') || navState.url.includes('/completed')) {
-                console.log('Mobile : L’utilisateur a signé !');
-              }
-            }}
-          />
-        )}
+        {signatureUrl && <WebViewSignature url={signatureUrl} />}
       </View>
     </SafeAreaView>
   );
