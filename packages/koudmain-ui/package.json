@@ -39,6 +39,7 @@
     "react-native-calendars": "*"
   },
   "dependencies": {
-    "libphonenumber-js": "^1.13.6"
+    "libphonenumber-js": "^1.13.6",
+    "react-native-webview": "^13.16.1"
   }
 }
