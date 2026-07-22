@@ -53,9 +53,7 @@ export default function SignatureWebViewScreen() {
             scalesPageToFit={true}
             onNavigationStateChange={(navState) => {
               if (navState.url.includes('/success') || navState.url.includes('/completed')) {
-                console.log(
-                  '📱 Mobile : L’utilisateur a signé ! Tu peux fermer l’écran ou rediriger.',
-                );
+                console.log('Mobile : L’utilisateur a signé !');
               }
             }}
           />
