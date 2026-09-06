@@ -47,10 +47,10 @@ export type RegisterData = {
 };
 
 export const authService = {
-  login: async (email: string, password: string, targetApp: 'employer' | 'worker') => {
+  login: async (email: string, password: string) => {
     return apiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
-      body: { email, password, targetApp },
+      body: { email, password },
     });
   },
 

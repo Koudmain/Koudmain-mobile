@@ -39,7 +39,7 @@ function RootLayoutContent() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <GluestackUIProvider mode={themePreference}>
-          <SessionProvider targetApp="worker">
+          <SessionProvider>
             <SidebarProvider>
               <SafeAreaView className="flex-1 bg-white dark:bg-primary" edges={['top']}>
                 <StatusBar style={colorMode === 'dark' ? 'light' : 'dark'} />
