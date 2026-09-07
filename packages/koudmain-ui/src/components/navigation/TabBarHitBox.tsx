@@ -1,8 +1,11 @@
-import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
-import { Pressable, View } from 'react-native';
+import React from 'react';
+import { GestureResponderEvent, Pressable, View } from 'react-native';
 
 interface TabBarHitBoxProps {
-  props?: BottomTabBarButtonProps;
+  props?: {
+    children?: React.ReactNode;
+    onPress?: ((e: GestureResponderEvent) => void) | undefined;
+  };
   size: string;
 }
 

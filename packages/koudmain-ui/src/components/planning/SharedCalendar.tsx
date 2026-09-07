@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { Dimensions, useColorScheme, View, ViewStyle } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 import { colors } from '../../constants/theme';
 import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
