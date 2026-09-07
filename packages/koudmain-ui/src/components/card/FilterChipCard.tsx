@@ -6,11 +6,7 @@ import { colors } from '../../constants/theme';
 
 interface FilterChipProps {
   label: string;
-  iconLibrary?: React.ComponentType<{
-    name: string;
-    size: number;
-    color: string;
-  }>;
+  iconLibrary?: React.ElementType;
   iconName?: string;
   svgComponent?: React.FC<SvgProps>;
   isActive: boolean;

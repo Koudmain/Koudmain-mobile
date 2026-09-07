@@ -25,12 +25,12 @@
   },
   "devDependencies": {
     "@koudmain/eslint-config": "workspace:*",
-    "@types/react": "~19.1.0",
+    "@types/react": "~19.2.0",
     "@types/react-dom": "~19.1.0",
     "eslint": "^9.25.0",
     "prettier": "3.8.1",
-    "react": "19.1.4",
-    "react-native": "*",
+    "react": "19.2.0",
+    "react-native": "0.83.10",
     "typescript": "5.9.2"
   },
   "peerDependencies": {

@@ -184,7 +184,7 @@ export default function MapScreen() {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         initialRegion={BELLECOUR_REGION}
-        showsPointsOfInterest={false}
+        showsPointsOfInterests={false}
         onRegionChangeComplete={handleRegionChangeComplete}
         customMapStyle={currentMapStyle}
       >
