@@ -48,11 +48,7 @@ interface SharedCalendarProps<
 export default function SharedCalendar<
   TEvent extends { starting_date?: string } = PlanningEvent,
   TFormattedEvent = PlanningEvent,
->({
-  events,
-  renderPopUp,
-  formatDayEvents,
-}: SharedCalendarProps<TEvent, TFormattedEvent>) {
+>({ events, renderPopUp, formatDayEvents }: SharedCalendarProps<TEvent, TFormattedEvent>) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [selected, setSelected] = useState('');
