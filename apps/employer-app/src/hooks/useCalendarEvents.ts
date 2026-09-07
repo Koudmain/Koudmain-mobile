@@ -12,7 +12,7 @@ const parseLocalDate = (dateStr: string): Date => {
 };
 
 export const useCalendarEvents = (
-  session: string,
+  session: string | null,
   currentMonthStr: string,
   activeCompanyId: string | number | null,
 ) => {

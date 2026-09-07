@@ -4,7 +4,6 @@ import { colors } from '@/constants/theme';
 import { useColorScheme } from 'react-native';
 
 interface PlusIconProps extends SvgProps {
-  color?: string;
   verticalColor?: string;
   horizontalColor?: string;
 }

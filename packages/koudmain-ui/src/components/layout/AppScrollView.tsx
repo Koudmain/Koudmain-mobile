@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 
 type Props = ScrollViewProps & {
   extraBottomSpace?: number;

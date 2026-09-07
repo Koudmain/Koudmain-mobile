@@ -1,11 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
-import { Dimensions, useColorScheme, View } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { Dimensions, useColorScheme, View, ViewStyle } from 'react-native';
+import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 import { colors } from '../../constants/theme';
 import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
 import { PlanningEvent } from '../../types/planning';
+
+declare module 'react-native-calendars/src/types' {
+  interface Theme {
+    'stylesheet.calendar.main'?: {
+      week?: ViewStyle;
+      dayContainer?: ViewStyle;
+      [key: string]: unknown;
+    };
+  }
+}
 
 const TITLE_AND_PADDING_HEIGHT = 110;
 const ESTIMATED_HEADER_HEIGHT = 85;
@@ -21,22 +31,24 @@ export function getNumberOfWeeks(year: number, month: number): number {
   return Math.ceil((offset + daysInMonth) / 7);
 }
 
-interface SharedCalendarProps {
-  events: PlanningEvent[];
+interface SharedCalendarProps<
+  TEvent extends { starting_date?: string } = PlanningEvent,
+  TFormattedEvent = PlanningEvent,
+> {
+  events: TEvent[];
   renderPopUp: (props: {
     isVisible: boolean;
     onClose: () => void;
     selectedDate: string;
-    events: PlanningEvent[];
+    events: TFormattedEvent[];
   }) => React.ReactNode;
-  formatDayEvents: (events: PlanningEvent[], dateString: string) => PlanningEvent[];
+  formatDayEvents: (events: TEvent[], dateString: string) => TFormattedEvent[];
 }
 
-export default function SharedCalendar({
-  events,
-  renderPopUp,
-  formatDayEvents,
-}: SharedCalendarProps) {
+export default function SharedCalendar<
+  TEvent extends { starting_date?: string } = PlanningEvent,
+  TFormattedEvent = PlanningEvent,
+>({ events, renderPopUp, formatDayEvents }: SharedCalendarProps<TEvent, TFormattedEvent>) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [selected, setSelected] = useState('');
@@ -47,7 +59,7 @@ export default function SharedCalendar({
     getNumberOfWeeks(today.getFullYear(), today.getMonth() + 1),
   );
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-  const [bottomSheetEvents, setBottomSheetEvents] = useState<PlanningEvent[]>([]);
+  const [bottomSheetEvents, setBottomSheetEvents] = useState<TFormattedEvent[]>([]);
 
   const markedDatesList = Array.from(
     new Set(
