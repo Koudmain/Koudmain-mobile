@@ -31,14 +31,12 @@ export function useSession() {
 
 interface SessionProviderProps {
   children: React.ReactNode;
-  targetApp: 'employer' | 'worker';
   onSessionLoaded?: (token: string) => Promise<void>;
   onSessionCleared?: () => Promise<void>;
 }
 
 export function SessionProvider({
   children,
-  targetApp,
   onSessionLoaded,
   onSessionCleared,
 }: SessionProviderProps) {
@@ -149,7 +147,7 @@ export function SessionProvider({
 
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await authService.login(email, password, targetApp);
+      const response = await authService.login(email, password);
 
       if (!response?.accessToken || typeof response.accessToken !== 'string') {
         throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
