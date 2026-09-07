@@ -30,7 +30,7 @@
     "eslint": "^9.25.0",
     "prettier": "3.8.1",
     "react": "19.2.3",
-    "react-native": "0.85.3",
+    "react-native": "0.86.3",
     "typescript": "5.9.2"
   },
   "peerDependencies": {
