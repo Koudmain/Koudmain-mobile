@@ -19,6 +19,7 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
   const [password, setPassword] = useState('');
   const { signIn, isLoading } = useSession();
   const [signinFailed, setSigninFailed] = useState(false);
+  const [wrongRole, setWrongRole] = useState(false);
 
   const trimmedEmail = email.trim();
   const isEmailValid = EMAIL_REGEX.test(trimmedEmail);
@@ -28,11 +29,17 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
 
   const handleSignIn = async () => {
     try {
+      setSigninFailed(false);
+      setWrongRole(false);
       await signIn(email, password);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-      console.error('Sign-in failed:', errorMessage);
-      setSigninFailed(true);
+      if (errorMessage === 'WRONG_ROLE') {
+        setWrongRole(true);
+      } else {
+        console.error('Sign-in failed:', errorMessage);
+        setSigninFailed(true);
+      }
     }
   };
 
@@ -54,6 +61,7 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
               onChangeText={(value: string) => {
                 setEmail(value);
                 setSigninFailed(false);
+                setWrongRole(false);
               }}
             />
             <LabeledUnderlinedInput
@@ -64,6 +72,7 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
               onChangeText={(value: string) => {
                 setPassword(value);
                 setSigninFailed(false);
+                setWrongRole(false);
               }}
             />
             <Text className="text-secondary-400 text-right font-bold">Mot de passe oublié ?</Text>
@@ -77,6 +86,11 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
             {signinFailed && (
               <Text className="text-red-500 text-center mt-4">
                 Échec de la connexion. Veuillez vérifier vos identifiants.
+              </Text>
+            )}
+            {wrongRole && (
+              <Text className="text-red-500 text-center mt-4">
+                Ce compte n&apos;est pas autorisé sur cette application.
               </Text>
             )}
             <View className="flex-row items-center justify-between ">
