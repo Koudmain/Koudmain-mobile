@@ -10,7 +10,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.Koudmain"
     },
     "android": {
       "adaptiveIcon": {
