@@ -1,4 +1,12 @@
-import { View, Text, Pressable, Keyboard, ScrollView, useColorScheme } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Keyboard,
+  ScrollView,
+  useColorScheme,
+  Platform,
+} from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
@@ -121,7 +129,7 @@ export default function RegisterLocation() {
 
                 <View className="mt-4 border border-gray-200 dark:border-gray-700 h-[350px] rounded-2xl overflow-hidden">
                   <MapView
-                    provider={PROVIDER_GOOGLE}
+                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
                     customMapStyle={currentMapStyle}
                     style={{ flex: 1 }}
                     region={{

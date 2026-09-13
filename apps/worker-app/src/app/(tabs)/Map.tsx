@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { View, StyleSheet, FlatList, useColorScheme, Image } from 'react-native';
+import { View, StyleSheet, FlatList, useColorScheme, Image, Platform } from 'react-native';
 import MapView, { Marker, Region, PROVIDER_GOOGLE } from 'react-native-maps';
 import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
 
@@ -181,10 +181,10 @@ export default function MapScreen() {
     <View className="flex-1">
       <MapView
         ref={mapRef}
-        provider={PROVIDER_GOOGLE}
+        provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         style={styles.map}
         initialRegion={BELLECOUR_REGION}
-        showsPointsOfInterest={false}
+        showsPointsOfInterests={false}
         onRegionChangeComplete={handleRegionChangeComplete}
         customMapStyle={currentMapStyle}
       >
@@ -215,6 +215,6 @@ export default function MapScreen() {
 
 const styles = StyleSheet.create({
   map: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
   },
 });

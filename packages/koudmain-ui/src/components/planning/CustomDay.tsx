@@ -1,24 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import BasicDay from 'react-native-calendars/src/calendar/day/basic';
+import BasicDay, { BasicDayProps } from 'react-native-calendars/src/calendar/day/basic';
 import { DateData } from 'react-native-calendars';
 import { colors } from '../../constants/theme';
 
-export interface CalendarDayProps {
-  date: DateData;
-  state?: 'selected' | 'disabled' | 'today' | '';
-  marking?: {
-    selected?: boolean;
-    marked?: boolean;
-    disabled?: boolean;
-    disableTouchEvent?: boolean;
-    textColor?: string;
-    dotColor?: string;
-    color?: string;
-  };
-  theme?: Record<string, unknown>;
-  onPress?: (date?: DateData) => void;
-  onLongPress?: (date?: DateData) => void;
+export interface CalendarDayProps extends Omit<BasicDayProps, 'date'> {
+  date?: DateData;
 }
 
 interface CustomDayProps {
@@ -29,6 +16,8 @@ interface CustomDayProps {
 
 export default function CustomDay({ props, cellHeight, isDark }: CustomDayProps) {
   const { ...rest } = props;
+
+  if (!props.date) return null;
 
   const dateObj = new Date(props.date.dateString);
   const isWeekend = dateObj.getDay() === 0 || dateObj.getDay() === 6;

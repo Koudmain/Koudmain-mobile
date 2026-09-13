@@ -8,9 +8,9 @@ export interface PlanningEvent {
   end: string;
   rate: number;
   number_rate: number;
-  status: 'accepted' | 'pending';
-  city: string;
-  zip: string;
+  status?: 'accepted' | 'pending';
+  city?: string;
+  zip?: string;
   starting_date: string;
 }
 

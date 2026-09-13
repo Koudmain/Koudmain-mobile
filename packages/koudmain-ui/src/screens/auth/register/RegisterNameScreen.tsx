@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useState } from 'react';
-import { router, useLocalSearchParams } from 'expo-router';
+import { Href, router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { PhoneInput, COUNTRIES } from '@koudmain/ui/components/form/PhoneInput';
@@ -99,12 +99,12 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
           phoneNumber,
           birthDate: convertBirthDate(birthDate),
         },
-      });
+      } as unknown as Href);
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
         params: { email, password, firstName, lastName, phoneNumber, ownerPosition },
-      });
+      } as unknown as Href);
     }
   };
 

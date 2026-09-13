@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, ColorValue } from 'react-native';
 import { SvgProps } from 'react-native-svg';
 import React from 'react';
 import { colors } from '../../constants/theme';
@@ -15,14 +15,10 @@ export const ICON_DIMENSIONS = {
 };
 
 interface TabBarIconProps {
-  iconLibrary?: React.ComponentType<{
-    name: string;
-    size: number;
-    color: string;
-  }>;
+  iconLibrary?: React.ElementType;
   iconName?: string;
-  svgComponent?: React.ComponentType<SvgProps & { color?: string }>;
-  color: string;
+  svgComponent?: React.ComponentType<SvgProps & { color?: ColorValue }>;
+  color: ColorValue;
   isLarge?: boolean;
 }
 

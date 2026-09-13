@@ -3,7 +3,6 @@
   "compilerOptions": {
     "strict": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*", "./*"],
       "@koudmain/ui/*": ["../../packages/koudmain-ui/src/*"],

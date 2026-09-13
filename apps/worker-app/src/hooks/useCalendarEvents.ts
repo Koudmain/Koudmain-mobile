@@ -11,7 +11,7 @@ const parseLocalDate = (dateStr: string): Date => {
   return new Date(parseInt(yearStr, 10), parseInt(monthStr, 10) - 1, parseInt(dayStr, 10));
 };
 
-export const useCalendarEvents = (session: string, currentMonthStr: string) => {
+export const useCalendarEvents = (session: string | null, currentMonthStr: string) => {
   const [events, setEvents] = useState<PlanningApiEvent[]>([]);
   const loadedMonths = useRef<Set<string>>(new Set());
 

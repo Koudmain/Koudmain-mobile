@@ -26,11 +26,12 @@
     "clean": "turbo run clean && rm -rf node_modules"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.7",
     "@koudmain/eslint-config": "workspace:*",
-    "eslint": "^9.25.0",
+    "eslint": "^9.39.5",
     "eslint-plugin-unicorn": "^64.0.0",
     "prettier": "3.8.1",
-    "turbo": "^2.5.4"
+    "turbo": "^2.10.12"
   },
   "engines": {
     "node": ">=20.0.0",

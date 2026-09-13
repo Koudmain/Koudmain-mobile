@@ -11,7 +11,7 @@ import {
   GestureResponderEvent,
   PanResponderGestureState,
 } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from 'expo-router/react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
 import { PlanningEvent } from '../../types/planning';
 
