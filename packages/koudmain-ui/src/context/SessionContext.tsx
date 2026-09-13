@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import * as SecureStore from 'expo-secure-store';
-import { User } from '../types/user';
+import { User, UserRole } from '../types/user';
 import { userService } from '../api/user.api';
 import { authService, RegisterData } from '../api/auth.api';
 import { configureAuthRefresh } from '../utils/api';
@@ -31,12 +31,14 @@ export function useSession() {
 
 interface SessionProviderProps {
   children: React.ReactNode;
+  expectedRole?: UserRole;
   onSessionLoaded?: (token: string) => Promise<void>;
   onSessionCleared?: () => Promise<void>;
 }
 
 export function SessionProvider({
   children,
+  expectedRole,
   onSessionLoaded,
   onSessionCleared,
 }: SessionProviderProps) {
@@ -79,8 +81,13 @@ export function SessionProvider({
         const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
 
         if (token && refreshToken) {
-          setSession(token);
           const userData = await userService.getMe(token);
+          if (expectedRole && userData.role !== expectedRole) {
+            console.warn(`Rôle incorrect: attendu ${expectedRole}, reçu ${userData.role}`);
+            await clearSession();
+            return;
+          }
+          setSession(token);
           setUser(userData);
           if (onSessionLoaded) {
             await onSessionLoaded(token);
@@ -130,9 +137,16 @@ export function SessionProvider({
 
       await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
       await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-      setSession(token);
 
       const userData = await userService.getMe(token);
+
+      if (expectedRole && userData.role !== expectedRole) {
+        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
+        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+        throw new Error('WRONG_ROLE');
+      }
+
+      setSession(token);
       setUser(userData);
 
       if (onSessionLoaded) {
@@ -161,9 +175,16 @@ export function SessionProvider({
 
       await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
       await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-      setSession(token);
 
       const userData = await userService.getMe(token);
+
+      if (expectedRole && userData.role !== expectedRole) {
+        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
+        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+        throw new Error('WRONG_ROLE');
+      }
+
+      setSession(token);
       setUser(userData);
 
       if (onSessionLoaded) {
