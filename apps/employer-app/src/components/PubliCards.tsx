@@ -11,11 +11,6 @@ import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimat
 import { Shadow } from 'react-native-shadow-2';
 import { colors } from '@/constants/theme';
 
-interface Competence {
-  name1: string;
-  name2: string;
-}
-
 type PublicationProps = {
   title: string;
   date: string;
@@ -23,7 +18,7 @@ type PublicationProps = {
   time: string;
   views: number;
   clicks: number;
-  competence: Competence;
+  competences: string[];
 };
 
 function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
@@ -85,8 +80,9 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
               </View>
             </View>
             <View className="flex-row">
-              {CompetenceCard({ comp: data.competence.name1 })}
-              {CompetenceCard({ comp: data.competence.name2 })}
+              {data.competences.map((comp) => (
+                <CompetenceCard key={comp} comp={comp} />
+              ))}
             </View>
           </View>
         </Card>
