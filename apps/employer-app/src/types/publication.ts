@@ -1,3 +1,5 @@
+import { Skill } from './skill';
+
 export enum PublicationStatus {
   OPEN = 'Ouverte',
   CLOSE = 'Fermée',
@@ -19,9 +21,11 @@ export interface IPublication {
   clicks: string;
   createdAt: string;
   updatedAt: string;
+  skills?: Skill[];
 }
 
 export interface PublicationsDto {
+  companyId?: number;
   createdByUserId?: number;
   address_id?: number;
   title: string;

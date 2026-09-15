@@ -1,4 +1,4 @@
-import { PublicationsDto } from '@/types/publication';
+import { IPublication, PublicationsDto } from '@/types/publication';
 import * as SecureStore from 'expo-secure-store';
 import { apiFetch } from '@koudmain/ui/utils/api';
 
@@ -17,6 +17,15 @@ export const createPostAsync = async (
     method: 'POST',
     token: token,
     body: JSON.stringify(payload),
+    signal,
+  });
+};
+
+export const getPublicationsAsync = async (signal?: AbortSignal): Promise<IPublication[]> => {
+  const token = await SecureStore.getItemAsync('session');
+  return apiFetch<IPublication[]>('/publication/get', {
+    method: 'GET',
+    token: token,
     signal,
   });
 };

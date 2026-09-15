@@ -19,8 +19,12 @@ import { Skill } from '@/types/skill';
 import { MissionDatePicker } from '@/components/skill/MissionDuration';
 import { MissionSkillSelector } from '@/components/skill/MissionSkillSelector';
 import { BottomSheetSkillSelector } from '@/components/skill/BottomSheetSkillSelector';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { useCompany } from '@/context/CompanyContext';
 
 export default function CreatePost() {
+  const { user } = useSession();
+  const { activeCompanyId } = useCompany();
   const [competencesList, setCompetencesList] = useState<Skill[]>([]);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -71,6 +75,11 @@ export default function CreatePost() {
       return;
     }
 
+    if (!activeCompanyId) {
+      Alert.alert('Erreur', 'Aucune entreprise sélectionnée. Impossible de publier une annonce.');
+      return;
+    }
+
     const parsedAmount = parseFloat(amount.replace(',', '.')) || 0;
     const rate =
       paymentType === '€/h' ? parsedAmount : parseFloat((parsedAmount / duration).toFixed(2));
@@ -81,6 +90,8 @@ export default function CreatePost() {
       `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:00`;
 
     const payload = {
+      companyId: Number(activeCompanyId),
+      createdByUserId: user?.id,
       title: title,
       description: description,
       hourly_rate: rate,
