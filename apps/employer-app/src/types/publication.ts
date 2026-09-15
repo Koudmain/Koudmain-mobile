@@ -25,6 +25,7 @@ export interface IPublication {
 }
 
 export interface PublicationsDto {
+  companyId?: number;
   createdByUserId?: number;
   address_id?: number;
   title: string;
