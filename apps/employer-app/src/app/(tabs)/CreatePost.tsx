@@ -10,7 +10,6 @@ import SelectorMissionPrice from '@/components/selector/SelectorMissionPrice';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { CustomButton } from '@/components/button/LongButton';
 import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useGetSkillCategory } from '@/hooks/useGetSkillCategory';
 import { SearchBarProps } from '@koudmain/ui/components/tools/SearchBar';
 import { router } from 'expo-router';
@@ -40,7 +39,13 @@ export default function CreatePost() {
   // Render the backdrop only when snapPoints change
   const renderBottomSheetBackdrop = useCallback(
     (props: React.ComponentProps<typeof BottomSheetBackdrop>) => (
-      <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} opacity={0.2} />
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-0.5}
+        appearsOnIndex={0}
+        opacity={0.2}
+        enableTouchThrough={true}
+      />
     ),
     [],
   );
@@ -122,15 +127,18 @@ export default function CreatePost() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppScrollView contentContainerClassName="items-center gap-4 bg-white px-6">
+    <View className="flex-1">
+      <AppScrollView
+        nestedScrollEnabled={true}
+        contentContainerClassName="items-center gap-4 bg-white px-6"
+      >
         <View className="w-full flex-row items-center gap-4 pt-4">
           <TouchableOpacity onPress={() => router.back()}>
             <Entypo name="chevron-left" size={32} color={'black'} />
           </TouchableOpacity>
           <Text className="text-primary text-3xl font-bold font-inter">Nouvelle Publication</Text>
         </View>
-        <View className="w-full h-full pt-4">
+        <View className="w-full pt-4">
           <FormControl>
             <VStack className="gap-6">
               <VStack space="xs" className="w-full gap-2">
@@ -245,6 +253,6 @@ export default function CreatePost() {
           setCompetencesList={setCompetencesList}
         />
       </BottomSheet>
-    </GestureHandlerRootView>
+    </View>
   );
 }
