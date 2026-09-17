@@ -49,10 +49,7 @@ export default function Publication() {
 
   if (companyPublications.length === 0) {
     return (
-      <AppScrollView
-        contentContainerClassName="bg-white pt-20"
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
+      <AppScrollView contentContainerClassName="bg-white pt-20 flex-grow">
         <EmptyPublications />
       </AppScrollView>
     );

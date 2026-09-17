@@ -11,14 +11,10 @@ export default function EmptyPublications() {
   return (
     <Reanimated.View
       entering={FadeInDown.duration(500).springify()}
-      className="items-center px-8"
-      style={{ flexGrow: 1, justifyContent: 'center' }}
+      className="items-center justify-center flex-grow px-8"
     >
-      <View className="items-center justify-center mb-6" style={{ width: 96, height: 96 }}>
-        <View
-          className="items-center justify-center rounded-full bg-secondary-50"
-          style={{ width: 96, height: 96 }}
-        >
+      <View className="items-center justify-center mb-6 w-24 h-24">
+        <View className="items-center justify-center rounded-full bg-secondary-50 w-24 h-24">
           <Feather name="file-plus" size={36} color={colors.secondary.DEFAULT} />
         </View>
       </View>
