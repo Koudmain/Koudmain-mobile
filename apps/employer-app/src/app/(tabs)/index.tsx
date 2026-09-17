@@ -1,58 +1,76 @@
-import PubliCards from '@/components/PubliCards';
+import { useCallback } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { useFocusEffect } from 'expo-router';
+import { Text } from '@koudmain/ui/gluestack';
 import { AppScrollView } from '@koudmain/ui/components/layout/AppScrollView';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import PubliCards from '@/components/PubliCards';
+import EmptyPublications from '@/components/EmptyPublications';
+import { useCompany } from '@/context/CompanyContext';
+import { useGetPublications } from '@/hooks/useGetPublications';
+import { colors } from '@/constants/theme';
+import { formatPublicationDateLabel, formatPublicationTimeLabel } from '@/utils/publicationFormat';
 
 export default function Publication() {
-  const desc1 =
-    'Cherchons une personne expérimentée pour un service lors d’une soirée de forte influence. Maitrise de la prise de commande numérique requise. Une personne gérant la pression et le période de rush recommandé.';
-  const desc2 =
-    'Cherchons une personne expérimentée pour un service lors d’un midi de forte influence. Maitrise de la  cuisine française requise. Votre tâche sera d’aider le chef, et de suivre les missions qu’il pourra vous donner.';
+  const { session } = useSession();
+  const { activeCompanyId } = useCompany();
+  const { mutatePublications, publications, isLoadingPublications, errorPublications } =
+    useGetPublications();
+
+  useFocusEffect(
+    useCallback(() => {
+      if (session) {
+        void mutatePublications();
+      }
+    }, [session, mutatePublications]),
+  );
+
+  const companyPublications = publications
+    .filter((pub) => activeCompanyId != null && pub.companyId === Number(activeCompanyId))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  if (isLoadingPublications && companyPublications.length === 0) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white pt-20">
+        <ActivityIndicator color={colors.secondary.DEFAULT} />
+      </View>
+    );
+  }
+
+  if (errorPublications && companyPublications.length === 0) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white pt-20 px-8">
+        <Text className="text-sm text-gray-500 text-center">
+          Impossible de récupérer vos publications. Réessayez plus tard.
+        </Text>
+      </View>
+    );
+  }
+
+  if (companyPublications.length === 0) {
+    return (
+      <AppScrollView contentContainerClassName="bg-white pt-20 flex-grow">
+        <EmptyPublications />
+      </AppScrollView>
+    );
+  }
 
   return (
     <AppScrollView contentContainerClassName="items-center py-4 gap-4 bg-white pt-20">
-      <PubliCards
-        data={{
-          title: 'Serveur H/F',
-          date: 'Lun. 25 Mars 2026',
-          description: desc1,
-          time: '18h00 - 23h00 (5h)',
-          views: 123,
-          clicks: 23,
-          competence: { name1: 'Barman', name2: 'Serveur' },
-        }}
-      />
-      <PubliCards
-        data={{
-          title: 'Serveur H/F',
-          date: 'Lun. 25 Mars 2026',
-          description: desc1,
-          time: '18h00 - 23h00 (5h)',
-          views: 67,
-          clicks: 12,
-          competence: { name1: 'Barman', name2: 'Serveur' },
-        }}
-      />
-      <PubliCards
-        data={{
-          title: 'Commis de cuisine',
-          date: 'Mar. 26 Mars 2026',
-          description: desc2,
-          time: '15h00 - 21h00 (6h)',
-          views: 456,
-          clicks: 45,
-          competence: { name1: 'Barman', name2: 'Serveur' },
-        }}
-      />
-      <PubliCards
-        data={{
-          title: 'Commis de cuisine',
-          date: 'Mar. 26 Mars 2026',
-          description: desc2,
-          time: '15h00 - 21h00 (6h)',
-          views: 456,
-          clicks: 45,
-          competence: { name1: 'Barman', name2: 'Serveur' },
-        }}
-      />
+      {companyPublications.map((pub) => (
+        <PubliCards
+          key={pub.id}
+          data={{
+            title: pub.title,
+            date: formatPublicationDateLabel(pub.starting_date),
+            description: pub.description,
+            time: formatPublicationTimeLabel(pub.starting_date, pub.ending_date),
+            views: Number(pub.views) || 0,
+            clicks: Number(pub.clicks) || 0,
+            competences: pub.skills?.map((skill) => skill.name) ?? [],
+          }}
+        />
+      ))}
     </AppScrollView>
   );
 }

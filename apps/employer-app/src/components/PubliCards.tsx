@@ -11,11 +11,6 @@ import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimat
 import { Shadow } from 'react-native-shadow-2';
 import { colors } from '@/constants/theme';
 
-interface Competence {
-  name1: string;
-  name2: string;
-}
-
 type PublicationProps = {
   title: string;
   date: string;
@@ -23,7 +18,7 @@ type PublicationProps = {
   time: string;
   views: number;
   clicks: number;
-  competence: Competence;
+  competences: string[];
 };
 
 function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
@@ -50,7 +45,12 @@ function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
   );
 }
 
+const MAX_VISIBLE_COMPETENCES = 4;
+
 export default function PubliCards({ data }: { data: PublicationProps }) {
+  const visibleCompetences = data.competences.slice(0, MAX_VISIBLE_COMPETENCES);
+  const hiddenCompetencesCount = data.competences.length - visibleCompetences.length;
+
   return (
     <Swipeable
       containerStyle={{ overflow: 'visible' }}
@@ -73,20 +73,28 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
             <Text className="text-sm text-gray-500 ml-3">{data.time}</Text>
           </View>
           <Text className="text-sm text-gray-500">{data.description}</Text>
-          <View className="mt-4 flex-row justify-between items-center">
-            <View className="flex-row ">
-              <View className="flex-row items-center">
-                <Entypo name="eye" size={14} color="grey" />
-                <Text className="text-2xs text-gray-500 ml-1">{data.views}</Text>
-              </View>
-              <View className="flex-row items-center ml-2">
-                <MaterialCommunityIcons name="cursor-default" size={14} color="grey" />
-                <Text className="text-2xs text-gray-500 ml-1">{data.clicks}</Text>
-              </View>
+
+          {data.competences.length > 0 && (
+            <View className="flex-row flex-wrap gap-1.5 mt-3">
+              {visibleCompetences.map((comp) => (
+                <CompetenceCard key={comp} comp={comp} size="sm" />
+              ))}
+              {hiddenCompetencesCount > 0 && (
+                <View className="rounded-full px-2 py-0.5 bg-neutral-100 items-center justify-center">
+                  <Text className="text-2xs text-gray-500">+{hiddenCompetencesCount}</Text>
+                </View>
+              )}
             </View>
-            <View className="flex-row">
-              {CompetenceCard({ comp: data.competence.name1 })}
-              {CompetenceCard({ comp: data.competence.name2 })}
+          )}
+
+          <View className="mt-3 flex-row items-center">
+            <View className="flex-row items-center">
+              <Entypo name="eye" size={14} color="grey" />
+              <Text className="text-2xs text-gray-500 ml-1">{data.views}</Text>
+            </View>
+            <View className="flex-row items-center ml-3">
+              <MaterialCommunityIcons name="cursor-default" size={14} color="grey" />
+              <Text className="text-2xs text-gray-500 ml-1">{data.clicks}</Text>
             </View>
           </View>
         </Card>
