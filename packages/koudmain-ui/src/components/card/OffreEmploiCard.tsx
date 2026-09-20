@@ -57,43 +57,42 @@ export default function OffreEmploiCard({
 
   const isDark = colorScheme === 'dark';
   return (
-    <Card className="w-full p-0 pt-4 pb-2 rounded-[20] mb-4 dark:bg-primary">
-      <View className="flex-row px-4 justify-between items-start">
-        <View className="flex-row items-center flex-1 mr-3">
-          <Image source={imageProfile} className="w-14 h-14 rounded-full mr-3" />
-          <View className="flex-1">
-            <Heading className="text-base font-bold">{name}</Heading>
-            <View className="flex-row items-center mt-1">
-              <Text className="text-xs text-gray-500 dark:text-white/80">
-                {city} - {zip}
-              </Text>
-              <View className="flex-row items-center ml-4">
-                <MaterialIcons name="star" size={18} color={colors.secondary.DEFAULT} />
-                <Text className="text-xs text-gray-500 dark:text-white/80 ml-1">
-                  {rate} ({numberRate})
+    <Card className="w-full p-0 pt-4 pb-4 rounded-[20] dark:bg-primary overflow-hidden">
+      <Pressable className="px-4" onPress={() => router.navigate(`/offer/${id}`)}>
+        <View className="flex-row justify-between items-start">
+          <View className="flex-row items-center flex-1 mr-3">
+            <Image source={imageProfile} className="w-14 h-14 rounded-full mr-3" />
+            <View className="flex-1">
+              <Heading className="text-base font-bold">{name}</Heading>
+              <View className="flex-row items-center mt-1">
+                <Text className="text-xs text-gray-500 dark:text-white/80">
+                  {city} - {zip}
                 </Text>
+                <View className="flex-row items-center ml-4">
+                  <MaterialIcons name="star" size={18} color={colors.utils.star} />
+                  <Text className="text-xs text-gray-500 dark:text-white/80 ml-1">
+                    {rate} ({numberRate})
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
 
-        <View className={`w-8 h-8 rounded-full items-center justify-center`}>
-          <MaterialIcons
-            name={wishlist ? 'favorite' : 'favorite-border'}
-            size={24}
-            color={wishlist ? colors.utils.heart : colors.primary.disabled}
-          />
+          <View className={`w-8 h-8 rounded-full items-center justify-center`}>
+            <MaterialIcons
+              name={wishlist ? 'favorite' : 'favorite-border'}
+              size={24}
+              color={wishlist ? colors.utils.heart : colors.primary.disabled}
+            />
+          </View>
         </View>
-      </View>
-
-      <Pressable className="px-4" onPress={() => router.navigate(`/offer/${id}`)}>
         <Heading className="text-3xl font-bold mt-4 mb-1">{title}</Heading>
 
         <View className="flex-row items-center mt-2 mb-4">
           <MaterialCommunityIcons name="account-cash" size={18} color={colors.secondary.DEFAULT} />
           <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{wage}€ /h</Text>
         </View>
-        <View className="flex-row items-center mb-4 gap-4">
+        <View className="flex-row items-center gap-4">
           <View className="flex-row items-center mt-2 mb-4">
             <Feather name="calendar" size={18} color={colors.secondary.DEFAULT} />
             <Text className="text-md text-gray-500 dark:text-white/80 ml-3">{date}</Text>
@@ -117,7 +116,7 @@ export default function OffreEmploiCard({
         >
           <View className="flex-row items-center">
             {competence.map((comp, index) => (
-              <CompetenceCard key={`${comp}-${index}`} comp={comp} size="lg" />
+              <CompetenceCard key={`${comp}-${index}`} comp={comp} size="md" />
             ))}
           </View>
         </ScrollView>

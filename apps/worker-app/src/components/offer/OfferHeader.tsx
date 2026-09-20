@@ -15,7 +15,7 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
 
   return (
     <View className="relative w-full h-[250px] mb-4 bg-white dark:bg-primary">
-      <Image source={imageSource} className="w-full h-full rounded-b-[20]" resizeMode="cover" />
+      <Image source={imageSource} className="w-full h-full rounded-b-xl" resizeMode="cover" />
 
       <View className="absolute inset-0 bg-black/40 rounded-[20]" />
 

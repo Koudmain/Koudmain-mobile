@@ -43,9 +43,9 @@ export default function OfferDetailsPage() {
         <OfferRequirements requirements={offer.requirements} />
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 px-6 pt-4 pb-8 bg-white dark:bg-primary">
+      <View className="absolute bottom-0 left-0 right-0 px-6 pt-4 pb-10 bg-white dark:bg-primary">
         <Pressable
-          className="w-full bg-[#D84A22] h-14 rounded-lg items-center justify-center flex-row"
+          className="w-full bg-[#D84A22] h-12 rounded-xl items-center justify-center flex-row"
           onPress={() => console.log('Postuler clicked')}
         >
           <Text className="text-white font-bold text-xl">Postuler</Text>
