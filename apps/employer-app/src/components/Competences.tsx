@@ -24,19 +24,17 @@ export default function CompetenceCard({
   const sizeStyle = SIZE_STYLES[size];
 
   return (
-    <View className="flex-row">
-      <View
-        className="rounded-full m-1"
-        style={{
-          backgroundColor,
-          borderColor: accentColor,
-          borderWidth: 1,
-          paddingHorizontal: sizeStyle.paddingHorizontal,
-          paddingVertical: sizeStyle.paddingVertical,
-        }}
-      >
-        <Text style={{ color: accentColor, fontSize: sizeStyle.fontSize }}>{comp}</Text>
-      </View>
+    <View
+      className="rounded-full"
+      style={{
+        backgroundColor,
+        borderColor: accentColor,
+        borderWidth: 1,
+        paddingHorizontal: sizeStyle.paddingHorizontal,
+        paddingVertical: sizeStyle.paddingVertical,
+      }}
+    >
+      <Text style={{ color: accentColor, fontSize: sizeStyle.fontSize }}>{comp}</Text>
     </View>
   );
 }
