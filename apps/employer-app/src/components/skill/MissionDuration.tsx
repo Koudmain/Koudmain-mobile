@@ -6,6 +6,7 @@ import CalendarStrip from 'react-native-calendar-strip';
 import { TimerPickerModal } from 'react-native-timer-picker';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { colors } from '@/constants/theme';
+import { useThemeColors } from '@/hooks/useThemeColors';
 import { formatTime } from '@koudmain/ui/utils/formatTime';
 
 export interface MissionDurationPickerProps {
@@ -23,26 +24,29 @@ export function MissionDatePicker({
   showPicker,
   setShowPicker,
 }: MissionDurationPickerProps) {
+  const { isDark, icon, text, mutedText } = useThemeColors();
   return (
     <View>
-      <Text className="text-primary font-inter font-bold text-xl">Début de la mission</Text>
-      <View className="pt-5 pb-2.5 bg-surface h-auto rounded-lg">
+      <Text className="text-primary dark:text-white font-inter font-bold text-xl">
+        Début de la mission
+      </Text>
+      <View className="pt-5 pb-2.5 bg-surface dark:bg-primary-hover h-auto rounded-lg">
         <CalendarStrip
           scrollable
           style={{ height: 120 }}
           calendarColor={'transparent'}
           calendarHeaderFormat={'MMMM YYYY'}
           calendarHeaderPosition={'above'}
-          calendarHeaderStyle={{ color: colors.primary.DEFAULT, fontFamily: 'Inter' }}
+          calendarHeaderStyle={{ color: text, fontFamily: 'Inter' }}
           dateNumberStyle={{
-            color: colors.primary.DEFAULT,
+            color: text,
             fontSize: 24,
             fontFamily: 'Inter',
             fontWeight: 'bold',
           }}
-          dateNameStyle={{ color: colors.grey, fontFamily: 'Inter', fontSize: 12 }}
+          dateNameStyle={{ color: mutedText, fontFamily: 'Inter', fontSize: 12 }}
           highlightDateNameStyle={{
-            color: colors.black,
+            color: text,
             fontSize: 12,
             fontFamily: 'Inter',
           }}
@@ -82,7 +86,7 @@ export function MissionDatePicker({
         confirmButton={<CustomButton label="Confirm" />}
         visible={showPicker}
         styles={{
-          theme: 'light',
+          theme: isDark ? 'dark' : 'light',
           pickerLabelGap: 8,
           pickerItem: {
             fontSize: 34,
@@ -101,11 +105,15 @@ export function MissionDatePicker({
         }}
       />
       <View className="pt-3 flex-row items-center gap-2">
-        <MaterialCommunityIcons name="clock" size={24} color="black" />
+        <MaterialCommunityIcons name="clock" size={24} color={icon} />
         {timePostString !== null ? (
-          <Text className="text-primary font-inter font-bold font-size-16">{timePostString}</Text>
+          <Text className="text-primary dark:text-white font-inter font-bold font-size-16">
+            {timePostString}
+          </Text>
         ) : (
-          <Text className="text-primary font-inter font-bold font-size-16">HH:MM</Text>
+          <Text className="text-primary dark:text-white font-inter font-bold font-size-16">
+            HH:MM
+          </Text>
         )}
       </View>
     </View>

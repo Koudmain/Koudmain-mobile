@@ -68,17 +68,19 @@ export function BottomSheetSkillSelector({
       showsVerticalScrollIndicator={false}
     >
       <View className="mb-6 flex-row items-center gap-2">
-        <Text className="text-primary text-2xl font-bold font-inter">Ajouter des compétences</Text>
+        <Text className="text-primary dark:text-white text-2xl font-bold font-inter">
+          Ajouter des compétences
+        </Text>
       </View>
       <SearchBarBottomSheet className="rounded-[10] mb-4" onFocus={() => {}} {...searchProps} />
       {isLoadingSkillCategory ? (
-        <Text className="text-center text-gray-500">
+        <Text className="text-center text-gray-500 dark:text-neutral-400">
           Chargement des catégories de compétences...
         </Text>
       ) : errorSkillCategory ? (
         <Text className="text-center text-red-500">{errorSkillCategory}</Text>
       ) : skillsSkillCategory.length === 0 ? (
-        <Text className="text-center text-gray-500">
+        <Text className="text-center text-gray-500 dark:text-neutral-400">
           Aucune catégorie de compétence disponible.
         </Text>
       ) : (

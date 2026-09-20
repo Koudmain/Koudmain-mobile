@@ -16,7 +16,9 @@ export function MissionSkillSelector({
 }: MissionSkillSelectorProps) {
   return (
     <View className="flex-row flex-wrap">
-      <Text className=" mb-3 font-inter font-bold text-primary text-xl">Compétences</Text>
+      <Text className=" mb-3 font-inter font-bold text-primary dark:text-white text-xl">
+        Compétences
+      </Text>
       <View className="flex-row items-center w-full mt-2 mb-4">
         <TouchableOpacity className="mr-2" onPress={handleOpenBottomSheet}>
           <CompetenceCard

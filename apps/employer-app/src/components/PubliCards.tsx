@@ -10,6 +10,7 @@ import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 import { Shadow } from 'react-native-shadow-2';
 import { colors } from '@/constants/theme';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 type PublicationProps = {
   title: string;
@@ -48,6 +49,7 @@ function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
 const MAX_VISIBLE_COMPETENCES = 4;
 
 export default function PubliCards({ data }: { data: PublicationProps }) {
+  const { icon, mutedText } = useThemeColors();
   const visibleCompetences = data.competences.slice(0, MAX_VISIBLE_COMPETENCES);
   const hiddenCompetencesCount = data.competences.length - visibleCompetences.length;
 
@@ -59,20 +61,22 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
       rightThreshold={40}
     >
       <Shadow startColor={colors.shadow.light} offset={[0, 2]} style={{ borderRadius: 20 }}>
-        <Card className="w-96 p-4 rounded-[18]  mt-2 bg-white">
+        <Card className="w-96 p-4 rounded-[18]  mt-2 bg-white dark:bg-primary-hover">
           <View className="mb flex-row justify-between items-center">
-            <Heading className="text-lg font-bold">{data.title}</Heading>
-            <MaterialIcons name="edit" size={18} color="black" />
+            <Heading className="text-lg font-bold text-primary dark:text-white">
+              {data.title}
+            </Heading>
+            <MaterialIcons name="edit" size={18} color={icon} />
           </View>
           <View className="flex-row items-center mt-2 mb-2">
             <Feather name="calendar" size={18} color="#D84A22" />
-            <Text className="text-sm text-gray-500 ml-3">{data.date}</Text>
+            <Text className="text-sm text-gray-500 dark:text-neutral-400 ml-3">{data.date}</Text>
           </View>
           <View className="flex-row items-center mb-4">
             <MaterialCommunityIcons name="clock" size={18} color="#D84A22" />
-            <Text className="text-sm text-gray-500 ml-3">{data.time}</Text>
+            <Text className="text-sm text-gray-500 dark:text-neutral-400 ml-3">{data.time}</Text>
           </View>
-          <Text className="text-sm text-gray-500">{data.description}</Text>
+          <Text className="text-sm text-gray-500 dark:text-neutral-400">{data.description}</Text>
 
           {data.competences.length > 0 && (
             <View className="flex-row flex-wrap gap-1.5 mt-3">
@@ -80,8 +84,10 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
                 <CompetenceCard key={comp} comp={comp} size="sm" />
               ))}
               {hiddenCompetencesCount > 0 && (
-                <View className="rounded-full px-2 py-0.5 bg-neutral-100 items-center justify-center">
-                  <Text className="text-2xs text-gray-500">+{hiddenCompetencesCount}</Text>
+                <View className="rounded-full px-2 py-0.5 bg-neutral-200 dark:bg-primary items-center justify-center">
+                  <Text className="text-2xs text-gray-500 dark:text-neutral-400">
+                    +{hiddenCompetencesCount}
+                  </Text>
                 </View>
               )}
             </View>
@@ -89,12 +95,16 @@ export default function PubliCards({ data }: { data: PublicationProps }) {
 
           <View className="mt-3 flex-row items-center">
             <View className="flex-row items-center">
-              <Entypo name="eye" size={14} color="grey" />
-              <Text className="text-2xs text-gray-500 ml-1">{data.views}</Text>
+              <Entypo name="eye" size={14} color={mutedText} />
+              <Text className="text-2xs text-gray-500 dark:text-neutral-400 ml-1">
+                {data.views}
+              </Text>
             </View>
             <View className="flex-row items-center ml-3">
-              <MaterialCommunityIcons name="cursor-default" size={14} color="grey" />
-              <Text className="text-2xs text-gray-500 ml-1">{data.clicks}</Text>
+              <MaterialCommunityIcons name="cursor-default" size={14} color={mutedText} />
+              <Text className="text-2xs text-gray-500 dark:text-neutral-400 ml-1">
+                {data.clicks}
+              </Text>
             </View>
           </View>
         </Card>
