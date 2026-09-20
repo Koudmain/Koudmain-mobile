@@ -9,7 +9,8 @@ import HorizontalSwitch from '@/components/switch/HorizontalSwitch';
 import SelectorMissionPrice from '@/components/selector/SelectorMissionPrice';
 import { useCreatePost } from '@/hooks/useCreatePost';
 import { CustomButton } from '@/components/button/LongButton';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackgroundProps } from '@gorhom/bottom-sheet';
+import Animated from 'react-native-reanimated';
 import { useGetSkillCategory } from '@/hooks/useGetSkillCategory';
 import { SearchBarProps } from '@koudmain/ui/components/tools/SearchBar';
 import { router } from 'expo-router';
@@ -20,9 +21,22 @@ import { MissionSkillSelector } from '@/components/skill/MissionSkillSelector';
 import { BottomSheetSkillSelector } from '@/components/skill/BottomSheetSkillSelector';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCompany } from '@/context/CompanyContext';
+import { useThemeColors } from '@/hooks/useThemeColors';
+import { colors } from '@/constants/theme';
+
+function BottomSheetBackground({ style }: BottomSheetBackgroundProps) {
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={style}
+      className="bg-white dark:bg-primary rounded-t-[20]"
+    />
+  );
+}
 
 export default function CreatePost() {
   const { user } = useSession();
+  const { isDark, icon } = useThemeColors();
   const { activeCompanyId } = useCompany();
   const [competencesList, setCompetencesList] = useState<Skill[]>([]);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -127,16 +141,18 @@ export default function CreatePost() {
   };
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-white dark:bg-primary">
       <AppScrollView
         nestedScrollEnabled={true}
-        contentContainerClassName="items-center gap-4 bg-white px-6"
+        contentContainerClassName="items-center gap-4 bg-white dark:bg-primary px-6"
       >
         <View className="w-full flex-row items-center gap-4 pt-4">
           <TouchableOpacity onPress={() => router.back()}>
-            <Entypo name="chevron-left" size={32} color={'black'} />
+            <Entypo name="chevron-left" size={32} color={icon} />
           </TouchableOpacity>
-          <Text className="text-primary text-3xl font-bold font-inter">Nouvelle Publication</Text>
+          <Text className="text-primary dark:text-white text-3xl font-bold font-inter">
+            Nouvelle Publication
+          </Text>
         </View>
         <View className="w-full pt-4">
           <FormControl>
@@ -173,7 +189,10 @@ export default function CreatePost() {
                   setShowPicker={setShowPicker}
                 />
               </VStack>
-              <VStack space="xs" className="w-full border-t border-gray-200 pt-4">
+              <VStack
+                space="xs"
+                className="w-full border-t border-gray-200 dark:border-primary-hover pt-4"
+              >
                 <DurationSlider
                   duration={duration}
                   setDuration={setDuration}
@@ -184,7 +203,10 @@ export default function CreatePost() {
                   step={0.25}
                 />
               </VStack>
-              <VStack space="xs" className="w-full border-t border-gray-200 pt-4">
+              <VStack
+                space="xs"
+                className="w-full border-t border-gray-200 dark:border-primary-hover pt-4"
+              >
                 <SelectorMissionPrice
                   title="Rémunération"
                   paymentType={paymentType}
@@ -197,26 +219,32 @@ export default function CreatePost() {
                   setAmount={setAmount}
                 />
               </VStack>
-              <VStack space="xs" className="w-full border-t border-gray-200 pt-4">
+              <VStack
+                space="xs"
+                className="w-full border-t border-gray-200 dark:border-primary-hover pt-4"
+              >
                 <MissionSkillSelector
                   competencesList={competencesList}
                   onDeleteCompetence={onDeleteCompetence}
                   handleOpenBottomSheet={handleOpenBottomSheet}
                 />
               </VStack>
-              <VStack space="xs" className="w-full border-t border-gray-200 pt-4">
+              <VStack
+                space="xs"
+                className="w-full border-t border-gray-200 dark:border-primary-hover pt-4"
+              >
                 <HorizontalSwitch
                   isEnabled={isPublicationAcceptFirstCandidature}
                   toggleSwitch={() =>
                     setIsPublicationAcceptFirstCandidature(!isPublicationAcceptFirstCandidature)
                   }
-                  iconExpo={<FontAwesome name="question-circle" size={24} color="black" />}
+                  iconExpo={<FontAwesome name="question-circle" size={24} color={icon} />}
                   text="Accepter automatiquement la première candidature"
                 />
                 <HorizontalSwitch
                   isEnabled={isPublicationHighlight}
                   toggleSwitch={() => setIsPublicationHighlight(!isPublicationHighlight)}
-                  iconExpo={<FontAwesome name="question-circle" size={24} color="black" />}
+                  iconExpo={<FontAwesome name="question-circle" size={24} color={icon} />}
                   text="Mettre en avant cette annonce"
                 />
               </VStack>
@@ -225,7 +253,7 @@ export default function CreatePost() {
                   label={isLoading ? 'Publication en cours...' : 'Publier'}
                   onPress={handleCreatePost}
                 />
-                {error && <Text className="text-red-500 mt-2 text-center">{error}</Text>}
+                {error && <Text className="text-error-muted mt-2 text-center">{error}</Text>}
               </VStack>
             </VStack>
           </FormControl>
@@ -236,6 +264,10 @@ export default function CreatePost() {
         index={-1}
         enablePanDownToClose={true}
         backdropComponent={renderBottomSheetBackdrop}
+        backgroundComponent={BottomSheetBackground}
+        handleIndicatorStyle={{
+          backgroundColor: isDark ? colors.primary.disabled : colors.primary.light,
+        }}
         onChange={handleSheetChanges}
         enableDynamicSizing={true}
         keyboardBehavior="interactive"
