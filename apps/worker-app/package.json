@@ -21,6 +21,7 @@
     "@expo-google-fonts/inter": "^0.4.2",
     "@expo-google-fonts/plus-jakarta-sans": "^0.4.2",
     "@expo/html-elements": "^55.0.3",
+    "@expo/metro-runtime": "~57.0.15",
     "@expo/vector-icons": "^15.0.2",
     "@gluestack-ui/core": "^3.0.12",
     "@gluestack-ui/utils": "^3.0.15",
@@ -32,8 +33,7 @@
     "@react-native-async-storage/async-storage": "2.2.0",
     "babel-preset-expo": "~57.0.0",
     "date-fns": "^4.1.0",
-    "expo": "~57.0.0",
-    "@expo/metro-runtime": "~57.0.15",
+    "expo": "~57.0.22",
     "expo-constants": "~57.0.17",
     "expo-dev-client": "~57.0.18",
     "expo-font": "~57.0.3",
@@ -84,5 +84,12 @@
     "typescript": "~5.9.2",
     "@koudmain/eslint-config": "workspace:*"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "@expo/dom-webview"
+      ]
+    }
+  }
 }

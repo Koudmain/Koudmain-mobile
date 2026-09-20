@@ -84,5 +84,12 @@
     "typescript": "~5.9.2",
     "@koudmain/eslint-config": "workspace:*"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "@expo/dom-webview"
+      ]
+    }
+  }
 }
