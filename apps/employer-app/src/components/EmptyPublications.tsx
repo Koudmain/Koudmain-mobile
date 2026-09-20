@@ -14,15 +14,15 @@ export default function EmptyPublications() {
       className="items-center justify-center flex-grow px-8"
     >
       <View className="items-center justify-center mb-6 w-24 h-24">
-        <View className="items-center justify-center rounded-full bg-secondary-50 w-24 h-24">
+        <View className="items-center justify-center rounded-full bg-secondary-50 dark:bg-primary-hover w-24 h-24">
           <Feather name="file-plus" size={36} color={colors.secondary.DEFAULT} />
         </View>
       </View>
 
-      <Heading className="text-xl font-bold text-center">
+      <Heading className="text-xl font-bold text-center text-primary dark:text-white">
         Vous n&apos;avez pas encore de publication en ligne
       </Heading>
-      <Text className="text-sm text-gray-500 text-center mt-3 leading-5">
+      <Text className="text-sm text-gray-500 dark:text-neutral-400 text-center mt-3 leading-5">
         Créez votre première offre pour la rendre visible auprès des travailleurs et commencer à
         recevoir des candidatures.
       </Text>

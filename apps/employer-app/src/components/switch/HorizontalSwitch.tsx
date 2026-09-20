@@ -1,6 +1,7 @@
 import { View, Text } from 'react-native';
 import { Switch } from '@koudmain/ui/gluestack';
 import { colors } from '@/constants/theme';
+import { useThemeColors } from '@/hooks/useThemeColors';
 export type HorizontalSwitchProps = {
   isEnabled: boolean;
   toggleSwitch: () => void;
@@ -14,21 +15,22 @@ export default function HorizontalSwitch({
   iconExpo,
   text,
 }: HorizontalSwitchProps) {
+  const { track } = useThemeColors();
   return (
     <View className="flex-row items-center gap-2 w-full">
       <Switch
         size="md"
         isDisabled={false}
-        trackColor={{ false: colors.primary.DEFAULT, true: colors.secondary.DEFAULT }}
+        trackColor={{ false: track, true: colors.secondary.DEFAULT }}
         thumbColor={colors.surface.card}
-        ios_backgroundColor={colors.primary.DEFAULT}
+        ios_backgroundColor={track}
         onValueChange={toggleSwitch}
         value={isEnabled}
       />
       {iconExpo}
       {text && (
         <Text
-          className="text-primary font-inter text-md flex-1"
+          className="text-primary dark:text-white font-inter text-md flex-1"
           numberOfLines={2}
           ellipsizeMode="tail"
         >

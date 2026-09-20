@@ -16,6 +16,7 @@ import {
   Input,
   InputField,
 } from '@koudmain/ui/gluestack';
+import { useThemeColors } from '@/hooks/useThemeColors';
 
 export type SelectorMissionPriceProps = {
   title: string;
@@ -34,18 +35,19 @@ export default function SelectorMissionPrice({
   amount,
   setAmount,
 }: SelectorMissionPriceProps) {
+  const { icon } = useThemeColors();
   return (
     <View className="p-4">
       <View className="flex-row items-center gap-2">
-        <Text className="text-primary font-inter font-bold text-xl">{title}</Text>
-        <FontAwesome name="question-circle" size={24} color="black" />
+        <Text className="text-primary dark:text-white font-inter font-bold text-xl">{title}</Text>
+        <FontAwesome name="question-circle" size={24} color={icon} />
       </View>
       <View className="flex-row items-center pt-3 gap-3">
-        <FontAwesome5 name="money-check-alt" size={24} color="black" />
+        <FontAwesome5 name="money-check-alt" size={24} color={icon} />
         <Input className="flex-1" variant="outline" isFocused={false} size="xl">
           <InputField
             type="text"
-            className="font-jakarta font-bold font-size-16 text-right"
+            className="font-jakarta font-bold font-size-16 text-right text-primary dark:text-white"
             placeholder="ex: 13.00"
             keyboardType="decimal-pad"
             value={amount}
