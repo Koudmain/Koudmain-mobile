@@ -50,6 +50,9 @@ module.exports = {
       sm: '.125rem',
       DEFAULT: '.25rem',
       lg: '.5rem',
+      xl: '.75rem',
+      '2xl': '1rem',
+      '3xl': '1.5rem',
       full: '9999px',
     },
     fontFamily: {
@@ -94,6 +97,7 @@ module.exports = {
 
         secondary: {
           DEFAULT: 'hsl(13, 73%, 49%)', // #D84A22
+          20: 'hsla(13, 73%, 49%, 0.2)', // #D84A22 with 20% opacity (#F7DBD3)
           50: 'hsl(13, 73%, 95%)',
           100: 'hsl(13, 73%, 88%)',
           200: 'hsl(13, 73%, 78%)',
@@ -135,8 +139,8 @@ module.exports = {
           sun: '#F59E0B',
         },
         utils: {
-          hearth: '#E02424',
-          star: '#FBBF24',
+          heart: '#DB2C2C',
+          star: '#FFCC00',
         },
         map: {
           selected: '#2ecc71',

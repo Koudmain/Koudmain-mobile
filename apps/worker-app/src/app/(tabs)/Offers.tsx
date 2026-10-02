@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Text, useColorScheme, View } from 'react-native';
+import { Pressable, Text, useColorScheme, View } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 
 import { LIST_PUBLI } from '@/constants/fakeData';
@@ -48,7 +48,7 @@ export default function Offers() {
 
       <FiltersOffers selectedIds={selectedJobs} onChange={setSelectedJobs} />
 
-      <AppScrollView className="p-6" showsVerticalScrollIndicator={false}>
+      <AppScrollView className="p-4" showsVerticalScrollIndicator={false}>
         {filteredOffers.map((offre, index) => (
           <Shadow
             key={`${offre.name}-${offre.date}-${index}`}
