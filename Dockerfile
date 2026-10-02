@@ -16,6 +16,10 @@ RUN apk add --no-cache bash git
 ARG REACT_NATIVE_PACKAGER_HOSTNAME
 ENV REACT_NATIVE_PACKAGER_HOSTNAME=$REACT_NATIVE_PACKAGER_HOSTNAME
 
+# Expo development mode variable (default: --go, can be overridden at build time)
+ARG EXPO_CLIENT_FLAG="--go"
+ENV EXPO_CLIENT_FLAG=$EXPO_CLIENT_FLAG
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 2 — Dependencies: Install monorepo dependencies
 # ─────────────────────────────────────────────────────────────────────────────
@@ -71,7 +75,7 @@ WORKDIR /usr/src/app
 # Expo Metro ports + dev tools
 EXPOSE 19000 19001 19002 19003 19006 8082
 
-CMD ["pnpm", "--filter", "@koudmain/employer", "start", "--", "--lan", "--go", "--port", "8082"]
+CMD ["sh", "-c", "pnpm --filter @koudmain/employer start -- --lan ${EXPO_CLIENT_FLAG} --port 8082"]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 7 — Development Worker
@@ -81,7 +85,7 @@ WORKDIR /usr/src/app
 
 EXPOSE 19000 19001 19002 19003 19006 8083
 
-CMD ["pnpm", "--filter", "@koudmain/worker", "start", "--", "--lan", "--go", "--port", "8083"]
+CMD ["sh", "-c", "pnpm --filter @koudmain/worker start -- --lan ${EXPO_CLIENT_FLAG} --port 8083"]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 8 — Production Employer
