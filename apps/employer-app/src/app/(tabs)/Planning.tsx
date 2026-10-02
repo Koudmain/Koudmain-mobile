@@ -9,8 +9,8 @@ export default function Planning() {
   const isDark = colorScheme === 'dark';
 
   return (
-    <ScrollView className="bg-white dark:bg-primary pt-10 bg-surface flex-1">
-      <Text className="text-4xl font-bold pt-6 px-6 dark:text-white">Mon Planning</Text>
+    <ScrollView className="bg-white dark:bg-primary bg-surface flex-1">
+      <Text className="text-4xl font-bold pt-4 px-6 dark:text-white">Mon Planning</Text>
 
       <View className="flex-1 m-6 rounded-lg">
         <Shadow
