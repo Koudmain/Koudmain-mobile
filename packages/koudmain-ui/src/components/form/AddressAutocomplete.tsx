@@ -142,7 +142,9 @@ export function AddressAutocomplete({
             onChangeText?.(text);
           }}
           allowFontScaling={false}
-          className="px-0 font-jakarta text-primary dark:text-white h-12 leading-tight flex-1"
+          numberOfLines={1}
+          lineBreakModeIOS="tail"
+          className="px-0 font-jakarta text-primary dark:text-white h-12 flex-1"
         />
         {loading && (
           <InputSlot className="pr-3">

@@ -7,11 +7,11 @@ import { ProfileEditLayout, ProfileLoadState, ProfileSection } from '@koudmain/u
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/AddressAutocomplete';
 import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
-import DistanceSlider from '@koudmain/ui/components/utils/DistanceSlider';
 import { profileService, skillCategoryService, SkillCategory, userService } from '@koudmain/ui/api';
 import { IWorkerProfile } from '@koudmain/ui/types';
 import { ExperienceDraft, ExperiencesEditor } from '@/components/profile/ExperiencesEditor';
 import { FormationDraft, FormationsEditor } from '@/components/profile/FormationsEditor';
+import { WorkRadiusSlider } from '@/components/profile/WorkRadiusSlider';
 
 const hasChanged = <T,>(current: T[], initial: T[]) =>
   JSON.stringify(current) !== JSON.stringify(initial);
@@ -73,8 +73,6 @@ function WorkerProfileForm({ worker }: { worker: IWorkerProfile }) {
     firstName.trim().length >= 2 &&
     lastName.trim().length >= 2 &&
     skillIds.length > 0 &&
-    workRadius >= 1 &&
-    workRadius <= 500 &&
     experiences.every((experience) => experience.title.trim()) &&
     formations.every(
       (formation) => formation.title.trim() && [0, 4].includes(formation.year.length),
@@ -221,14 +219,7 @@ function WorkerProfileForm({ worker }: { worker: IWorkerProfile }) {
             Choisissez une adresse précise, avec un numéro et une rue.
           </Text>
         )}
-        <DistanceSlider
-          title="Rayon de recherche"
-          distance={workRadius}
-          distanceMin={1}
-          distanceMax={50}
-          onValuesChange={setWorkRadius}
-          className="mt-4"
-        />
+        <WorkRadiusSlider radius={workRadius} onChange={setWorkRadius} />
       </ProfileSection>
 
       <ProfileSection title="Expériences">
