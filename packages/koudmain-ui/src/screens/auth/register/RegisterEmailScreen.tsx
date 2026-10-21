@@ -1,22 +1,83 @@
-import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { buildRegisterData } from '@koudmain/ui/utils/buildRegisterData';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function RegisterEmailScreen() {
+type RegisterEmailScreenProps = {
+  appContext: 'employer' | 'worker';
+};
+
+export function RegisterEmailScreen({ appContext }: RegisterEmailScreenProps) {
   const params = useLocalSearchParams();
   const [email, setEmail] = useState('');
+  const { signInWithGoogle } = useSession();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const googleIdToken = typeof params.googleIdToken === 'string' ? params.googleIdToken : '';
 
   const trimmedEmail = email.trim();
   const isEmailValid = EMAIL_REGEX.test(trimmedEmail);
   const isFormValid = isEmailValid;
   const emailValidationState =
     trimmedEmail.length === 0 ? 'default' : isEmailValid ? 'success' : 'error';
+
+  const handleGoogleRegister = async () => {
+    setIsSubmitting(true);
+    try {
+      await signInWithGoogle(googleIdToken, buildRegisterData(params, appContext));
+      router.replace('/');
+    } catch (error) {
+      console.error('Google registration failed:', error);
+      Alert.alert(
+        'Erreur',
+        (error as { status?: number }).status === 401
+          ? 'Session Google expirée, reconnectez-vous avec Google.'
+          : "Échec de l'inscription. Merci de réessayer.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (googleIdToken) {
+    return (
+      <View className="flex-1 bg-white dark:bg-primary h-full">
+        <AuthTop title="Inscription" />
+        <VStack className="flex flex-col justify-around h-full px-10">
+          <View className="gap-4">
+            <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+              Dernière étape
+            </Text>
+            <Text className="text-gray-500 dark:text-white mb-6">
+              Votre compte sera créé avec votre adresse Google {params.email}.
+            </Text>
+          </View>
+          <View className="mt-10">
+            <Button
+              label={isSubmitting ? 'Inscription...' : 'Créer mon compte'}
+              variant={isSubmitting ? 'muted' : 'primary'}
+              className="mx-2"
+              disabled={isSubmitting}
+              onPress={handleGoogleRegister}
+            />
+            <Text className="text-gray-400 my-4 mx-2">
+              En créant un compte, j&apos;accepte les
+              <Text className="text-secondary-400 font-bold"> conditions d&apos;utilisation </Text>
+              et la
+              <Text className="text-secondary-400 font-bold"> politique de confidentialité </Text>
+              de Koudmain.
+            </Text>
+          </View>
+        </VStack>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">

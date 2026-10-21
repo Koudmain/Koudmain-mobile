@@ -23,6 +23,7 @@ export default function RegisterLocation() {
   const params = useLocalSearchParams<{
     email: string;
     password: string;
+    googleIdToken: string;
     firstName: string;
     lastName: string;
     phoneNumber: string;
@@ -58,6 +59,8 @@ export default function RegisterLocation() {
     router.push({
       pathname: '/auth/register/RegisterEmail',
       params: {
+        email: params.email,
+        googleIdToken: params.googleIdToken,
         firstName: params.firstName,
         lastName: params.lastName,
         phoneNumber: params.phoneNumber,

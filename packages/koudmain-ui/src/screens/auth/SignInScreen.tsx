@@ -1,12 +1,13 @@
 import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native';
 import { useState } from 'react';
-import { router } from 'expo-router';
+import { Href, router } from 'expo-router';
 import { SvgProps } from 'react-native-svg';
 
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button, Divider } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { useSession } from '@koudmain/ui/context/SessionContext';
+import { GoogleAccount, getGoogleAccount } from '@koudmain/ui/utils/googleSignIn';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,7 +18,7 @@ type SignInScreenProps = {
 export function SignInScreen({ googleIcon }: SignInScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, isLoading } = useSession();
+  const { signIn, signInWithGoogle, isLoading } = useSession();
   const [signinFailed, setSigninFailed] = useState(false);
   const [wrongRole, setWrongRole] = useState(false);
 
@@ -38,6 +39,34 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
         setWrongRole(true);
       } else {
         console.error('Sign-in failed:', errorMessage);
+        setSigninFailed(true);
+      }
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setSigninFailed(false);
+    setWrongRole(false);
+    let account: GoogleAccount | null = null;
+    try {
+      account = await getGoogleAccount();
+      if (account) await signInWithGoogle(account.idToken);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : '';
+      if (errorMessage === 'GOOGLE_ACCOUNT_NOT_FOUND' && account) {
+        router.push({
+          pathname: '/auth/register/RegisterName',
+          params: {
+            googleIdToken: account.idToken,
+            email: account.email,
+            firstName: account.firstName,
+            lastName: account.lastName,
+          },
+        } as unknown as Href);
+      } else if (errorMessage === 'WRONG_ROLE') {
+        setWrongRole(true);
+      } else {
+        console.error('Google sign-in failed:', error);
         setSigninFailed(true);
       }
     }
@@ -100,12 +129,10 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
             </View>
             <Button
               icon={googleIcon}
-              label="Connection avec Google"
+              label="Connexion avec Google"
               variant="outline"
               className="mx-2"
-              onPress={() => {
-                router.push('/auth/register/RegisterName');
-              }}
+              onPress={handleGoogleSignIn}
             />
             <View className="flex-row items-center justify-center gap-2 mt-10">
               <Text className="text-gray-400">Vous n&apos;avez pas de compte ?</Text>

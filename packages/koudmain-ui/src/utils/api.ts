@@ -49,7 +49,7 @@ export function configureAuthRefresh(handlers: RefreshHandlers | null): void {
   refreshHandlers = handlers;
 }
 
-function buildApiUrl(endpoint: string): string {
+export function buildApiUrl(endpoint: string): string {
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
     return endpoint;
   }

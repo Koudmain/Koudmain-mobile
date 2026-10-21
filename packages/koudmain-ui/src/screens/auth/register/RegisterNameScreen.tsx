@@ -35,15 +35,23 @@ type RegisterNameScreenProps = {
 const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
 
 export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
-  const { email: emailParam, password: passwordParam } = useLocalSearchParams<{
+  const params = useLocalSearchParams<{
     email?: string | string[];
     password?: string | string[];
+    googleIdToken?: string | string[];
+    firstName?: string | string[];
+    lastName?: string | string[];
   }>();
-  const email = Array.isArray(emailParam) ? (emailParam[0] ?? '') : (emailParam ?? '');
-  const password = Array.isArray(passwordParam) ? (passwordParam[0] ?? '') : (passwordParam ?? '');
+  const getParam = (key: keyof typeof params) => {
+    const value = params[key];
+    return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
+  };
+  const email = getParam('email');
+  const password = getParam('password');
+  const googleIdToken = getParam('googleIdToken');
   const [birthDate, setBirthDate] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState(getParam('firstName'));
+  const [lastName, setLastName] = useState(getParam('lastName'));
   const [phoneNumber, setPhoneNumber] = useState('');
   const [ownerPosition, setOwnerPosition] = useState('');
 
@@ -94,6 +102,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
         params: {
           email,
           password,
+          googleIdToken,
           firstName,
           lastName,
           phoneNumber,
@@ -103,7 +112,15 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
-        params: { email, password, firstName, lastName, phoneNumber, ownerPosition },
+        params: {
+          email,
+          password,
+          googleIdToken,
+          firstName,
+          lastName,
+          phoneNumber,
+          ownerPosition,
+        },
       } as unknown as Href);
     }
   };

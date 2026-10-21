@@ -1,6 +1,6 @@
 import { apiFetch } from '@koudmain/ui/utils/api';
 
-type LoginResponse = {
+export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
@@ -46,11 +46,20 @@ export type RegisterData = {
   };
 };
 
+export type GoogleRegistration = Omit<RegisterData, 'email' | 'password'>;
+
 export const authService = {
   login: async (email: string, password: string) => {
     return apiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
       body: { email, password },
+    });
+  },
+
+  google: async (idToken: string, registration?: GoogleRegistration) => {
+    return apiFetch<LoginResponse>('/auth/google', {
+      method: 'POST',
+      body: { idToken, registration },
     });
   },
 

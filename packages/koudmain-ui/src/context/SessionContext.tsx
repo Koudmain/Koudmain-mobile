@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 import * as SecureStore from 'expo-secure-store';
 import { User, UserRole } from '../types/user';
 import { userService } from '../api/user.api';
-import { authService, RegisterData } from '../api/auth.api';
+import { authService, GoogleRegistration, LoginResponse, RegisterData } from '../api/auth.api';
 import { configureAuthRefresh } from '../utils/api';
 
 const ACCESS_TOKEN_KEY = 'session';
@@ -10,6 +10,7 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: (idToken: string, registration?: GoogleRegistration) => Promise<void>;
   register: (data: RegisterData) => Promise<number>;
   verifyEmail: (userId: number, code: string) => Promise<boolean>;
   signOut: () => Promise<void>;
@@ -159,41 +160,52 @@ export function SessionProvider({
     }
   };
 
+  const startSession = async (response: LoginResponse) => {
+    if (!response?.accessToken || typeof response.accessToken !== 'string') {
+      throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
+    }
+    if (!response?.refreshToken || typeof response.refreshToken !== 'string') {
+      throw new Error("Le serveur n'a pas renvoyé de refresh token valide.");
+    }
+
+    const token = response.accessToken;
+    const refreshToken = response.refreshToken;
+
+    await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
+    await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
+
+    const userData = await userService.getMe(token);
+
+    if (expectedRole && userData.role !== expectedRole) {
+      await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
+      await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+      throw new Error('WRONG_ROLE');
+    }
+
+    setSession(token);
+    setUser(userData);
+
+    if (onSessionLoaded) {
+      await onSessionLoaded(token);
+    }
+  };
+
   const signIn = async (email: string, password: string) => {
     try {
-      const response = await authService.login(email, password);
-
-      if (!response?.accessToken || typeof response.accessToken !== 'string') {
-        throw new Error("Le serveur n'a pas renvoyé de jeton (token) valide.");
-      }
-      if (!response?.refreshToken || typeof response.refreshToken !== 'string') {
-        throw new Error("Le serveur n'a pas renvoyé de refresh token valide.");
-      }
-
-      const token = response.accessToken;
-      const refreshToken = response.refreshToken;
-
-      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
-      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-
-      const userData = await userService.getMe(token);
-
-      if (expectedRole && userData.role !== expectedRole) {
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        throw new Error('WRONG_ROLE');
-      }
-
-      setSession(token);
-      setUser(userData);
-
-      if (onSessionLoaded) {
-        await onSessionLoaded(token);
-      }
+      await startSession(await authService.login(email, password));
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Une erreur inconnue est survenue';
       console.error('Erreur de connexion détaillée:', errorMessage);
+      await clearSession();
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async (idToken: string, registration?: GoogleRegistration) => {
+    try {
+      await startSession(await authService.google(idToken, registration));
+    } catch (error) {
       await clearSession();
       throw error;
     }
@@ -213,7 +225,17 @@ export function SessionProvider({
 
   return (
     <AuthContext.Provider
-      value={{ register, verifyEmail, signIn, signOut, session, user, isLoading, refreshUser }}
+      value={{
+        register,
+        verifyEmail,
+        signIn,
+        signInWithGoogle,
+        signOut,
+        session,
+        user,
+        isLoading,
+        refreshUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

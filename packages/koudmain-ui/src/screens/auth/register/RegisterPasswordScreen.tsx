@@ -8,7 +8,7 @@ import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { PasswordChecker, isPasswordValid } from '@koudmain/ui/components/auth/PasswordChecker';
 
 import { useSession } from '@koudmain/ui/context/SessionContext';
-import { OwnerPosition } from '@koudmain/ui/api';
+import { buildRegisterData } from '@koudmain/ui/utils/buildRegisterData';
 
 type RegisterPasswordScreenProps = {
   appContext: 'employer' | 'worker';
@@ -31,64 +31,10 @@ export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenPro
 
   const handleRegister = async () => {
     try {
-      const getParam = (key: string) =>
-        Array.isArray(params[key]) ? params[key][0] : (params[key] as string);
-
       const userId = await register({
+        ...buildRegisterData(params, appContext),
         email,
         password,
-        firstName: getParam('firstName'),
-        lastName: getParam('lastName'),
-        phoneNumber: getParam('phoneNumber'),
-        birthDate: getParam('birthDate'),
-        role: appContext === 'employer' ? 'EMPLOYER' : 'WORKER',
-        workerProfile:
-          appContext === 'worker'
-            ? {
-                skillCategoryIds: getParam('selectedJobs')
-                  ? getParam('selectedJobs')
-                      .split(',')
-                      .map((id: string) => parseInt(id, 10))
-                  : [1],
-                bio: getParam('bio'),
-                workRadius: parseInt(getParam('radius') || '10', 10),
-                address: getParam('streetName')
-                  ? {
-                      streetNumber: getParam('streetNumber') || undefined,
-                      streetName: getParam('streetName') || '',
-                      zipCode: getParam('zipCode') || '',
-                      city: getParam('city') || '',
-                      country: getParam('country') || 'France',
-                      latitude: parseFloat(getParam('latitude') || '0'),
-                      longitude: parseFloat(getParam('longitude') || '0'),
-                    }
-                  : undefined,
-              }
-            : undefined,
-        employerProfile:
-          appContext === 'employer'
-            ? {
-                companyName: getParam('companyName') || 'Entreprise inconnue',
-                companyType: getParam('companyType') || 'Autre',
-                ownerPosition: (getParam('ownerPosition') as OwnerPosition) || 'OWNER',
-                desiredJobIds: getParam('desiredJobIds')
-                  ? getParam('desiredJobIds')
-                      .split(',')
-                      .map((id: string) => parseInt(id, 10))
-                  : [],
-                address: getParam('streetName')
-                  ? {
-                      streetNumber: getParam('streetNumber') || undefined,
-                      streetName: getParam('streetName') || '',
-                      zipCode: getParam('zipCode') || '',
-                      city: getParam('city') || '',
-                      country: getParam('country') || 'France',
-                      latitude: parseFloat(getParam('latitude') || '0'),
-                      longitude: parseFloat(getParam('longitude') || '0'),
-                    }
-                  : undefined,
-              }
-            : undefined,
       });
 
       if (userId) {
