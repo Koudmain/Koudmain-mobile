@@ -128,31 +128,7 @@ export function SessionProvider({
 
   const verifyEmail = async (userId: number, code: string) => {
     try {
-      const response = await authService.verifyEmail(userId, code);
-      if (!response?.accessToken || !response?.refreshToken) {
-        throw new Error('Jetons invalides après vérification.');
-      }
-
-      const token = response.accessToken;
-      const refreshToken = response.refreshToken;
-
-      await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
-      await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-
-      const userData = await userService.getMe(token);
-
-      if (expectedRole && userData.role !== expectedRole) {
-        await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-        await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
-        throw new Error('WRONG_ROLE');
-      }
-
-      setSession(token);
-      setUser(userData);
-
-      if (onSessionLoaded) {
-        await onSessionLoaded(token);
-      }
+      await startSession(await authService.verifyEmail(userId, code));
       return true;
     } catch (error) {
       console.error('Erreur vérification email:', error);
@@ -177,6 +153,7 @@ export function SessionProvider({
     const userData = await userService.getMe(token);
 
     if (expectedRole && userData.role !== expectedRole) {
+      await authService.logout(token).catch((error) => console.error('Erreur logout API:', error));
       await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
       await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
       throw new Error('WRONG_ROLE');

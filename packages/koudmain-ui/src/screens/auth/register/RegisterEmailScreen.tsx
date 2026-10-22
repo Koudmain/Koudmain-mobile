@@ -49,20 +49,20 @@ export function RegisterEmailScreen({ appContext }: RegisterEmailScreenProps) {
     return (
       <View className="flex-1 bg-white dark:bg-primary h-full">
         <AuthTop title="Inscription" />
-        <VStack className="flex flex-col justify-around h-full px-10">
-          <View className="gap-4">
-            <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+        <View className="flex-1 px-10 pb-10">
+          <View className="gap-4 mt-12">
+            <Text className="text-primary dark:text-white text-4xl font-bold mb-2">
               Dernière étape
             </Text>
-            <Text className="text-gray-500 dark:text-white mb-6">
-              Votre compte sera créé avec votre adresse Google {params.email}.
+            <Text className="text-gray-400 dark:text-gray-300 mb-8 px-1">
+              Votre compte sera créé avec l&apos;adresse Google{' '}
+              <Text className="font-bold text-secondary">{params.email}</Text>
             </Text>
           </View>
-          <View className="mt-10">
+          <View className="mt-auto">
             <Button
               label={isSubmitting ? 'Inscription...' : 'Créer mon compte'}
               variant={isSubmitting ? 'muted' : 'primary'}
-              className="mx-2"
               disabled={isSubmitting}
               onPress={handleGoogleRegister}
             />
@@ -74,7 +74,7 @@ export function RegisterEmailScreen({ appContext }: RegisterEmailScreenProps) {
               de Koudmain.
             </Text>
           </View>
-        </VStack>
+        </View>
       </View>
     );
   }
