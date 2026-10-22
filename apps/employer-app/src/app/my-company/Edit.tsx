@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { Feather, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useGetCompanyProfile } from '@koudmain/ui/hooks/useGetCompanyProfile';
@@ -8,6 +7,7 @@ import { ProfileEditLayout, ProfileLoadState, ProfileSection } from '@koudmain/u
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/AddressAutocomplete';
 import { profileService } from '@koudmain/ui/api';
+import { pickImage } from '@koudmain/ui/utils/pickImage';
 import { ICompanyProfile } from '@koudmain/ui/types';
 import { useCompany } from '@/context/CompanyContext';
 import { CompanyTypeSelector } from '@/components/company/CompanyTypeSelector';
@@ -30,23 +30,6 @@ export default function EditMyCompanyPage() {
 
   return <CompanyProfileForm companyId={companyId} company={companyProfile} />;
 }
-
-const pickImage = async (aspect: [number, number]) => {
-  try {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsEditing: true,
-      aspect,
-      quality: 0.8,
-    });
-
-    return result.canceled ? null : result.assets[0].uri;
-  } catch (error) {
-    console.error(error);
-    alert("Impossible d'ouvrir votre galerie photo.");
-    return null;
-  }
-};
 
 function CompanyProfileForm({
   companyId,

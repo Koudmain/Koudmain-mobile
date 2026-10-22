@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useGetWorkerProfile } from '@koudmain/ui/hooks/useGetWorkerProfile';
 import { ProfileEditLayout, ProfileLoadState, ProfileSection } from '@koudmain/ui/components';
@@ -9,6 +8,7 @@ import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/A
 import CompetenceCardSelectable from '@koudmain/ui/components/card/CompetenceCardSelectable';
 import { profileService, skillCategoryService, SkillCategory, userService } from '@koudmain/ui/api';
 import { IWorkerProfile } from '@koudmain/ui/types';
+import { pickImage } from '@koudmain/ui/utils/pickImage';
 import { ExperienceDraft, ExperiencesEditor } from '@/components/profile/ExperiencesEditor';
 import { FormationDraft, FormationsEditor } from '@/components/profile/FormationsEditor';
 import { WorkRadiusSlider } from '@/components/profile/WorkRadiusSlider';
@@ -78,22 +78,6 @@ function WorkerProfileForm({ worker }: { worker: IWorkerProfile }) {
       (formation) => formation.title.trim() && [0, 4].includes(formation.year.length),
     );
 
-  const pickPicture = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.8,
-      });
-
-      if (!result.canceled) setPictureUri(result.assets[0].uri);
-    } catch (error) {
-      console.error(error);
-      alert("Impossible d'ouvrir votre galerie photo.");
-    }
-  };
-
   const toggleSkill = (id: number, selected: boolean) =>
     setSkillIds((ids) => (selected ? [...ids, id] : ids.filter((skillId) => skillId !== id)));
 
@@ -101,17 +85,6 @@ function WorkerProfileForm({ worker }: { worker: IWorkerProfile }) {
     if (!session) return false;
 
     try {
-      const hasIdentityChanged =
-        firstName !== worker.user.first_name || lastName !== worker.user.last_name || !!pictureUri;
-      if (hasIdentityChanged) {
-        await userService.updateProfile(session, {
-          first_name: firstName.trim(),
-          last_name: lastName.trim(),
-          imageUri: pictureUri,
-        });
-        await refreshUser();
-      }
-
       await profileService.updateMyWorkerProfile(session, {
         bio: bio.trim(),
         workRadius,
@@ -136,20 +109,42 @@ function WorkerProfileForm({ worker }: { worker: IWorkerProfile }) {
           : undefined,
         address: address ?? undefined,
       });
-
-      return true;
     } catch (error) {
       console.error(error);
       alert("Erreur lors de l'enregistrement de votre profil.");
       return false;
     }
+
+    const hasIdentityChanged =
+      firstName !== worker.user.first_name || lastName !== worker.user.last_name || !!pictureUri;
+    if (hasIdentityChanged) {
+      try {
+        await userService.updateProfile(session, {
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          imageUri: pictureUri,
+        });
+        await refreshUser();
+      } catch (error) {
+        console.error(error);
+        alert(
+          'Votre profil a été enregistré, mais pas votre nom ni votre photo. Réessayez de les modifier plus tard.',
+        );
+      }
+    }
+
+    return true;
   };
 
   const pictureSource = pictureUri ?? worker.user.profile_picture_url;
 
   return (
     <ProfileEditLayout title="Modifier mon profil" canSave={canSave} onSave={handleSave}>
-      <TouchableOpacity onPress={pickPicture} className="items-center mt-6" activeOpacity={0.8}>
+      <TouchableOpacity
+        onPress={async () => setPictureUri((await pickImage([1, 1])) ?? pictureUri)}
+        className="items-center mt-6"
+        activeOpacity={0.8}
+      >
         <View className="w-24 h-24 rounded-full overflow-hidden bg-secondary-50">
           {pictureSource ? (
             <Image source={{ uri: pictureSource }} className="w-full h-full" />
