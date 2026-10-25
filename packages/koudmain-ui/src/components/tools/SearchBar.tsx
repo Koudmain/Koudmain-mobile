@@ -45,7 +45,8 @@ export default function SearchBar({
       >
         <InputField
           placeholder={placeholder}
-          className="text-primary"
+          placeholderTextColor={isDark ? colors.primary.disabled : colors.primary.hover}
+          className="text-primary dark:text-white"
           value={value}
           onChangeText={onChangeText}
           onFocus={onFocus}
@@ -79,7 +80,8 @@ export const SearchBarBottomSheet = ({
       />
       <BottomSheetTextInput
         placeholder={placeholder}
-        className="text-primary w-[90%] py-3 px-2"
+        placeholderTextColor={isDark ? colors.primary.disabled : colors.primary.hover}
+        className="text-primary dark:text-white w-[90%] py-3 px-2"
         value={value}
         onChangeText={onChangeText}
         onFocus={onFocus}

@@ -37,7 +37,9 @@ const CategorySection = ({
 
   return (
     <View className="w-full">
-      <Text className="text-primary font-inter font-bold text-lg">{category.name}</Text>
+      <Text className="text-primary dark:text-white font-inter font-bold text-lg">
+        {category.name}
+      </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -45,11 +47,13 @@ const CategorySection = ({
         contentContainerStyle={{ flexDirection: 'row', gap: 8 }}
       >
         {isLoadingSkill ? (
-          <Text className="text-center text-gray-500">Chargement des compétences...</Text>
+          <Text className="text-center text-gray-500 dark:text-neutral-400">
+            Chargement des compétences...
+          </Text>
         ) : errorSkill ? (
           <Text className="text-center text-red-500">{errorSkill}</Text>
         ) : filteredSkills.length === 0 ? (
-          <Text className="text-center text-gray-500">
+          <Text className="text-center text-gray-500 dark:text-neutral-400">
             Aucune compétence pour la catégorie {category.name}.
           </Text>
         ) : (

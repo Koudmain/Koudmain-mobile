@@ -31,7 +31,7 @@ export default function Publication() {
 
   if (isLoadingPublications && companyPublications.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-white pt-20">
+      <View className="flex-1 items-center justify-center bg-white dark:bg-primary pt-20">
         <ActivityIndicator color={colors.secondary.DEFAULT} />
       </View>
     );
@@ -39,8 +39,8 @@ export default function Publication() {
 
   if (errorPublications && companyPublications.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-white pt-20 px-8">
-        <Text className="text-sm text-gray-500 text-center">
+      <View className="flex-1 items-center justify-center bg-white dark:bg-primary pt-20 px-8">
+        <Text className="text-sm text-gray-500 dark:text-neutral-400 text-center">
           Impossible de récupérer vos publications. Réessayez plus tard.
         </Text>
       </View>
@@ -49,14 +49,17 @@ export default function Publication() {
 
   if (companyPublications.length === 0) {
     return (
-      <AppScrollView contentContainerClassName="bg-white pt-20 flex-grow">
+      <AppScrollView contentContainerClassName="bg-white dark:bg-primary pt-20 flex-grow">
         <EmptyPublications />
       </AppScrollView>
     );
   }
 
   return (
-    <AppScrollView contentContainerClassName="items-center py-4 gap-4 bg-white pt-20">
+    <AppScrollView contentContainerClassName="items-center pb-4 gap-4 bg-white dark:bg-primary">
+      <Text className="self-start text-primary dark:text-primary-content text-4xl font-bold px-6 pt-4 mb-4">
+        Mes publications
+      </Text>
       {companyPublications.map((pub) => (
         <PubliCards
           key={pub.id}
