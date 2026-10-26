@@ -3,7 +3,7 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 1 — Base: General configuration
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /usr/src/app
 
 # Enable pnpm via corepack (avoids manual pnpm installation)
@@ -86,7 +86,7 @@ CMD ["pnpm", "--filter", "@koudmain/worker", "start", "--", "--lan", "--go", "--
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 8 — Production Employer
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:20-slim AS production-employer
+FROM node:22-slim AS production-employer
 WORKDIR /usr/src/app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -106,7 +106,7 @@ CMD ["node", "apps/employer-app/dist/index.js"]
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 9 — Production Worker
 # ─────────────────────────────────────────────────────────────────────────────
-FROM node:20-slim AS production-worker
+FROM node:22-slim AS production-worker
 WORKDIR /usr/src/app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
