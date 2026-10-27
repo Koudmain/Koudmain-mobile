@@ -27,7 +27,7 @@ export function RegisterVerificationCodeScreen() {
   const [isVerifying, setIsVerifying] = useState(false);
 
   const { verifyEmail } = useSession();
-  const inputRefs = useRef<(TextInput | null)[]>([]);
+  const inputRefs = useRef<(React.ComponentRef<typeof TextInput> | null)[]>([]);
 
   const isCodeComplete = code.every((digit) => digit.length === 1);
 
