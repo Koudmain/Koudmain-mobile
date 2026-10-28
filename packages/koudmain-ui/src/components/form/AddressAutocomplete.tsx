@@ -39,13 +39,17 @@ interface FormattedAddressResult extends NominatimSearchResult {
 interface AddressAutocompleteProps {
   onSelect: (address: AddressData) => void;
   placeholder?: string;
+  defaultValue?: string;
+  onChangeText?: (text: string) => void;
 }
 
 export function AddressAutocomplete({
   onSelect,
   placeholder = 'Rechercher une adresse...',
+  defaultValue = '',
+  onChangeText,
 }: AddressAutocompleteProps) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(defaultValue);
   const [results, setResults] = useState<FormattedAddressResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -135,9 +139,12 @@ export function AddressAutocomplete({
           onChangeText={(text) => {
             setQuery(text);
             setShowDropdown(true);
+            onChangeText?.(text);
           }}
           allowFontScaling={false}
-          className="px-0 font-jakarta text-primary dark:text-white h-12 leading-tight flex-1"
+          numberOfLines={1}
+          lineBreakModeIOS="tail"
+          className="px-0 font-jakarta text-primary dark:text-white h-12 flex-1"
         />
         {loading && (
           <InputSlot className="pr-3">
