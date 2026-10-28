@@ -9,6 +9,7 @@ export interface PlanningEvent {
   rate: number;
   number_rate: number;
   starting_date: string;
+  workerId: number | null;
 }
 
 export interface PlanningApiEvent {
@@ -19,6 +20,7 @@ export interface PlanningApiEvent {
   salary: string;
   worker_name: string;
   worker_profile_picture: string | null;
+  workerId: number | null;
   workerRating: number;
   workerRatingCount: number;
 }

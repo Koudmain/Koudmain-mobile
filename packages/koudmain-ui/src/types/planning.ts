@@ -12,6 +12,7 @@ export interface PlanningEvent {
   city?: string;
   zip?: string;
   starting_date: string;
+  workerId?: number | null;
 }
 
 export interface PlanningApiEvent {
