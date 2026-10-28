@@ -29,16 +29,16 @@ function RootNavigator() {
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Protected guard={!!session}>
+      <Stack.Protected guard={!!session} redirectTo="/auth/Connection">
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="(menu)" />
+        <Stack.Screen name="(menu)/Settings" />
         <Stack.Screen name="offer/[id]" />
         <Stack.Screen name="worker/[id]" />
         <Stack.Screen name="my-company/index" />
         <Stack.Screen name="my-company/Edit" />
       </Stack.Protected>
 
-      <Stack.Protected guard={!session}>
+      <Stack.Protected guard={!session} redirectTo="/">
         <Stack.Screen name="auth/Connection" />
         <Stack.Screen name="auth/SignIn" />
         <Stack.Screen name="auth/register/RegisterEmail" />
