@@ -89,6 +89,7 @@ export default function ChatScreen() {
                   conversation.worker?.user.first_name + ' ' + conversation.worker?.user.last_name
                 }
                 publicationTitle={conversation.publication?.title}
+                workerId={conversation.worker?.id}
               />
             ),
             headerTitleAlign: 'left',

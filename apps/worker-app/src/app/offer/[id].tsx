@@ -28,6 +28,7 @@ export default function OfferDetailsPage() {
           title={offer.restaurantName || 'Restaurant'}
           imageSource={offer.bannerImage}
           logoSource={offer.logoImage}
+          companyId={offer.companyId}
         />
 
         <OfferTitle title={offer.title} isAvailable={offer.isAvailable} />

@@ -8,10 +8,15 @@ interface OfferHeaderProps {
   title: string;
   imageSource: ImageSourcePropType;
   logoSource?: ImageSourcePropType;
+  companyId?: number;
 }
 
-export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps) {
+export function OfferHeader({ title, imageSource, logoSource, companyId }: OfferHeaderProps) {
   const [isFavorite, setIsFavorite] = React.useState(false);
+
+  const openCompanyProfile = () => {
+    if (companyId) router.push(`/company/${companyId}`);
+  };
 
   return (
     <View className="relative w-full h-[250px] mb-4 bg-white dark:bg-primary">
@@ -41,7 +46,10 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
         </Pressable>
       </View>
 
-      <View className="absolute bottom-16 left-1/2 -translate-x-1/2 -translate-y-[20px] w-[90px] h-[90px] bg-white rounded-full items-center justify-center shadow-lg border-2 border-white z-20">
+      <Pressable
+        onPress={openCompanyProfile}
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 -translate-y-[20px] w-[90px] h-[90px] bg-white rounded-full items-center justify-center shadow-lg border-2 border-white z-20"
+      >
         {logoSource ? (
           <Image source={logoSource} className="w-full h-full rounded-full" resizeMode="cover" />
         ) : (
@@ -49,10 +57,13 @@ export function OfferHeader({ title, imageSource, logoSource }: OfferHeaderProps
             <FontAwesome6 name="hat-chef" size={32} color={colors.primary.DEFAULT} />
           </View>
         )}
-      </View>
-      <View className="absolute bottom-6 left-0 right-0 px-6 z-10 items-center">
+      </Pressable>
+      <Pressable
+        onPress={openCompanyProfile}
+        className="absolute bottom-6 left-0 right-0 px-6 z-10 items-center"
+      >
         <Text className="text-white text-3xl font-bold text-center">{title}</Text>
-      </View>
+      </Pressable>
     </View>
   );
 }
