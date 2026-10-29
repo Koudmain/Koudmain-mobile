@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-import { router } from 'expo-router';
+import { GoogleCallbackScreen } from '@koudmain/ui/screens/auth/GoogleCallbackScreen';
 
 export default function GoogleCallback() {
-  useEffect(() => {
-    if (router.canGoBack()) router.back();
-  }, []);
-  return null;
+  return <GoogleCallbackScreen />;
 }

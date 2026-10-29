@@ -28,6 +28,8 @@ import {
 } from '../../../components/ui/select';
 import { ChevronDownIcon } from '../../../components/ui/icon';
 import { AuthTop } from '../../../components/auth/AuthTop';
+import { useSession } from '../../../context/SessionContext';
+import { firstParam } from '../../../utils/buildRegisterData';
 type RegisterNameScreenProps = {
   appContext: 'employer' | 'worker';
 };
@@ -38,20 +40,13 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
   const params = useLocalSearchParams<{
     email?: string | string[];
     password?: string | string[];
-    googleIdToken?: string | string[];
-    firstName?: string | string[];
-    lastName?: string | string[];
   }>();
-  const getParam = (key: keyof typeof params) => {
-    const value = params[key];
-    return Array.isArray(value) ? (value[0] ?? '') : (value ?? '');
-  };
-  const email = getParam('email');
-  const password = getParam('password');
-  const googleIdToken = getParam('googleIdToken');
+  const email = firstParam(params, 'email');
+  const password = firstParam(params, 'password');
+  const { googleAccount } = useSession();
   const [birthDate, setBirthDate] = useState('');
-  const [firstName, setFirstName] = useState(getParam('firstName'));
-  const [lastName, setLastName] = useState(getParam('lastName'));
+  const [firstName, setFirstName] = useState(googleAccount?.firstName ?? '');
+  const [lastName, setLastName] = useState(googleAccount?.lastName ?? '');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [ownerPosition, setOwnerPosition] = useState('');
 
@@ -102,7 +97,6 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
         params: {
           email,
           password,
-          googleIdToken,
           firstName,
           lastName,
           phoneNumber,
@@ -112,15 +106,7 @@ export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
     } else {
       router.push({
         pathname: '/auth/register/RegisterEstablishment',
-        params: {
-          email,
-          password,
-          googleIdToken,
-          firstName,
-          lastName,
-          phoneNumber,
-          ownerPosition,
-        },
+        params: { email, password, firstName, lastName, phoneNumber, ownerPosition },
       } as unknown as Href);
     }
   };

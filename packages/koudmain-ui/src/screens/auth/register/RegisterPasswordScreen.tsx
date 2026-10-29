@@ -8,7 +8,7 @@ import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { PasswordChecker, isPasswordValid } from '@koudmain/ui/components/auth/PasswordChecker';
 
 import { useSession } from '@koudmain/ui/context/SessionContext';
-import { buildRegisterData } from '@koudmain/ui/utils/buildRegisterData';
+import { buildRegisterData, firstParam } from '@koudmain/ui/utils/buildRegisterData';
 
 type RegisterPasswordScreenProps = {
   appContext: 'employer' | 'worker';
@@ -16,7 +16,7 @@ type RegisterPasswordScreenProps = {
 
 export function RegisterPasswordScreen({ appContext }: RegisterPasswordScreenProps) {
   const params = useLocalSearchParams<Record<string, string | string[]>>();
-  const email = Array.isArray(params.email) ? (params.email[0] ?? '') : (params.email ?? '');
+  const email = firstParam(params, 'email');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const { register, isLoading } = useSession();

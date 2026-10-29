@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Text, View, Image, useColorScheme, ImageSourcePropType } from 'react-native';
 
 import { Button } from '@koudmain/ui/components/ui/index';
+import { useSession } from '@koudmain/ui/context/SessionContext';
 
 type ConnectionScreenProps = {
   logoLight: ImageSourcePropType;
@@ -11,6 +12,7 @@ type ConnectionScreenProps = {
 export function ConnectionScreen({ logoLight, logoDark }: ConnectionScreenProps) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { setGoogleAccount } = useSession();
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
@@ -35,6 +37,7 @@ export function ConnectionScreen({ logoLight, logoDark }: ConnectionScreenProps)
           variant="primary"
           className="mt-10"
           onPress={() => {
+            setGoogleAccount(null);
             router.push('/auth/register/RegisterName');
           }}
         />

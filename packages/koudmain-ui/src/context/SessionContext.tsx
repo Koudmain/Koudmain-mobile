@@ -4,13 +4,16 @@ import { User, UserRole } from '../types/user';
 import { userService } from '../api/user.api';
 import { authService, GoogleRegistration, LoginResponse, RegisterData } from '../api/auth.api';
 import { configureAuthRefresh } from '../utils/api';
+import { GoogleAccount } from '../utils/googleSignIn';
 
 const ACCESS_TOKEN_KEY = 'session';
 const REFRESH_TOKEN_KEY = 'refresh_token';
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: (idToken: string, registration?: GoogleRegistration) => Promise<void>;
+  signInWithGoogle: (account: GoogleAccount, registration?: GoogleRegistration) => Promise<void>;
+  googleAccount: GoogleAccount | null;
+  setGoogleAccount: (account: GoogleAccount | null) => void;
   register: (data: RegisterData) => Promise<number>;
   verifyEmail: (userId: number, code: string) => Promise<boolean>;
   signOut: () => Promise<void>;
@@ -46,6 +49,7 @@ export function SessionProvider({
   const [session, setSession] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [googleAccount, setGoogleAccount] = useState<GoogleAccount | null>(null);
 
   const clearSession = useCallback(async () => {
     await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
@@ -147,17 +151,15 @@ export function SessionProvider({
     const token = response.accessToken;
     const refreshToken = response.refreshToken;
 
-    await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
-    await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
-
     const userData = await userService.getMe(token);
 
     if (expectedRole && userData.role !== expectedRole) {
-      await authService.logout(token).catch((error) => console.error('Erreur logout API:', error));
-      await SecureStore.deleteItemAsync(ACCESS_TOKEN_KEY);
-      await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY);
+      authService.logout(token).catch((error) => console.error('Erreur logout API:', error));
       throw new Error('WRONG_ROLE');
     }
+
+    await SecureStore.setItemAsync(ACCESS_TOKEN_KEY, token);
+    await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refreshToken);
 
     setSession(token);
     setUser(userData);
@@ -179,9 +181,11 @@ export function SessionProvider({
     }
   };
 
-  const signInWithGoogle = async (idToken: string, registration?: GoogleRegistration) => {
+  const signInWithGoogle = async (account: GoogleAccount, registration?: GoogleRegistration) => {
     try {
-      await startSession(await authService.google(idToken, registration));
+      await startSession(
+        await authService.google(account.idToken, account.verifier, expectedRole, registration),
+      );
     } catch (error) {
       await clearSession();
       throw error;
@@ -207,6 +211,8 @@ export function SessionProvider({
         verifyEmail,
         signIn,
         signInWithGoogle,
+        googleAccount,
+        setGoogleAccount,
         signOut,
         session,
         user,
