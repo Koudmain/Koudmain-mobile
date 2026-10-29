@@ -28,6 +28,8 @@ import {
 } from '../../../components/ui/select';
 import { ChevronDownIcon } from '../../../components/ui/icon';
 import { AuthTop } from '../../../components/auth/AuthTop';
+import { useSession } from '../../../context/SessionContext';
+import { firstParam } from '../../../utils/buildRegisterData';
 type RegisterNameScreenProps = {
   appContext: 'employer' | 'worker';
 };
@@ -35,15 +37,16 @@ type RegisterNameScreenProps = {
 const DATE_REGEX = /^\d{2}\/\d{2}\/\d{4}$/;
 
 export function RegisterNameScreen({ appContext }: RegisterNameScreenProps) {
-  const { email: emailParam, password: passwordParam } = useLocalSearchParams<{
+  const params = useLocalSearchParams<{
     email?: string | string[];
     password?: string | string[];
   }>();
-  const email = Array.isArray(emailParam) ? (emailParam[0] ?? '') : (emailParam ?? '');
-  const password = Array.isArray(passwordParam) ? (passwordParam[0] ?? '') : (passwordParam ?? '');
+  const email = firstParam(params, 'email');
+  const password = firstParam(params, 'password');
+  const { googleAccount } = useSession();
   const [birthDate, setBirthDate] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState(googleAccount?.firstName ?? '');
+  const [lastName, setLastName] = useState(googleAccount?.lastName ?? '');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [ownerPosition, setOwnerPosition] = useState('');
 

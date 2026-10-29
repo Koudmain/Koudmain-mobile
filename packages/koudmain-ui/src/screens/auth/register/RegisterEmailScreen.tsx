@@ -1,16 +1,25 @@
-import { View, Text, TouchableOpacity, Pressable, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, Keyboard, Alert } from 'react-native';
 import { useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
+import { useSession } from '@koudmain/ui/context/SessionContext';
+import { buildRegisterData } from '@koudmain/ui/utils/buildRegisterData';
+import { getGoogleAccount } from '@koudmain/ui/utils/googleSignIn';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export function RegisterEmailScreen() {
+type RegisterEmailScreenProps = {
+  appContext: 'employer' | 'worker';
+};
+
+export function RegisterEmailScreen({ appContext }: RegisterEmailScreenProps) {
   const params = useLocalSearchParams();
   const [email, setEmail] = useState('');
+  const { signInWithGoogle, googleAccount, setGoogleAccount } = useSession();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const trimmedEmail = email.trim();
   const isEmailValid = EMAIL_REGEX.test(trimmedEmail);
@@ -18,52 +27,102 @@ export function RegisterEmailScreen() {
   const emailValidationState =
     trimmedEmail.length === 0 ? 'default' : isEmailValid ? 'success' : 'error';
 
+  const handleGoogleRegister = async (reauthenticate = false) => {
+    setIsSubmitting(true);
+    try {
+      const account = reauthenticate ? await getGoogleAccount() : googleAccount;
+      if (!account) return;
+      setGoogleAccount(account);
+      await signInWithGoogle(account, buildRegisterData(params, appContext));
+      router.replace('/');
+    } catch (error) {
+      console.error('Google registration failed:', error);
+      if ((error as { status?: number }).status === 401) {
+        Alert.alert('Session Google expirée', 'Reconnectez-vous avec Google pour terminer.', [
+          { text: 'Annuler', style: 'cancel' },
+          { text: 'Se reconnecter', onPress: () => handleGoogleRegister(true) },
+        ]);
+      } else {
+        Alert.alert(
+          'Erreur',
+          (error as Error).message === 'WRONG_ROLE'
+            ? 'Ce compte Google est déjà utilisé sur une autre application Koudmain.'
+            : "Échec de l'inscription. Merci de réessayer.",
+        );
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <View className="flex-1 bg-white dark:bg-primary h-full">
       <AuthTop title="Inscription" />
       <Pressable onPress={Keyboard.dismiss} className="flex-1">
         <FormControl className="flex-1">
           <VStack className="flex flex-col justify-around h-full px-10">
-            <View className="gap-4">
-              <Text className="text-primary dark:text-white text-4xl font-bold px-2">
-                Créer un compte
-              </Text>
-              <Text className="text-gray-500 dark:text-white mb-6">
-                Veuillez votre adresse e-mail. Nous vous enverrons un code de confirmation.
-              </Text>
-              <LabeledUnderlinedInput
-                label="Email"
-                placeholder="contact@exemple.com"
-                type="text"
-                value={email}
-                validationState={emailValidationState}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={(value: string) => {
-                  setEmail(value);
-                }}
-              />
-              <View className="flex-row items-center justify-center gap-2 mt-2">
-                <Text className="text-gray-400">Vous avez déjà un compte ?</Text>
-                <TouchableOpacity onPress={() => router.push('/auth/SignIn')}>
-                  <Text className="text-secondary-400 font-bold">Se connecter</Text>
-                </TouchableOpacity>
+            {googleAccount ? (
+              <View className="gap-4 flex-1 mt-12">
+                <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+                  Dernière étape
+                </Text>
+                <Text className="text-gray-500 dark:text-white mb-6 px-2">
+                  Votre compte sera créé avec l&apos;adresse Google{' '}
+                  <Text className="font-bold text-secondary">{googleAccount.email}</Text>
+                </Text>
               </View>
-            </View>
+            ) : (
+              <View className="gap-4">
+                <Text className="text-primary dark:text-white text-4xl font-bold px-2">
+                  Créer un compte
+                </Text>
+                <Text className="text-gray-500 dark:text-white mb-6">
+                  Veuillez votre adresse e-mail. Nous vous enverrons un code de confirmation.
+                </Text>
+                <LabeledUnderlinedInput
+                  label="Email"
+                  placeholder="contact@exemple.com"
+                  type="text"
+                  value={email}
+                  validationState={emailValidationState}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  onChangeText={(value: string) => {
+                    setEmail(value);
+                  }}
+                />
+                <View className="flex-row items-center justify-center gap-2 mt-2">
+                  <Text className="text-gray-400">Vous avez déjà un compte ?</Text>
+                  <TouchableOpacity onPress={() => router.push('/auth/SignIn')}>
+                    <Text className="text-secondary-400 font-bold">Se connecter</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
             <View className="mt-10">
-              <Button
-                label="Continuer"
-                variant={isFormValid ? 'primary' : 'muted'}
-                className="mx-2"
-                disabled={!isFormValid}
-                onPress={() =>
-                  router.push({
-                    pathname: '/auth/register/RegisterPassword',
-                    params: { ...params, email: trimmedEmail },
-                  })
-                }
-              />
+              {googleAccount ? (
+                <Button
+                  label={isSubmitting ? 'Inscription...' : 'Créer mon compte'}
+                  variant={isSubmitting ? 'muted' : 'primary'}
+                  className="mx-2"
+                  disabled={isSubmitting}
+                  onPress={() => handleGoogleRegister()}
+                />
+              ) : (
+                <Button
+                  label="Continuer"
+                  variant={isFormValid ? 'primary' : 'muted'}
+                  className="mx-2"
+                  disabled={!isFormValid}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/auth/register/RegisterPassword',
+                      params: { ...params, email: trimmedEmail },
+                    })
+                  }
+                />
+              )}
               <Text className="text-gray-400 my-4 mx-2">
                 En créant un compte, j&apos;accepte les
                 <Text className="text-secondary-400 font-bold">
