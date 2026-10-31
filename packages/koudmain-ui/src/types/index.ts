@@ -4,6 +4,8 @@ export * from './message';
 
 export * from './publication';
 
+export * from './application';
+
 export * from './worker';
 
 export * from './user';

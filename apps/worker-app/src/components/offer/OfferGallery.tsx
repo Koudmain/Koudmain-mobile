@@ -16,7 +16,12 @@ export function OfferGallery({ images }: OfferGalleryProps) {
         contentContainerClassName="px-6 gap-4"
       >
         {images.map((img, index) => (
-          <Image key={index} source={img} className="w-32 h-32" resizeMode="cover" />
+          <Image
+            key={index}
+            source={img}
+            className="w-[160px] h-32 rounded-xl"
+            resizeMode="cover"
+          />
         ))}
       </ScrollView>
     </View>

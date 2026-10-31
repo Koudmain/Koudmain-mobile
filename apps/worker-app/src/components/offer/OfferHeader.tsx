@@ -3,10 +3,11 @@ import { View, Text, Pressable, Image, ImageSourcePropType } from 'react-native'
 import { Feather, FontAwesome6 } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { router } from 'expo-router';
+import defaultCompanyCover from '@koudmain/ui/assets/images/default-company-cover.png';
 
 interface OfferHeaderProps {
   title: string;
-  imageSource: ImageSourcePropType;
+  imageSource?: ImageSourcePropType;
   logoSource?: ImageSourcePropType;
   companyId?: number;
 }
@@ -20,7 +21,11 @@ export function OfferHeader({ title, imageSource, logoSource, companyId }: Offer
 
   return (
     <View className="relative w-full h-[250px] mb-4 bg-white dark:bg-primary">
-      <Image source={imageSource} className="w-full h-full rounded-b-[20]" resizeMode="cover" />
+      <Image
+        source={imageSource ?? defaultCompanyCover}
+        className="w-full h-full rounded-b-xl"
+        resizeMode="cover"
+      />
 
       <View className="absolute inset-0 bg-black/40 rounded-[20]" />
 
@@ -48,13 +53,13 @@ export function OfferHeader({ title, imageSource, logoSource, companyId }: Offer
 
       <Pressable
         onPress={openCompanyProfile}
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 -translate-y-[20px] w-[90px] h-[90px] bg-white rounded-full items-center justify-center shadow-lg border-2 border-white z-20"
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 -translate-y-[20px] w-[90px] h-[90px] bg-white rounded-full items-center justify-center shadow-lg border-2 border-white z-20 overflow-hidden"
       >
         {logoSource ? (
           <Image source={logoSource} className="w-full h-full rounded-full" resizeMode="cover" />
         ) : (
-          <View className="w-full h-full bg-gray-200 rounded-full items-center justify-center">
-            <FontAwesome6 name="hat-chef" size={32} color={colors.primary.DEFAULT} />
+          <View className="w-full h-full bg-primary-100 rounded-full items-center justify-center">
+            <FontAwesome6 name="utensils" size={32} color={colors.primary.DEFAULT} />
           </View>
         )}
       </Pressable>
