@@ -8,6 +8,7 @@ type CompetenceCardSelectableProps = {
   textColor?: string;
   accentColor?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  defaultSelected?: boolean;
   onChange?: (selected: boolean) => void;
 };
 
@@ -23,10 +24,11 @@ export default function CompetenceCardSelectable({
   textColor = 'black',
   accentColor = colors.secondary.DEFAULT,
   size = 'md',
+  defaultSelected = false,
   onChange,
 }: CompetenceCardSelectableProps) {
   const sizeStyle = SIZE_STYLES[size];
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState(defaultSelected);
 
   return (
     <View className="flex-row">

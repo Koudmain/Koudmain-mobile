@@ -16,6 +16,7 @@ type PlanningCardProps = {
   wage: number;
   begin: string;
   end: string;
+  onPress?: () => void;
 };
 
 export default function PlanningCard({
@@ -27,9 +28,10 @@ export default function PlanningCard({
   wage,
   begin,
   end,
+  onPress,
 }: PlanningCardProps) {
   return (
-    <Pressable>
+    <Pressable onPress={onPress} disabled={!onPress}>
       <Card className="w-full pt-4 px-4 rounded-[20] bg-background-light dark:bg-background-dark">
         <View className="flex-row items-center flex-1 mr-3">
           {imageProfile ? (

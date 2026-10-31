@@ -9,3 +9,13 @@ export const formatPublicationDate = (dateString: string) => {
 
   return format(date, 'eee d MMM', { locale: fr });
 };
+
+export const formatReviewDate = (dateString: string) =>
+  format(new Date(dateString), 'd MMM yyyy', { locale: fr });
+
+export const formatResponseDelay = (minutes: number | null) => {
+  if (minutes === null) return '—';
+  if (minutes < 60) return `~ ${minutes}min`;
+  if (minutes < 60 * 24) return `~ ${Math.round(minutes / 60)}h`;
+  return `~ ${Math.round(minutes / (60 * 24))}j`;
+};
