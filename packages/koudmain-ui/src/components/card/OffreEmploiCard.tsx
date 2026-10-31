@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import Feather from '@expo/vector-icons/Feather';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
@@ -23,7 +24,7 @@ import { router } from 'expo-router';
 type OffreEmploiCardProps = {
   id: number;
   name: string;
-  imageProfile: ImageSourcePropType;
+  imageProfile?: ImageSourcePropType | null;
   city: string;
   zip: string;
   rate: number;
@@ -61,12 +62,18 @@ export default function OffreEmploiCard({
       <Pressable className="px-4" onPress={() => router.navigate(`/offer/${id}`)}>
         <View className="flex-row justify-between items-start">
           <View className="flex-row items-center flex-1 mr-3">
-            <Image source={imageProfile} className="w-14 h-14 rounded-full mr-3" />
+            {imageProfile ? (
+              <Image source={imageProfile} className="w-14 h-14 rounded-full mr-3" />
+            ) : (
+              <View className="w-14 h-14 rounded-full mr-3 items-center justify-center bg-primary-100">
+                <FontAwesome6 name="utensils" size={22} color={colors.primary.DEFAULT} />
+              </View>
+            )}
             <View className="flex-1">
               <Heading className="text-base font-bold">{name}</Heading>
               <View className="flex-row items-center mt-1">
                 <Text className="text-xs text-gray-500 dark:text-white/80">
-                  {city} - {zip}
+                  {zip ? `${city} - ${zip}` : city}
                 </Text>
                 <View className="flex-row items-center ml-4">
                   <MaterialIcons name="star" size={18} color={colors.utils.star} />
