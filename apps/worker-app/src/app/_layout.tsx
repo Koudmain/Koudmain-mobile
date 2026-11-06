@@ -19,6 +19,9 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(menu)" />
         <Stack.Screen name="offer/[id]" />
+        <Stack.Screen name="company/[id]" />
+        <Stack.Screen name="my-profile/index" />
+        <Stack.Screen name="my-profile/Edit" />
       </Stack.Protected>
 
       <Stack.Protected guard={!session}>

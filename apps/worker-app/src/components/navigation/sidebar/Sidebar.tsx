@@ -55,9 +55,10 @@ export function Sidebar() {
   }));
 
   const menuItems = [
+    { label: 'Mon profil', path: '/my-profile' },
     { label: 'Mon porte-monnaie', path: '/YourOffers' },
     { label: 'Mes candidatures', path: '/applications' },
-    { label: 'Paramètre du Compte', path: '/Settings' },
+    { label: 'Paramètre du Compte', path: '/Settings' }, // Pertinance à revoir
     { label: 'Mes documents', path: '/contracts' },
     { label: 'Notifications', path: '/notifications' },
     { label: 'Mes favoris', path: '/YourOffers' },
@@ -88,7 +89,7 @@ export function Sidebar() {
         className="h-full rounded-l-[20] bg-white dark:bg-primary ml-auto p-1 pt-16 shadow-2xl"
       >
         <ScrollView bounces={false} contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 12 }}>
-          <UserHeader />
+          <UserHeader onPress={() => handleItemPress('/my-profile')} />
 
           <View className="flex-1 py-2">
             {menuItems.map((item, index) => (

@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Pressable } from 'react-native';
 import { Heading } from '@koudmain/ui/gluestack';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 
-export function UserHeader() {
+interface UserHeaderProps {
+  onPress: () => void;
+}
+
+export function UserHeader({ onPress }: UserHeaderProps) {
   const { user } = useSession();
 
   return (
-    <View className="items-center pb-8 border-b border-primary-disabled mb-6">
+    <Pressable
+      onPress={onPress}
+      accessibilityLabel="Voir mon profil"
+      className="items-center pb-8 border-b border-primary-disabled mb-6 active:opacity-60"
+    >
       <View className="size-24 rounded-full bg-gray-200 overflow-hidden mb-4 shadow-sm border-neutral-300">
         <Image
           source={{
@@ -22,6 +30,6 @@ export function UserHeader() {
       <Heading size="md" className="text-primary dark:text-white text-center">
         {user?.first_name} {user?.last_name}
       </Heading>
-    </View>
+    </Pressable>
   );
 }

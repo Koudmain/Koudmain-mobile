@@ -18,7 +18,7 @@ interface InfoHintProps {
 export default function InfoHint({ icon, texts, className = '' }: InfoHintProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  const buttonRef = useRef<View>(null);
+  const buttonRef = useRef<React.ComponentRef<typeof View>>(null);
 
   const toggleTooltip = () => {
     if (!isOpen && buttonRef.current) {

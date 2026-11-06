@@ -10,9 +10,16 @@ interface EventPopUpProps {
   onClose: () => void;
   selectedDate: string;
   events: PlanningEvent[];
+  onEventPress?: (event: PlanningEvent) => void;
 }
 
-export default function EventPopUp({ isVisible, onClose, selectedDate, events }: EventPopUpProps) {
+export default function EventPopUp({
+  isVisible,
+  onClose,
+  selectedDate,
+  events,
+  onEventPress,
+}: EventPopUpProps) {
   return (
     <CalendarBottomSheet
       isVisible={isVisible}
@@ -46,6 +53,7 @@ export default function EventPopUp({ isVisible, onClose, selectedDate, events }:
                 wage={event.wage}
                 begin={event.time}
                 end={event.end}
+                onPress={onEventPress && (() => onEventPress(event))}
               />
             </Shadow>
           ))}

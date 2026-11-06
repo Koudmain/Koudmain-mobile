@@ -87,6 +87,7 @@ export const LIST_FAV = [
 // -- Mock Data representing the design --
 export const MOCK_OFFER_DATA = [
   {
+    companyId: 1,
     restaurantName: 'La femme du boulanger',
     title: 'Serveur H/F',
     isAvailable: true,
@@ -120,6 +121,7 @@ export const MOCK_OFFER_DATA = [
     ] as RequirementItem[],
   },
   {
+    companyId: 2,
     restaurantName: 'La carbonarita',
     title: 'Commis de cuisine',
     isAvailable: true,
@@ -150,6 +152,7 @@ export const MOCK_OFFER_DATA = [
     ] as RequirementItem[],
   },
   {
+    companyId: 3,
     restaurantName: 'Le Boston',
     title: 'Barman H/F',
     isAvailable: true,

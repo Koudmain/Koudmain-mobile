@@ -1,5 +1,6 @@
 import { User } from '../types/user';
 import { apiFetch } from '@koudmain/ui/utils/api';
+import { appendImage } from '../utils/formData';
 
 export const userService = {
   getMe: async (token: string) => {
@@ -11,12 +12,7 @@ export const userService = {
 
   uploadAvatar: async (token: string, fileUri: string) => {
     const formData = new FormData();
-    // @ts-expect-error React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
-    formData.append('image', {
-      uri: fileUri,
-      type: 'image/jpeg',
-      name: 'avatar.jpg',
-    });
+    appendImage(formData, 'image', fileUri);
 
     return apiFetch<User>('/users/me/avatar', {
       method: 'PATCH',
@@ -34,18 +30,7 @@ export const userService = {
     if (data.first_name) formData.append('first_name', data.first_name);
     if (data.last_name) formData.append('last_name', data.last_name);
 
-    if (data.imageUri) {
-      const filename = data.imageUri.split('/').pop();
-      const match = /\.(\w+)$/.exec(filename || '');
-      const type = match ? `image/${match[1]}` : `image`;
-
-      // @ts-expect-error React Native's FormData doesn't support the standard File API, so we need to provide the file info manually
-      formData.append('image', {
-        uri: data.imageUri,
-        name: filename,
-        type,
-      });
-    }
+    if (data.imageUri) appendImage(formData, 'image', data.imageUri);
 
     return apiFetch<User>('/users/me', {
       method: 'PATCH',

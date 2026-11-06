@@ -138,6 +138,14 @@ module.exports = {
           hearth: '#E02424',
           star: '#FBBF24',
         },
+        rating: {
+          1: '#E74C3C',
+          2: '#E67E22',
+          3: '#F4D03F',
+          4: '#8BC34A',
+          5: '#27AA45',
+          track: '#E3E3E3',
+        },
         map: {
           selected: '#2ecc71',
           stroke: '#333',

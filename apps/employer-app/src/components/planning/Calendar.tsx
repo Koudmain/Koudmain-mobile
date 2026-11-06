@@ -5,6 +5,7 @@ import { useCompany } from '@/context/CompanyContext';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { formatDayEvents } from '@/utils/calendarUtils';
 import EventPopUp from '@koudmain/ui/components/modals/EventPopUp';
+import { router } from 'expo-router';
 
 export default function CalendarComponent() {
   const { session } = useSession();
@@ -17,7 +18,16 @@ export default function CalendarComponent() {
     <SharedCalendar
       events={events}
       formatDayEvents={formatDayEvents}
-      renderPopUp={(props) => <EventPopUp {...props} />}
+      renderPopUp={(props) => (
+        <EventPopUp
+          {...props}
+          onEventPress={(event) => {
+            if (!event.workerId) return;
+            props.onClose();
+            router.push(`/worker/${event.workerId}`);
+          }}
+        />
+      )}
     />
   );
 }

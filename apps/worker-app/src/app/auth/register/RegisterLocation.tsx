@@ -12,9 +12,9 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import Slider from '@react-native-community/slider';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { darkMapStyle, lightMapStyle } from '@/constants/styleMap';
+import { WorkRadiusSlider } from '@/components/profile/WorkRadiusSlider';
 
 import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/AddressAutocomplete';
 import { colors } from '@koudmain/ui/constants/theme';
@@ -100,31 +100,8 @@ export default function RegisterLocation() {
                   }}
                 />
 
-                <View className="mt-4">
-                  <View className="flex-row items-center justify-between">
-                    <Text className="text-primary dark:text-white font-semibold">
-                      Rayon de déplacement :
-                    </Text>
-                    <Text className="text-secondary-500 font-bold">{radius} km</Text>
-                  </View>
-                </View>
-
-                <Slider
-                  style={{ width: '100%', height: 40 }}
-                  minimumValue={1}
-                  maximumValue={50}
-                  step={1}
-                  value={radius}
-                  onValueChange={setRadius}
-                  minimumTrackTintColor={colors.secondary.DEFAULT}
-                  maximumTrackTintColor={isDark ? colors.primary[600] : colors.neutral[200]}
-                  thumbTintColor={colors.secondary.DEFAULT}
-                />
-
-                <View className="flex-row items-center justify-between mt-1 mb-6">
-                  <Text className="text-primary dark:text-white font-semibold">1 km</Text>
-                  <Text className="text-primary dark:text-white font-semibold">25 km</Text>
-                  <Text className="text-primary dark:text-white font-semibold">50 km</Text>
+                <View className="mb-6">
+                  <WorkRadiusSlider radius={radius} onChange={setRadius} />
                 </View>
 
                 <View className="mt-4 border border-gray-200 dark:border-gray-700 h-[350px] rounded-2xl overflow-hidden">

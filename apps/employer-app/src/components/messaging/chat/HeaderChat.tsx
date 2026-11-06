@@ -8,9 +8,10 @@ interface HeaderChatProps {
   userName: string;
   publicationTitle: string;
   userImage?: string;
+  workerId?: number;
 }
 
-export function HeaderChat({ userName, publicationTitle, userImage }: HeaderChatProps) {
+export function HeaderChat({ userName, publicationTitle, userImage, workerId }: HeaderChatProps) {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
@@ -26,29 +27,36 @@ export function HeaderChat({ userName, publicationTitle, userImage }: HeaderChat
           />
         </TouchableOpacity>
 
-        <View className="w-10 h-10 rounded-full bg-neutral-200 overflow-hidden mr-3">
-          {userImage ? (
-            <Image source={{ uri: userImage }} className="flex-1" />
-          ) : (
-            <View className="flex-1 items-center justify-center bg-primary-100">
-              <Text className="text-primary-600 font-bold">{userName.charAt(0)}</Text>
-            </View>
-          )}
-        </View>
-
-        <View className="flex-1">
-          <Text className="font-bold text-[16px] dark:text-white" numberOfLines={1}>
-            {userName}
-          </Text>
-          <View className="flex-row items-center">
-            <Text
-              className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
-              numberOfLines={1}
-            >
-              {publicationTitle}
-            </Text>
+        <TouchableOpacity
+          className="flex-row items-center flex-1"
+          activeOpacity={0.7}
+          disabled={!workerId}
+          onPress={() => router.push(`/worker/${workerId}`)}
+        >
+          <View className="w-10 h-10 rounded-full bg-neutral-200 overflow-hidden mr-3">
+            {userImage ? (
+              <Image source={{ uri: userImage }} className="flex-1" />
+            ) : (
+              <View className="flex-1 items-center justify-center bg-primary-100">
+                <Text className="text-primary-600 font-bold">{userName.charAt(0)}</Text>
+              </View>
+            )}
           </View>
-        </View>
+
+          <View className="flex-1">
+            <Text className="font-bold text-[16px] dark:text-white" numberOfLines={1}>
+              {userName}
+            </Text>
+            <View className="flex-row items-center">
+              <Text
+                className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
+                numberOfLines={1}
+              >
+                {publicationTitle}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity className="p-2">

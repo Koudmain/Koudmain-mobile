@@ -23,6 +23,7 @@ export const formatDayEvents = (
         rate: parseFloat(String(item.workerRating)),
         number_rate: Number(item.workerRatingCount),
         starting_date: item.starting_date,
+        workerId: item.workerId,
       };
     });
 };

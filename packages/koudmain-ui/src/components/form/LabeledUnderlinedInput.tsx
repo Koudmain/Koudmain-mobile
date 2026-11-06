@@ -67,14 +67,15 @@ export default function LabeledUnderlinedInput({
         <InputField
           {...fieldProps}
           multiline={multiline}
+          numberOfLines={multiline ? fieldProps.numberOfLines : 1}
+          lineBreakModeIOS={multiline ? fieldProps.lineBreakModeIOS : 'tail'}
           type={isPasswordField ? (showPassword ? 'text' : 'password') : fieldProps.type}
           secureTextEntry={isPasswordField && !showPassword}
           textAlignVertical={multiline ? 'top' : 'center'}
           allowFontScaling={false}
           className={[
             'px-0 font-jakarta text-primary dark:text-white',
-            multiline ? 'h-full py-3' : 'h-12',
-            'leading-tight',
+            multiline ? 'h-full py-3 leading-tight' : 'h-12',
             fieldClassName,
           ]
             .filter(Boolean)

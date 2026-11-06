@@ -6,15 +6,7 @@ import { AddressAutocomplete, AddressData } from '@koudmain/ui/components/form/A
 import LabeledUnderlinedInput from '@koudmain/ui/components/form/LabeledUnderlinedInput';
 import { VStack, FormControl, Button } from '@koudmain/ui/components/ui/index';
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
-
-const COMPANY_TYPES = [
-  'Café / Bar',
-  'Restaurant',
-  'Hôtel',
-  'Restauration rapide',
-  'Traiteur / Event',
-  'Autre CHR',
-];
+import { CompanyTypeSelector } from '@/components/company/CompanyTypeSelector';
 
 export default function RegisterEstablishment() {
   const params = useLocalSearchParams();
@@ -59,29 +51,7 @@ export default function RegisterEstablishment() {
                   <Text className="text-primary dark:text-white font-inter font-bold text-xl mb-4">
                     Type d'établissement
                   </Text>
-                  <View className="flex-row flex-wrap justify-between">
-                    {COMPANY_TYPES.map((type) => {
-                      const isSelected = selectedType === type;
-                      return (
-                        <View key={type} className="w-[48%] mb-2">
-                          <Pressable
-                            onPress={() => setSelectedType(isSelected ? null : type)}
-                            className={`rounded-xl border border-secondary py-4 px-2 items-center justify-center flex-row ${
-                              isSelected ? 'bg-secondary' : 'bg-transparent'
-                            }`}
-                          >
-                            <Text
-                              className={`text-center font-semibold ${
-                                isSelected ? 'text-white' : 'text-primary dark:text-white'
-                              }`}
-                            >
-                              {type}
-                            </Text>
-                          </Pressable>
-                        </View>
-                      );
-                    })}
-                  </View>
+                  <CompanyTypeSelector value={selectedType} onChange={setSelectedType} />
                 </View>
               </View>
 
