@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SectionList, Text, View, FlatList, Pressable } from 'react-native';
+import { SectionList, Text, View, Pressable } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import SearchBar from '@koudmain/ui/components/tools/SearchBar';
 import { normalizeText } from '@koudmain/ui/utils/text';
-import { MOCK_PUBLICATIONS } from '@/constants/fakePubliConv';
 import ConversationItem from '@/components/messaging/ConversationItem';
 import SectionHeader from '@/components/messaging/SectionsHeader';
-import PublicationStoryItem from '@/components/messaging/PublicationStoryItem';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCompany } from '@/context/CompanyContext';
 import { chatService } from '@/api/chat.api';
@@ -15,7 +13,6 @@ import { IConversation } from '@/types/conversation';
 export default function Messaging() {
   const [searchText, setSearchText] = useState('');
   const [openRowId, setOpenRowId] = useState<number | null>(null);
-  const [selectedPubId, setSelectedPubId] = useState<number | null>(null);
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
   const { session } = useSession();
@@ -54,10 +51,6 @@ export default function Messaging() {
     const cleanQuery = normalizeText(searchText.trim());
     const tokens = cleanQuery.length > 0 ? cleanQuery.split(/\s+/) : [];
     const filtered = conversations.filter((conv) => {
-      if (selectedPubId && conv.publicationId !== selectedPubId) {
-        return false;
-      }
-
       const workerUser = conv.worker?.user;
       const workerName = `${workerUser?.first_name || ''} ${workerUser?.last_name || ''}`;
       const pubTitle = conv.publication?.title || '';
@@ -77,7 +70,7 @@ export default function Messaging() {
       result.push({ title: '', data: others, icon: '' });
     }
     return result;
-  }, [searchText, conversations, selectedPubId]);
+  }, [searchText, conversations]);
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
@@ -97,24 +90,6 @@ export default function Messaging() {
 
       <SectionList
         sections={sections}
-        ListHeaderComponent={
-          <View className="py-6 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-primary">
-            <FlatList
-              horizontal
-              data={MOCK_PUBLICATIONS}
-              keyExtractor={(item) => item.id.toString()}
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{ paddingHorizontal: 20 }}
-              renderItem={({ item }) => (
-                <PublicationStoryItem
-                  item={item}
-                  isActive={selectedPubId === item.id}
-                  onPress={() => setSelectedPubId(selectedPubId === item.id ? null : item.id)}
-                />
-              )}
-            />
-          </View>
-        }
         keyExtractor={(item) => item.id.toString()}
         stickySectionHeadersEnabled={false}
         onScrollBeginDrag={closeAll}
@@ -140,9 +115,7 @@ export default function Messaging() {
         ListEmptyComponent={
           <View className="items-center mt-20 px-10">
             <Text className="text-neutral-500 text-center">
-              {selectedPubId
-                ? 'Aucun message pour cette mission.'
-                : 'Aucune conversation correspondante.'}
+              Aucune conversation correspondante.
             </Text>
           </View>
         }
