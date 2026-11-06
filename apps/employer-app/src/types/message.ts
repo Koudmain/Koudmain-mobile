@@ -10,6 +10,7 @@ export interface Message {
 export interface IMessage {
   id: number;
   conversationId: number;
+  conversation_id?: number;
   content_text: string;
   sender_id: number;
   created_at: string;

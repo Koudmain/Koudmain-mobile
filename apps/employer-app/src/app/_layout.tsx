@@ -36,6 +36,7 @@ function RootNavigator() {
         <Stack.Screen name="worker/[id]" />
         <Stack.Screen name="my-company/index" />
         <Stack.Screen name="my-company/Edit" />
+        <Stack.Screen name="chat" />
       </Stack.Protected>
 
       <Stack.Protected guard={!session} redirectTo="/">

@@ -16,6 +16,34 @@ interface ConversationItemProps {
   className?: string;
 }
 
+const formatLastMessageDate = (dateStr?: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '';
+  const now = new Date();
+  const isSameDay =
+    d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+
+  if (isSameDay) {
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const isYesterday =
+    d.getDate() === yesterday.getDate() &&
+    d.getMonth() === yesterday.getMonth() &&
+    d.getFullYear() === yesterday.getFullYear();
+
+  if (isYesterday) {
+    return 'Hier';
+  }
+
+  return d.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+};
+
 function ConversationItem({
   conversation,
   isOpen,
@@ -31,9 +59,16 @@ function ConversationItem({
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
+  const workerUser = conversation.worker?.user;
+  const workerFullName =
+    [workerUser?.first_name, workerUser?.last_name].filter(Boolean).join(' ') || 'Candidat';
+
   const urlImg =
-    conversation.worker.user.profile_picture_url ||
+    workerUser?.profile_picture_url ||
     'https://www.cuisine-essentiel.fr/images/2020/10/avatar-neutre.png';
+
+  const lastMessage = conversation.last_message?.[0];
+  const lastMessageTime = formatLastMessageDate(lastMessage?.created_at);
 
   useEffect(() => {
     if (!isOpen) {
@@ -94,16 +129,18 @@ function ConversationItem({
               )}
               numberOfLines={1}
             >
-              {conversation.worker.user.first_name} {conversation.worker.user.last_name}
+              {workerFullName}
             </Text>
-            <Text
-              className={cnFusion(
-                'text-xs',
-                hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
-              )}
-            >
-              {conversation.last_message[0]?.created_at}
-            </Text>
+            {lastMessageTime ? (
+              <Text
+                className={cnFusion(
+                  'text-xs',
+                  hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
+                )}
+              >
+                {lastMessageTime}
+              </Text>
+            ) : null}
           </View>
 
           <View className="flex-row items-center">
@@ -114,7 +151,7 @@ function ConversationItem({
               )}
               numberOfLines={1}
             >
-              {conversation.last_message[0]?.content_text}
+              {lastMessage?.content_text || ''}
             </Text>
             {hasUnread && (
               <View className="bg-primary-500 min-w-[20px] h-5 px-1.5 rounded-full items-center justify-center">

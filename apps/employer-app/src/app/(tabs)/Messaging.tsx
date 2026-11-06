@@ -44,7 +44,7 @@ export default function Messaging() {
 
   const handlePin = (id: number) => {
     const convIndex = conversations.findIndex((c) => c.id === id);
-    if (convIndex !== -1) {
+    if (convIndex !== -1 && conversations[convIndex].settings) {
       conversations[convIndex].settings.is_pinned = !conversations[convIndex].settings.is_pinned;
       setOpenRowId(null);
     }
@@ -58,12 +58,16 @@ export default function Messaging() {
         return false;
       }
 
-      const searchableText = normalizeText(`${conv.last_message[0]?.content_text}`);
+      const workerUser = conv.worker?.user;
+      const workerName = `${workerUser?.first_name || ''} ${workerUser?.last_name || ''}`;
+      const pubTitle = conv.publication?.title || '';
+      const lastMessageText = conv.last_message?.[0]?.content_text || '';
+      const searchableText = normalizeText(`${workerName} ${pubTitle} ${lastMessageText}`);
       return tokens.every((token) => searchableText.includes(token));
     });
 
-    const pinned = filtered.filter((c) => c.settings.is_pinned);
-    const others = filtered.filter((c) => !c.settings.is_pinned);
+    const pinned = filtered.filter((c) => c.settings?.is_pinned);
+    const others = filtered.filter((c) => !c.settings?.is_pinned);
 
     const result = [];
     if (pinned.length > 0) {

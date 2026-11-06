@@ -57,7 +57,7 @@ const ButtonRightAction = ({
           }}
         >
           <Octicons
-            name={conversation.settings.is_pinned ? 'pin-slash' : 'pin'}
+            name={conversation.settings?.is_pinned ? 'pin-slash' : 'pin'}
             size={24}
             color="white"
           />

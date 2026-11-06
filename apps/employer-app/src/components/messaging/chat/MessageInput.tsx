@@ -17,20 +17,25 @@ export default function MessageInput({
   const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
-    if (value.trim().length > 0 && !isSending) {
-      setIsSending(true);
-      try {
-        await onSend(value);
-        setValue('');
-      } catch (error) {
-        console.error("Erreur d'envoi:", error);
-      } finally {
-        setIsSending(false);
-      }
+    const textToSend = value.trim();
+    if (!textToSend || isSending) return;
+
+    // Vider immédiatement le champ texte pour une expérience optimiste fluide
+    setValue('');
+    setIsSending(true);
+
+    try {
+      await onSend(textToSend);
+    } catch (error) {
+      console.error("Erreur d'envoi:", error);
+      // En cas d'erreur bloquante avant dispatch, on peut restaurer le texte si le champ est toujours vide
+      setValue((current) => (current === '' ? textToSend : current));
+    } finally {
+      setIsSending(false);
     }
   };
 
-  const isTyping = value.length > 0;
+  const isTyping = value.trim().length > 0;
 
   return (
     <View className="flex-row items-end justify-center px-3 w-[95%] rounded-full bg-neutral-200 dark:bg-primary-hover border-t border-neutral-100 dark:border-neutral-800">
@@ -43,7 +48,6 @@ export default function MessageInput({
             value={value}
             onChangeText={setValue}
             multiline={true}
-            editable={!isSending}
           />
         </Input>
       </View>
@@ -64,13 +68,13 @@ export default function MessageInput({
         ) : (
           <TouchableOpacity
             onPress={handleSend}
-            disabled={isSending || !isTyping}
+            disabled={!isTyping && !isSending}
             className="bg-secondary w-12 h-8 rounded-[15] items-center justify-center shadow-sm"
           >
-            {isSending ? (
+            {isSending && !isTyping ? (
               <ActivityIndicator size="small" color={colors.primary.content} />
             ) : (
-              <Feather name="send" size={22} color={colors.primary.content} />
+              <Feather name="send" size={20} color={colors.primary.content} />
             )}
           </TouchableOpacity>
         )}

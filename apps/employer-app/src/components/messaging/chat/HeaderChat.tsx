@@ -5,16 +5,24 @@ import { useRouter } from 'expo-router';
 import { colors } from '@/constants/theme';
 
 interface HeaderChatProps {
-  userName: string;
-  publicationTitle: string;
-  userImage?: string;
+  userName?: string;
+  publicationTitle?: string;
+  userImage?: string | null;
   workerId?: number;
 }
 
-export function HeaderChat({ userName, publicationTitle, userImage, workerId }: HeaderChatProps) {
+export function HeaderChat({
+  userName = '',
+  publicationTitle = '',
+  userImage,
+  workerId,
+}: HeaderChatProps) {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+
+  const initial =
+    userName && userName.trim().length > 0 ? userName.trim().charAt(0).toUpperCase() : '?';
 
   return (
     <View className="bg-white dark:bg-primary flex-row items-center justify-between w-full px-2">
@@ -38,23 +46,28 @@ export function HeaderChat({ userName, publicationTitle, userImage, workerId }: 
               <Image source={{ uri: userImage }} className="flex-1" />
             ) : (
               <View className="flex-1 items-center justify-center bg-primary-100">
-                <Text className="text-primary-600 font-bold">{userName.charAt(0)}</Text>
+                <Text className="text-primary-600 font-bold">{initial}</Text>
               </View>
             )}
           </View>
 
           <View className="flex-1">
-            <Text className="font-bold text-[16px] dark:text-white" numberOfLines={1}>
-              {userName}
+            <Text
+              className="font-bold text-[16px] text-neutral-900 dark:text-white"
+              numberOfLines={1}
+            >
+              {userName || 'Candidat'}
             </Text>
-            <View className="flex-row items-center">
-              <Text
-                className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
-                numberOfLines={1}
-              >
-                {publicationTitle}
-              </Text>
-            </View>
+            {publicationTitle ? (
+              <View className="flex-row items-center">
+                <Text
+                  className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
+                  numberOfLines={1}
+                >
+                  {publicationTitle}
+                </Text>
+              </View>
+            ) : null}
           </View>
         </TouchableOpacity>
       </View>
