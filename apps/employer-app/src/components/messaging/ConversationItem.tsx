@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { cnFusion } from '@koudmain/ui/utils/cnFusion';
@@ -63,9 +63,8 @@ function ConversationItem({
   const workerFullName =
     [workerUser?.first_name, workerUser?.last_name].filter(Boolean).join(' ') || 'Candidat';
 
-  const urlImg =
-    workerUser?.profile_picture_url ||
-    'https://www.cuisine-essentiel.fr/images/2020/10/avatar-neutre.png';
+  const [imageError, setImageError] = useState(false);
+  const initial = (workerFullName || 'C').trim().charAt(0).toUpperCase();
 
   const lastMessage = conversation.last_message?.[0];
   const lastMessageTime = formatLastMessageDate(lastMessage?.created_at);
@@ -112,12 +111,21 @@ function ConversationItem({
         )}
       >
         <View className="relative">
-          <Image
-            source={{
-              uri: urlImg,
-            }}
-            className="w-14 h-14 rounded-full bg-neutral-200"
-          />
+          {workerUser?.profile_picture_url && !imageError ? (
+            <Image
+              source={{
+                uri: workerUser.profile_picture_url,
+              }}
+              className="w-14 h-14 rounded-full bg-neutral-200"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View className="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-hover items-center justify-center">
+              <Text className="text-primary-600 dark:text-primary-content font-bold text-lg">
+                {initial}
+              </Text>
+            </View>
+          )}
         </View>
 
         <View className="flex-1 ml-4">
