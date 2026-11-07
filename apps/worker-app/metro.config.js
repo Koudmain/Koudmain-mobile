@@ -1,10 +1,16 @@
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
+const path = require('path');
 
 module.exports = (() => {
-  const config = getDefaultConfig(__dirname);
+  const projectRoot = __dirname;
+  const monorepoRoot = path.resolve(projectRoot, '../..');
+
+  const config = getDefaultConfig(projectRoot);
 
   const { transformer, resolver } = config;
+
+  config.watchFolders = [monorepoRoot];
 
   config.transformer = {
     ...transformer,
@@ -13,6 +19,10 @@ module.exports = (() => {
 
   config.resolver = {
     ...resolver,
+    nodeModulesPaths: [
+      path.resolve(projectRoot, 'node_modules'),
+      path.resolve(monorepoRoot, 'node_modules'),
+    ],
     assetExts: resolver.assetExts.filter((ext) => ext !== 'svg'),
     sourceExts: [...resolver.sourceExts, 'svg'],
   };
