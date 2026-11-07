@@ -8,57 +8,109 @@ const API_URL = transformIpBackendUrl(RAW_API_HOST, 4000);
 class SocketService {
   private socket: WebSocket | null = null;
   private isExplicitlyClosed = false;
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
   connect(token: string) {
-    if (this.socket || !token) {
-      console.log('WebSocket: connexion ignorée (socket déjà ouverte ou token manquant)');
-      return;
+    if (!token) return;
+
+    // Si une socket est déjà active ou en cours d'ouverture, ne rien faire
+    if (this.socket) {
+      if (
+        this.socket.readyState === WebSocket.OPEN ||
+        this.socket.readyState === WebSocket.CONNECTING
+      ) {
+        return;
+      }
+      this.disconnect();
     }
 
     this.isExplicitlyClosed = false;
 
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+
     const wsUrl = API_URL.replace(/^http/, 'ws') + `/ws?token=${token}`;
 
-    console.log('Tentative de connexion WebSocket sur :', wsUrl);
-
     try {
-      this.socket = new WebSocket(wsUrl);
+      const ws = new WebSocket(wsUrl);
+      this.socket = ws;
 
-      this.socket.onopen = () => {
+      ws.onopen = () => {
+        if (this.socket !== ws) return;
         console.log('WebSocket: connecté avec succès');
       };
 
-      this.socket.onmessage = (event) => {
+      ws.onmessage = (event) => {
+        if (this.socket !== ws) return;
         try {
           const data = JSON.parse(event.data);
           if (data.type === 'MESSAGE' || data.content_text) {
             useChatStore.getState().addMessage(data);
           }
         } catch (e) {
-          console.error('Erreur parsing WS', e);
+          console.warn('WebSocket: erreur parsing message JSON', e);
         }
       };
 
-      this.socket.onerror = (e: Event) => {
-        console.error('WebSocket: erreur de connexion', e);
+      ws.onerror = (e) => {
+        if (this.isExplicitlyClosed || this.socket !== ws) return;
+        console.warn(
+          'WebSocket: problème de connexion au serveur (Go)',
+          (e as { message?: string })?.message || '',
+        );
       };
 
-      this.socket.onclose = (e) => {
-        this.socket = null;
-        if (!this.isExplicitlyClosed && e.code !== 1000) {
-          console.log('WebSocket: reconnexion dans 5s');
-          setTimeout(() => this.connect(token), 5000);
+      ws.onclose = (e) => {
+        if (this.socket === ws) {
+          this.socket = null;
+        }
+        if (this.isExplicitlyClosed) return;
+
+        // Reconnexion automatique si fermeture inattendue (autre que code normal 1000 / 1001)
+        if (e.code !== 1000 && e.code !== 1001) {
+          if (this.reconnectTimer) {
+            clearTimeout(this.reconnectTimer);
+          }
+          this.reconnectTimer = setTimeout(() => {
+            if (!this.isExplicitlyClosed) {
+              this.connect(token);
+            }
+          }, 5000);
         }
       };
     } catch (err) {
-      console.error('WebSocket: erreur fatale lors de la création', err);
+      console.warn('WebSocket: échec lors de la création de la connexion', err);
     }
   }
 
   disconnect() {
     this.isExplicitlyClosed = true;
-    this.socket?.close();
-    this.socket = null;
+
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+
+    if (this.socket) {
+      const ws = this.socket;
+      this.socket = null;
+
+      // Détacher tous les listeners pour éviter les callbacks sur un socket en cours de destruction
+      ws.onopen = null;
+      ws.onmessage = null;
+      ws.onerror = null;
+      ws.onclose = null;
+
+      try {
+        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+          ws.close();
+        }
+      } catch {
+        // Ignorer si déjà fermé
+      }
+    }
   }
 }
 
