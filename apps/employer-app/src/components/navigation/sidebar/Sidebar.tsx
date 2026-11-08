@@ -57,7 +57,7 @@ export function Sidebar() {
   const menuItems = [
     { label: 'Mon établissement', path: '/my-company' },
     { label: 'Paramètre du Compte', path: '/Settings' },
-    { label: 'Mes documents', path: '/contracts' },
+    { label: 'Mes documents', path: '/Documents' },
     { label: 'Notifications', path: '/notifications' },
   ];
 
