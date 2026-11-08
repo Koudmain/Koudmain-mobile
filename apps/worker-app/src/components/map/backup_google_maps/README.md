@@ -1,6 +1,6 @@
 # Sauvegarde de la Map initiale (react-native-maps / Google & Apple Maps)
 
-Ce dossier contient une sauvegarde complète de votre implémentation précédente de la carte basée sur `react-native-maps`.
+Ce dossier contient une sauvegarde complète de l'implémentation précédente de la carte basée sur `react-native-maps`.
 
 ### Fichiers sauvegardés :
 
