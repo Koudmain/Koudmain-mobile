@@ -3,7 +3,7 @@ import { getPublicationsAsync } from '@/api/publications.api';
 import { IPublication } from '@/types/publication';
 
 interface UseGetPublicationsReturn {
-  mutatePublications: () => Promise<IPublication[] | null>;
+  mutatePublications: (companyId: number) => Promise<IPublication[] | null>;
   publications: IPublication[];
   isLoadingPublications: boolean;
   errorPublications: string | null;
@@ -15,7 +15,7 @@ export const useGetPublications = (): UseGetPublicationsReturn => {
   const [publications, setPublications] = useState<IPublication[]>([]);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const mutatePublications = useCallback(async () => {
+  const mutatePublications = useCallback(async (companyId: number) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
@@ -27,7 +27,7 @@ export const useGetPublications = (): UseGetPublicationsReturn => {
     setErrorPublications(null);
 
     try {
-      const data = await getPublicationsAsync(controller.signal);
+      const data = await getPublicationsAsync(companyId, controller.signal);
       setPublications(data);
       return data;
     } catch (err: unknown) {
