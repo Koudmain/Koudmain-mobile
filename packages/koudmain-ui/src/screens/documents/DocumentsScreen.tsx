@@ -193,13 +193,10 @@ export function DocumentsScreen({
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
-      {/* HEADER */}
       <DocumentHeader selectedFolder={selectedFolder} onBack={handleBack} />
 
-      {/* SEARCH BAR */}
       <DocumentSearchBar value={searchQuery} onChangeText={setSearchQuery} />
 
-      {/* CONTENT */}
       {selectedFolder ? (
         <FolderDetailView
           selectedFolder={selectedFolder}

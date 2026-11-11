@@ -42,7 +42,6 @@ export function FolderDetailView({
 
   return (
     <View className="flex-1">
-      {/* Subheader with View Toggle */}
       <View className="flex-row items-center justify-between px-4 py-3">
         <Text className="text-xs font-medium text-neutral-400 dark:text-neutral-400">
           {selectedFolder}

@@ -23,7 +23,6 @@ export function ViewModePopover({
       <TouchableWithoutFeedback onPress={onClose}>
         <View className="flex-1 bg-black/10">
           <View className="absolute right-4 top-32 w-14 bg-white dark:bg-[#2C2C2E] rounded-xl shadow-lg border border-gray-200 dark:border-neutral-700 py-1 items-center">
-            {/* Grid option */}
             <TouchableOpacity
               onPress={() => {
                 onSelectMode('grid');
@@ -40,10 +39,8 @@ export function ViewModePopover({
               />
             </TouchableOpacity>
 
-            {/* Divider */}
             <View className="h-px w-4/5 bg-gray-200 dark:bg-neutral-700 my-0.5" />
 
-            {/* List option */}
             <TouchableOpacity
               onPress={() => {
                 onSelectMode('list');

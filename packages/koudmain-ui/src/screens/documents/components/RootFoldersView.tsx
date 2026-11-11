@@ -43,7 +43,6 @@ export function RootFoldersView({
         />
       }
     >
-      {/* Switcher Card Button */}
       <View className="py-2">
         <TouchableOpacity
           activeOpacity={0.7}
@@ -63,7 +62,6 @@ export function RootFoldersView({
         </TouchableOpacity>
       </View>
 
-      {/* 3 Folders Row */}
       <View className="flex-row gap-3 my-3">
         {(['Contrats', 'Factures', 'Personnel'] as FolderType[]).map((folder) => (
           <TouchableOpacity
@@ -82,7 +80,6 @@ export function RootFoldersView({
         ))}
       </View>
 
-      {/* SECTION: RÉCENTS */}
       {recentDocuments.length > 0 && (
         <View className="mt-4">
           <Text className="text-sm font-bold text-neutral-900 dark:text-white mb-3">Récents</Text>
@@ -114,12 +111,10 @@ export function RootFoldersView({
         </View>
       )}
 
-      {/* SECTION: FICHIERS */}
       <View className="mt-6">
         <Text className="text-sm font-bold text-neutral-900 dark:text-white mb-3">Fichiers</Text>
 
         <View className="gap-2">
-          {/* Category: PDF */}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => onSelectCategory(selectedCategory === 'pdf' ? null : 'pdf')}
@@ -140,7 +135,6 @@ export function RootFoldersView({
             <Text className="text-xs font-semibold text-neutral-400">{categoryCounts.pdf}</Text>
           </TouchableOpacity>
 
-          {/* Category: Images */}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => onSelectCategory(selectedCategory === 'image' ? null : 'image')}
@@ -159,7 +153,6 @@ export function RootFoldersView({
             <Text className="text-xs font-semibold text-neutral-400">{categoryCounts.image}</Text>
           </TouchableOpacity>
 
-          {/* Category: Autres */}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => onSelectCategory(selectedCategory === 'other' ? null : 'other')}

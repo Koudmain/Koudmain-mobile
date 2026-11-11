@@ -34,7 +34,6 @@ export function RootListView({
 }: RootListViewProps) {
   return (
     <View className="flex-1">
-      {/* Switcher Card Button */}
       <View className="px-4 py-2">
         <TouchableOpacity
           activeOpacity={0.7}
@@ -54,7 +53,6 @@ export function RootListView({
         </TouchableOpacity>
       </View>
 
-      {/* Section Subheader */}
       <View className="flex-row items-center justify-between px-4 pt-3 pb-2">
         <Text className="text-xs font-medium text-neutral-400 dark:text-neutral-400">
           Documents
@@ -68,7 +66,6 @@ export function RootListView({
         </TouchableOpacity>
       </View>
 
-      {/* Document List */}
       {isLoading && documents.length === 0 ? (
         <View className="flex-1 items-center justify-center py-12">
           <ActivityIndicator size="large" color={colors.secondary.DEFAULT} />
