@@ -1,0 +1,55 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+    open-pull-requests-limit: 3
+
+    labels:
+      - "dependencies"
+      - "to review"
+
+    commit-message:
+      prefix: "[DEPENDABOT]"
+      prefix-development: "[DEPENDABOT-DEV]"
+      include: "scope"
+
+    ignore:
+      # Versions aligned with the Expo SDK: upgrade them with `expo install --fix`.
+      # shortcut: react-native-* also skips JS-only libraries (react-native-calendars...), narrow it if they fall behind.
+      - dependency-name: "expo"
+      - dependency-name: "expo-*"
+      - dependency-name: "@expo/*"
+      - dependency-name: "babel-preset-expo"
+      - dependency-name: "eslint-config-expo"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+      - dependency-name: "react-native"
+      - dependency-name: "react-native-*"
+      - dependency-name: "@react-native-*/*"
+      - dependency-name: "@types/react"
+      - dependency-name: "@types/react-dom"
+      - dependency-name: "typescript"
+      # NativeWind 4 relies on Tailwind 3.
+      - dependency-name: "tailwindcss"
+        update-types:
+          - "version-update:semver-major"
+
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      prod-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
