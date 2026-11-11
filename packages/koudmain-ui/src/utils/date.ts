@@ -1,6 +1,10 @@
 import { format, isToday, isTomorrow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
+// 'yyyy-MM-dd' of the phone's own day. Never use toISOString().split('T')[0]: that is the UTC
+// day, which is the previous day in France between midnight and 1-2 am.
+export const toLocalDateKey = (date: Date | string) => format(new Date(date), 'yyyy-MM-dd');
+
 export const formatPublicationDate = (dateString: string) => {
   const date = new Date(dateString);
 

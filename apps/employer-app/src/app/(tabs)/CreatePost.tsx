@@ -22,6 +22,7 @@ import { BottomSheetSkillSelector } from '@/components/skill/BottomSheetSkillSel
 import { useCompany } from '@/context/CompanyContext';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { colors } from '@/constants/theme';
+import { toLocalDateKey } from '@koudmain/ui/utils/date';
 
 function BottomSheetBackground({ style }: BottomSheetBackgroundProps) {
   return (
@@ -76,7 +77,7 @@ export default function CreatePost() {
   // Publication data
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(toLocalDateKey(new Date()));
   const [timePostString, setTimePostString] = useState<string | null>(null);
   const [duration, setDuration] = useState(4);
   const [paymentType, setPaymentType] = useState('€/h');
@@ -101,18 +102,17 @@ export default function CreatePost() {
     const rate =
       paymentType === '€/h' ? parsedAmount : parseFloat((parsedAmount / duration).toFixed(2));
 
+    // Parsed as the phone's local time, sent in UTC: the API needs an explicit time zone.
     const startObj = new Date(`${selectedDate}T${timePostString}:00`);
     const endObj = new Date(startObj.getTime() + duration * 60 * 60 * 1000);
-    const formatLocal = (d: Date) =>
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}:00`;
 
     const payload = {
       companyId: Number(activeCompanyId),
       title: title,
       description: description,
       hourly_rate: rate,
-      starting_date: formatLocal(startObj),
-      ending_date: formatLocal(endObj),
+      starting_date: startObj.toISOString(),
+      ending_date: endObj.toISOString(),
       skills: competencesList.map((comp) => comp.id),
       autoAccept: isPublicationAcceptFirstCandidature,
       highlight: isPublicationHighlight,
