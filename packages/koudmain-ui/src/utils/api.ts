@@ -141,17 +141,24 @@ async function refreshAccessToken(): Promise<string | null> {
         return null;
       }
 
-      const response = await fetch(buildApiUrl('/auth/refresh'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refreshToken }),
-      });
+      let response: Response;
+      try {
+        response = await fetch(buildApiUrl('/auth/refresh'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken }),
+        });
+      } catch {
+        // Offline: keep the tokens, the request fails and can be retried later.
+        return null;
+      }
 
       const rawData = await response.json().catch(() => null);
       const data = rawData as { accessToken?: string; refreshToken?: string } | null;
 
       if (!response.ok || !data?.accessToken || !data?.refreshToken) {
-        await handlers.onAuthExpired?.();
+        // Only a rejected refresh token ends the session; a 5xx keeps it.
+        if (response.status === 401) await handlers.onAuthExpired?.();
         return null;
       }
 
