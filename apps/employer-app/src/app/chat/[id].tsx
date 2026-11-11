@@ -8,7 +8,6 @@ import MessageInput from '@/components/messaging/chat/MessageInput';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useChatStore } from '@koudmain/ui/store/useChatStore';
 import { useSession } from '@koudmain/ui/context/SessionContext';
-import { useCompany } from '@/context/CompanyContext';
 import { chatService } from '@/api/chat.api';
 import { IMessage } from '@/types/message';
 import { IConversation } from '@/types/conversation';
@@ -16,8 +15,7 @@ import { IConversation } from '@/types/conversation';
 export default function ChatScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const conversationId = Number(id);
-  const { session } = useSession();
-  const { activeCompanyId } = useCompany();
+  const { session, user } = useSession();
 
   const messages = useChatStore((state) => state.messages);
   const setMessages = useChatStore((state) => state.setMessages);
@@ -47,13 +45,13 @@ export default function ChatScreen() {
   }, [session, conversationId, setMessages, setConversation]);
 
   const handleSend = async (text: string) => {
-    if (!session || !conversationId || !text.trim()) return;
+    if (!session || !user || !conversationId || !text.trim()) return;
 
     const tempId = Date.now();
     const optimisticMessage: IMessage = {
       id: tempId,
       conversationId: conversationId,
-      sender_id: Number(activeCompanyId),
+      sender_id: user.id,
       content_text: text,
       created_at: new Date().toISOString(),
       message_type: 'text',
@@ -109,7 +107,7 @@ export default function ChatScreen() {
           <FlatList
             data={currentChatMessages}
             renderItem={({ item }) => (
-              <MessageBubble message={item} isMe={item.sender_id === Number(activeCompanyId)} />
+              <MessageBubble message={item} isMe={item.sender_id === user?.id} />
             )}
             keyExtractor={(item) => item.id.toString()}
             inverted
