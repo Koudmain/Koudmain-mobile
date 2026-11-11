@@ -2,3 +2,4 @@ export * from './auth.api';
 export * from './skillCategory.api';
 export * from './user.api';
 export * from './profile.api';
+export * from './document.api';
