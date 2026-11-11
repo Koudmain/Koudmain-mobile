@@ -1,3 +1,4 @@
+import { toLocalDateKey } from '@koudmain/ui/utils/date';
 import { PlanningApiEvent, PlanningEvent } from '@/types/planning';
 
 export const formatDayEvents = (
@@ -7,7 +8,7 @@ export const formatDayEvents = (
   return events
     .filter((item) => {
       if (!item.starting_date) return false;
-      return item.starting_date.split('T')[0] === dateString;
+      return toLocalDateKey(item.starting_date) === dateString;
     })
     .map((item) => {
       const startDate = new Date(item.starting_date);
