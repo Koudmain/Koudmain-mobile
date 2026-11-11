@@ -19,7 +19,6 @@ import { Skill } from '@/types/skill';
 import { MissionDatePicker } from '@/components/skill/MissionDuration';
 import { MissionSkillSelector } from '@/components/skill/MissionSkillSelector';
 import { BottomSheetSkillSelector } from '@/components/skill/BottomSheetSkillSelector';
-import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCompany } from '@/context/CompanyContext';
 import { useThemeColors } from '@/hooks/useThemeColors';
 import { colors } from '@/constants/theme';
@@ -35,7 +34,6 @@ function BottomSheetBackground({ style }: BottomSheetBackgroundProps) {
 }
 
 export default function CreatePost() {
-  const { user } = useSession();
   const { isDark, icon } = useThemeColors();
   const { activeCompanyId } = useCompany();
   const [competencesList, setCompetencesList] = useState<Skill[]>([]);
@@ -110,7 +108,6 @@ export default function CreatePost() {
 
     const payload = {
       companyId: Number(activeCompanyId),
-      createdByUserId: user?.id,
       title: title,
       description: description,
       hourly_rate: rate,
