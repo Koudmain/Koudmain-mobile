@@ -7,7 +7,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
-import { useSidebar } from '@/context/SidebarContext';
+import { useSidebar } from '@koudmain/ui/context/SidebarContext';
 import { Text } from '@koudmain/ui/gluestack';
 import { UserHeader } from './UserHeader';
 import { Feather } from '@expo/vector-icons';

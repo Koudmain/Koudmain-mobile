@@ -5,7 +5,7 @@ import { TabBarGradient } from '@koudmain/ui/components/navigation/TabBarGradien
 import { useColorScheme } from 'react-native';
 import { colors } from '@/constants/theme';
 import { TabBarHitBox } from '@koudmain/ui/components/navigation/TabBarHitBox';
-import { useSidebar } from '@/context/SidebarContext';
+import { useSidebar } from '@koudmain/ui/context/SidebarContext';
 import { PlusIcon } from '@/svg/PlusIcon';
 
 const TABS_CONFIG = [
