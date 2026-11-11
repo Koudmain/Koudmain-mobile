@@ -1,43 +1,15 @@
-import { useMemo, useState } from 'react';
 import { Pressable, Text, useColorScheme, View } from 'react-native';
-
-import { LIST_FAV } from '@/constants/fakeData';
-
-import OffreEmploiCard from '@koudmain/ui/components/card/OffreEmploiCard';
-import FiltersOffers from '@/components/filters/FiltersOffers';
-import { Shadow } from 'react-native-shadow-2';
-import SearchBar from '@koudmain/ui/components/tools/SearchBar';
-import { normalizeText } from '@koudmain/ui/utils/text';
-import { colors } from '@/constants/theme';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
+import { colors } from '@/constants/theme';
+
+// Favorites are not stored by the API yet: show an empty state rather than invented offers.
 export default function YourOffers() {
-  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState('');
   const colorScheme = useColorScheme();
   const router = useRouter();
 
   const isDark = colorScheme === 'dark';
-
-  const filteredOffers = useMemo(() => {
-    const normalizedQuery = normalizeText(searchText.trim());
-    const queryTokens = normalizedQuery.length > 0 ? normalizedQuery.split(/\s+/) : [];
-
-    return LIST_FAV.filter((offre) => {
-      const matchesJob =
-        selectedJobs.length === 0 ||
-        selectedJobs.some((jobId) => Array.isArray(offre.job) && offre.job.includes(jobId));
-
-      const searchableText = normalizeText(
-        [offre.name, offre.city, offre.zip, ...(offre.competence ?? [])].join(' '),
-      );
-      const matchesSearch = queryTokens.every((token) => searchableText.includes(token));
-
-      return matchesJob && matchesSearch;
-    });
-  }, [searchText, selectedJobs]);
 
   return (
     <View className="bg-white dark:bg-primary bg-surface flex-1">
@@ -55,42 +27,19 @@ export default function YourOffers() {
         <Text className="dark:text-primary-content text-4xl font-bold px-6">Vos Favoris</Text>
       </View>
 
-      <SearchBar value={searchText} onChangeText={setSearchText} />
-
-      <FiltersOffers selectedIds={selectedJobs} onChange={setSelectedJobs} />
-
-      <ScrollView className="p-6" showsVerticalScrollIndicator={false}>
-        {filteredOffers.map((offre, index) => (
-          <Shadow
-            key={`${offre.name}-${offre.date}-${index}`}
-            startColor={isDark ? colors.shadow.dark : colors.shadow.light}
-            style={{
-              borderRadius: 24,
-              width: '100%',
-              marginBottom: 16,
-              backgroundColor: isDark ? colors.background.dark : colors.background.light,
-            }}
-          >
-            <OffreEmploiCard
-              key={`${offre.name}-${offre.date}-${index}`}
-              id={offre.id}
-              name={offre.name}
-              imageProfile={offre.image_profile}
-              city={offre.city}
-              zip={offre.zip}
-              rate={offre.rate}
-              numberRate={offre.number_rate}
-              title={offre.title}
-              wage={offre.wage}
-              date={offre.date}
-              begin={offre.begin}
-              duration={offre.duration}
-              competence={offre.competence}
-              wishlist={offre.wishlist}
-            />
-          </Shadow>
-        ))}
-      </ScrollView>
+      <View className="flex-1 items-center justify-center px-8">
+        <Feather
+          name="heart"
+          size={40}
+          color={isDark ? colors.primary.disabled : colors.primary.hover}
+        />
+        <Text className="text-primary dark:text-primary-content text-lg font-semibold mt-4 text-center">
+          Aucun favori pour le moment
+        </Text>
+        <Text className="text-primary-hover dark:text-primary-disabled text-sm mt-2 text-center">
+          Les offres que vous mettrez en favori apparaîtront ici.
+        </Text>
+      </View>
     </View>
   );
 }
