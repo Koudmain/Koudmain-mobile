@@ -3,7 +3,7 @@ import { VStack, Heading, Text } from '@koudmain/ui/gluestack';
 import Feather from '@expo/vector-icons/Feather';
 import { User } from '@koudmain/ui/types';
 import { router } from 'expo-router';
-import { colors } from '@/constants/theme';
+import { colors } from '@koudmain/ui/constants/theme';
 
 interface HeaderProfileSettingsProps {
   user: User | null;

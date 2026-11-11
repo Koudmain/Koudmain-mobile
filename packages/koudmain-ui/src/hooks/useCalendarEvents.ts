@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { planningService } from '@/api/planning.api';
-import { PlanningApiEvent } from '@/types/planning';
+import { planningService } from '@koudmain/ui/api/planning.api';
+
+type PlanningEventBase = { publicationId?: number; starting_date: string };
 
 const parseLocalDate = (dateStr: string): Date => {
   const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -11,13 +12,26 @@ const parseLocalDate = (dateStr: string): Date => {
   return new Date(parseInt(yearStr, 10), parseInt(monthStr, 10) - 1, parseInt(dayStr, 10));
 };
 
-export const useCalendarEvents = (session: string | null, currentMonthStr: string) => {
-  const [events, setEvents] = useState<PlanningApiEvent[]>([]);
+// Worker: omit activeCompanyId. Employer: pass it; `null` (company not loaded yet) skips the fetch.
+export const useCalendarEvents = <T extends PlanningEventBase>(
+  session: string | null,
+  currentMonthStr: string,
+  activeCompanyId?: string | number | null,
+) => {
+  const [events, setEvents] = useState<T[]>([]);
   const loadedMonths = useRef<Set<string>>(new Set());
+  const loadedCompany = useRef(activeCompanyId);
 
   useEffect(() => {
     const fetchEvents = async () => {
-      if (!session) return;
+      if (!session || activeCompanyId === null) return;
+
+      // Another company: the cached months belong to the previous one.
+      if (loadedCompany.current !== activeCompanyId) {
+        loadedCompany.current = activeCompanyId;
+        loadedMonths.current.clear();
+        setEvents([]);
+      }
       const currentDate = parseLocalDate(currentMonthStr);
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
@@ -69,8 +83,12 @@ export const useCalendarEvents = (session: string | null, currentMonthStr: strin
       try {
         const response =
           loadedMonths.current.size === 0
-            ? await planningService.getPlanning(session)
-            : await planningService.getPlanning(session, fetchStartDate, fetchEndDate);
+            ? await planningService.getPlanning<T>(session, { activeCompanyId })
+            : await planningService.getPlanning<T>(session, {
+                activeCompanyId,
+                startDate: fetchStartDate,
+                endDate: fetchEndDate,
+              });
 
         const fetchedEvents = response ?? [];
 
@@ -78,7 +96,7 @@ export const useCalendarEvents = (session: string | null, currentMonthStr: strin
 
         setEvents((prevEvents) => {
           const allEvents = [...prevEvents, ...fetchedEvents];
-          const uniqueEventsMap = new Map<string, PlanningApiEvent>();
+          const uniqueEventsMap = new Map<string, T>();
           allEvents.forEach((evt) => {
             const key = evt.publicationId
               ? `${evt.publicationId}-${evt.starting_date}`
@@ -97,7 +115,7 @@ export const useCalendarEvents = (session: string | null, currentMonthStr: strin
       }
     };
     fetchEvents();
-  }, [currentMonthStr, session]);
+  }, [currentMonthStr, session, activeCompanyId]);
 
   return { events };
 };

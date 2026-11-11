@@ -2,7 +2,7 @@ import '@/global.css';
 import { Stack } from 'expo-router';
 import { GluestackUIProvider } from '@koudmain/ui/gluestack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SidebarProvider } from '@/context/SidebarContext';
+import { SidebarProvider } from '@koudmain/ui/context/SidebarContext';
 import { Sidebar } from '@/components/navigation/sidebar/Sidebar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -11,7 +11,7 @@ import { SessionProvider, useSession } from '@koudmain/ui/context/SessionContext
 import { CompanyProvider } from '@/context/CompanyContext';
 import { SplashScreenController } from '@/Splash';
 import { useEffect } from 'react';
-import { socketService } from '@/services/socket.service';
+import { socketService } from '@koudmain/ui/services/socket.service';
 
 function RootNavigator() {
   const { session } = useSession();

@@ -2,7 +2,7 @@ import '@/global.css';
 import { Stack } from 'expo-router';
 import { GluestackUIProvider } from '@koudmain/ui/gluestack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SidebarProvider } from '@/context/SidebarContext';
+import { SidebarProvider } from '@koudmain/ui/context/SidebarContext';
 import { Sidebar } from '@/components/navigation/sidebar/Sidebar';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
