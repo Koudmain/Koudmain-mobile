@@ -51,7 +51,6 @@ export default function ChatScreen() {
     const optimisticMessage: IMessage = {
       id: tempId,
       conversationId: conversationId,
-      // The API stores the user who sent the message, not the company.
       sender_id: user.id,
       content_text: text,
       created_at: new Date().toISOString(),
