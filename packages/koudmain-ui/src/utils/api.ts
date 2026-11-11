@@ -126,7 +126,8 @@ export async function apiFetch<T>(
   }
 }
 
-async function refreshAccessToken(): Promise<string | null> {
+// Also used by the WebSocket client before reconnecting with an expired token.
+export async function refreshAccessToken(): Promise<string | null> {
   if (!refreshHandlers) {
     return null;
   }

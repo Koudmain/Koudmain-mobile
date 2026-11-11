@@ -1,28 +1,59 @@
 import { useChatStore } from '@koudmain/ui/store/useChatStore';
-import { transformIpBackendUrl } from '@koudmain/ui/utils/api';
+import { refreshAccessToken, transformIpBackendUrl } from '@koudmain/ui/utils/api';
 
 const RAW_API_HOST = process.env.EXPO_PUBLIC_REACT_NATIVE_PACKAGER_HOSTNAME;
 
 const API_URL = transformIpBackendUrl(RAW_API_HOST, 4000);
 
+const RECONNECT_DELAY_MS = 5000;
+
+// exp claim of a JWT; unreadable tokens are treated as still valid (the server decides).
+const isExpired = (token: string) => {
+  try {
+    const part = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const padded = part + '='.repeat((4 - (part.length % 4)) % 4);
+    const { exp } = JSON.parse(atob(padded)) as { exp?: number };
+    return typeof exp === 'number' && exp * 1000 <= Date.now();
+  } catch {
+    return false;
+  }
+};
+
 class SocketService {
   private socket: WebSocket | null = null;
   private isExplicitlyClosed = false;
+  private token: string | null = null;
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
   connect(token: string) {
-    if (this.socket || !token) {
-      console.log('WebSocket: connexion ignorée (socket déjà ouverte ou token manquant)');
-      return;
-    }
+    // Keep the newest token even when already connected: a reconnection must not reuse the
+    // token of the first connection, which expires after 15 minutes.
+    this.token = token;
+    if (this.socket || this.reconnectTimer || !token) return;
 
     this.isExplicitlyClosed = false;
+    this.open();
+  }
 
-    const wsUrl = API_URL.replace(/^http/, 'ws') + `/ws?token=${token}`;
+  disconnect() {
+    this.isExplicitlyClosed = true;
+    if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
+    this.reconnectTimer = null;
+    this.token = null;
+    this.socket?.close();
+    this.socket = null;
+  }
 
-    console.log('Tentative de connexion WebSocket sur :', wsUrl);
+  private open() {
+    if (!this.token) return;
+
+    // Never log the URL: it carries the access token.
+    console.log('WebSocket: connexion à', API_URL);
 
     try {
-      this.socket = new WebSocket(wsUrl);
+      this.socket = new WebSocket(
+        API_URL.replace(/^http/, 'ws') + `/ws?token=${encodeURIComponent(this.token)}`,
+      );
 
       this.socket.onopen = () => {
         console.log('WebSocket: connecté avec succès');
@@ -45,20 +76,32 @@ class SocketService {
 
       this.socket.onclose = (e) => {
         this.socket = null;
-        if (!this.isExplicitlyClosed && e.code !== 1000) {
-          console.log('WebSocket: reconnexion dans 5s');
-          setTimeout(() => this.connect(token), 5000);
-        }
+        if (!this.isExplicitlyClosed && e.code !== 1000) this.scheduleReconnect();
       };
     } catch (err) {
       console.error('WebSocket: erreur fatale lors de la création', err);
     }
   }
 
-  disconnect() {
-    this.isExplicitlyClosed = true;
-    this.socket?.close();
-    this.socket = null;
+  private scheduleReconnect() {
+    console.log(`WebSocket: reconnexion dans ${RECONNECT_DELAY_MS / 1000}s`);
+    this.reconnectTimer = setTimeout(async () => {
+      this.reconnectTimer = null;
+      if (this.isExplicitlyClosed || this.socket) return;
+
+      if (this.token && isExpired(this.token)) {
+        const freshToken = await refreshAccessToken();
+        if (this.isExplicitlyClosed) return;
+        if (!freshToken) {
+          // Offline or refresh failing: try again later. A rejected refresh token signs the
+          // user out, which calls disconnect().
+          this.scheduleReconnect();
+          return;
+        }
+        this.token = freshToken;
+      }
+      this.open();
+    }, RECONNECT_DELAY_MS);
   }
 }
 
