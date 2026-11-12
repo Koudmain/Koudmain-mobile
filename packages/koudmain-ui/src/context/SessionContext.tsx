@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import { User, UserRole } from '../types/user';
 import { userService } from '../api/user.api';
 import { authService, GoogleRegistration, LoginResponse, RegisterData } from '../api/auth.api';
-import { configureAuthRefresh } from '../utils/api';
+import { ApiError, configureAuthRefresh } from '../utils/api';
 import { GoogleAccount } from '../utils/googleSignIn';
 
 const ACCESS_TOKEN_KEY = 'session';
@@ -81,8 +81,9 @@ export function SessionProvider({
 
   useEffect(() => {
     async function loadStorageData() {
+      let token: string | null = null;
       try {
-        const token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
+        token = await SecureStore.getItemAsync(ACCESS_TOKEN_KEY);
         const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
 
         if (token && refreshToken) {
@@ -92,17 +93,23 @@ export function SessionProvider({
             await clearSession();
             return;
           }
-          setSession(token);
+          const currentToken = (await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)) ?? token;
+          setSession(currentToken);
           setUser(userData);
           if (onSessionLoaded) {
-            await onSessionLoaded(token);
+            await onSessionLoaded(currentToken);
           }
         } else {
           await clearSession();
         }
       } catch (e) {
-        console.error('Session obsolète ou invalide, nettoyage...', e);
-        await clearSession();
+        if (e instanceof ApiError && e.status === 401) {
+          console.warn('Session expirée, nettoyage...');
+          await clearSession();
+        } else if (token) {
+          console.error('Profil indisponible, session conservée', e);
+          setSession(token);
+        }
       } finally {
         setIsLoading(false);
       }
