@@ -19,10 +19,11 @@ export default function Publication() {
 
   useFocusEffect(
     useCallback(() => {
-      if (session) {
-        void mutatePublications();
+      // Only this company's publications are downloaded (the list used to hold every company's).
+      if (session && activeCompanyId != null) {
+        void mutatePublications(Number(activeCompanyId));
       }
-    }, [session, mutatePublications]),
+    }, [session, activeCompanyId, mutatePublications]),
   );
 
   const companyPublications = publications

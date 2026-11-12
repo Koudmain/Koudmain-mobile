@@ -21,9 +21,12 @@ export const createPostAsync = async (
   });
 };
 
-export const getPublicationsAsync = async (signal?: AbortSignal): Promise<IPublication[]> => {
+export const getPublicationsAsync = async (
+  companyId: number,
+  signal?: AbortSignal,
+): Promise<IPublication[]> => {
   const token = await SecureStore.getItemAsync('session');
-  return apiFetch<IPublication[]>('/publication/get', {
+  return apiFetch<IPublication[]>(`/publication/get?companyId=${companyId}`, {
     method: 'GET',
     token: token,
     signal,
