@@ -7,7 +7,6 @@ const API_URL = transformIpBackendUrl(RAW_API_HOST, 4000);
 
 const RECONNECT_DELAY_MS = 5000;
 
-// exp claim of a JWT; unreadable tokens are treated as still valid (the server decides).
 const isExpired = (token: string) => {
   try {
     const part = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
@@ -26,8 +25,6 @@ class SocketService {
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
   connect(token: string) {
-    // Keep the newest token even when already connected: a reconnection must not reuse the
-    // token of the first connection, which expires after 15 minutes.
     this.token = token;
     if (this.socket || this.reconnectTimer || !token) return;
 
@@ -46,9 +43,6 @@ class SocketService {
 
   private open() {
     if (!this.token) return;
-
-    // Never log the URL: it carries the access token.
-    console.log('WebSocket: connexion à', API_URL);
 
     try {
       this.socket = new WebSocket(
