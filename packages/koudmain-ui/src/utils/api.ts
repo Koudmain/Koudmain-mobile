@@ -149,7 +149,6 @@ async function refreshAccessToken(): Promise<string | null> {
           body: JSON.stringify({ refreshToken }),
         });
       } catch {
-        // Offline: keep the tokens, the request fails and can be retried later.
         return null;
       }
 
@@ -157,7 +156,6 @@ async function refreshAccessToken(): Promise<string | null> {
       const data = rawData as { accessToken?: string; refreshToken?: string } | null;
 
       if (!response.ok || !data?.accessToken || !data?.refreshToken) {
-        // Only a rejected refresh token ends the session; a 5xx keeps it.
         if (response.status === 401) await handlers.onAuthExpired?.();
         return null;
       }
