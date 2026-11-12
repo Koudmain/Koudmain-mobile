@@ -93,7 +93,6 @@ export function SessionProvider({
             await clearSession();
             return;
           }
-          // getMe may have refreshed the tokens: keep the newest one.
           const currentToken = (await SecureStore.getItemAsync(ACCESS_TOKEN_KEY)) ?? token;
           setSession(currentToken);
           setUser(userData);
@@ -104,7 +103,6 @@ export function SessionProvider({
           await clearSession();
         }
       } catch (e) {
-        // Only the server can say the session is over: offline or a 5xx must not sign the user out.
         if (e instanceof ApiError && e.status === 401) {
           console.warn('Session expirée, nettoyage...');
           await clearSession();
