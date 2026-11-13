@@ -2,6 +2,7 @@ import React from 'react';
 import { colors } from '../../constants/theme';
 import { View, useColorScheme } from 'react-native';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { toLocalDateKey } from '@koudmain/ui/utils/date';
 
 LocaleConfig.locales['fr'] = {
   monthNames: [
@@ -56,7 +57,7 @@ export default function CalendarSelector({
   endDate,
   onRangeChange,
 }: CalendarSelectorProps) {
-  const today = new Date().toISOString().split('T')[0];
+  const today = toLocalDateKey(new Date());
 
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';

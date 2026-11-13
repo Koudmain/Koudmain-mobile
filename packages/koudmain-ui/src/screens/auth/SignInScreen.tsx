@@ -8,6 +8,8 @@ import { VStack, FormControl, Button, Divider } from '@koudmain/ui/components/ui
 import { AuthTop } from '@koudmain/ui/components/auth/AuthTop';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { GoogleAccount, getGoogleAccount } from '@koudmain/ui/utils/googleSignIn';
+import { ApiError } from '@koudmain/ui/utils/api';
+import { authService } from '@koudmain/ui/api/auth.api';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const WRONG_ROLE_MESSAGE = "Ce compte n'est pas autorisé sur cette application.";
@@ -36,7 +38,18 @@ export function SignInScreen({ googleIcon }: SignInScreenProps) {
       await signIn(email, password);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-      if (errorMessage === 'WRONG_ROLE') {
+      const unverifiedUserId =
+        error instanceof ApiError && errorMessage === 'EMAIL_NOT_VERIFIED'
+          ? (error.data as { userId?: number } | null)?.userId
+          : undefined;
+      if (unverifiedUserId) {
+        // A code may still be valid (60 s cooldown): the screen also offers to resend it.
+        await authService.resendVerification(unverifiedUserId).catch(() => undefined);
+        router.push({
+          pathname: '/auth/register/RegisterVerificationCode',
+          params: { userId: String(unverifiedUserId), email: email.trim() },
+        });
+      } else if (errorMessage === 'WRONG_ROLE') {
         setSignInError(WRONG_ROLE_MESSAGE);
       } else {
         console.error('Sign-in failed:', errorMessage);

@@ -2,8 +2,9 @@ import React from 'react';
 import { SharedCalendar } from '@koudmain/ui';
 import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCompany } from '@/context/CompanyContext';
-import { useCalendarEvents } from '@/hooks/useCalendarEvents';
+import { useCalendarEvents } from '@koudmain/ui/hooks/useCalendarEvents';
 import { formatDayEvents } from '@/utils/calendarUtils';
+import { PlanningApiEvent } from '@/types/planning';
 import EventPopUp from '@koudmain/ui/components/modals/EventPopUp';
 import { router } from 'expo-router';
 
@@ -12,7 +13,7 @@ export default function CalendarComponent() {
   const { activeCompanyId } = useCompany();
   const today = new Date();
   const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`;
-  const { events } = useCalendarEvents(session, currentMonthStr, activeCompanyId);
+  const { events } = useCalendarEvents<PlanningApiEvent>(session, currentMonthStr, activeCompanyId);
 
   return (
     <SharedCalendar

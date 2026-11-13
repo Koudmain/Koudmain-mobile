@@ -6,6 +6,7 @@ import { colors } from '../../constants/theme';
 import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
 import { PlanningEvent } from '../../types/planning';
+import { toLocalDateKey } from '@koudmain/ui/utils/date';
 
 declare module 'react-native-calendars/src/types' {
   interface Theme {
@@ -67,7 +68,7 @@ export default function SharedCalendar<
         .map((item) => {
           const date = item.starting_date;
           if (!date) return '';
-          return date.split('T')[0];
+          return toLocalDateKey(date);
         })
         .filter((d) => d !== ''),
     ),

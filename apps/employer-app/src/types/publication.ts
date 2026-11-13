@@ -24,9 +24,9 @@ export interface IPublication {
   skills?: Skill[];
 }
 
+// Request body of POST /publication/create: the creator comes from the token.
 export interface PublicationsDto {
-  companyId?: number;
-  createdByUserId?: number;
+  companyId: number;
   address_id?: number;
   title: string;
   description: string;
