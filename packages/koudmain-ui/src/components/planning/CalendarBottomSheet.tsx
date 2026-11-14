@@ -62,7 +62,7 @@ export default function CalendarBottomSheet<TEvent>({
     } else {
       Animated.timing(translateY, {
         toValue: screenHeight,
-        duration: 300,
+        duration: 200,
         useNativeDriver: true,
       }).start(() => {
         if (!isVisible || !isFocused) {
@@ -71,6 +71,12 @@ export default function CalendarBottomSheet<TEvent>({
       });
     }
   }, [isVisible, isFocused, translateY, bottomSheetHeight]);
+
+  const closeImmediately = () => {
+    translateY.setValue(screenHeight);
+    setShouldRenderModal(false);
+    onClose();
+  };
 
   const dragHandleHeight = 548;
   const isDragHandleGesture = (
@@ -115,24 +121,14 @@ export default function CalendarBottomSheet<TEvent>({
       transparent={true}
       visible={shouldRenderModal}
       animationType="none"
-      onRequestClose={() => {
-        translateY.setValue(screenHeight);
-        onClose();
-      }}
+      onRequestClose={closeImmediately}
     >
       <View className="absolute inset-0" pointerEvents="box-none">
         <Animated.View
           className="absolute inset-0 bg-black/40 z-10"
           style={{ opacity: overlayOpacity }}
         >
-          <TouchableOpacity
-            className="flex-1"
-            activeOpacity={1}
-            onPress={() => {
-              translateY.setValue(screenHeight);
-              onClose();
-            }}
-          />
+          <TouchableOpacity className="flex-1" activeOpacity={1} onPress={closeImmediately} />
         </Animated.View>
 
         <Animated.View

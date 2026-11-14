@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { Dimensions, useColorScheme, View, ViewStyle } from 'react-native';
 import { useBottomTabBarHeight } from 'expo-router/js-tabs';
@@ -58,16 +58,36 @@ export default function SharedCalendar<TEvent extends { starting_date?: string }
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [bottomSheetEvents, setBottomSheetEvents] = useState<TFormattedEvent[]>([]);
 
-  const markedDatesList = Array.from(
-    new Set(
-      events
-        .map((item) => {
-          const date = item.starting_date;
-          if (!date) return '';
-          return date.split('T')[0];
-        })
-        .filter((d) => d !== ''),
-    ),
+  const markedDatesList = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          events
+            .map((item) => {
+              const date = item.starting_date;
+              if (!date) return '';
+              return date.split('T')[0];
+            })
+            .filter((d) => d !== ''),
+        ),
+      ),
+    [events],
+  );
+
+  const markedDates = useMemo(
+    () => ({
+      ...markedDatesList.reduce(
+        (acc, date) => ({
+          ...acc,
+          [date]: { marked: true, dotColor: colors.secondary.DEFAULT },
+        }),
+        {},
+      ),
+      ...(selected
+        ? { [selected]: { selected: true, disableTouchEvent: false, dotColor: 'transparent' } }
+        : {}),
+    }),
+    [markedDatesList, selected],
   );
 
   const tabBarHeight = useBottomTabBarHeight();
@@ -148,18 +168,7 @@ export default function SharedCalendar<TEvent extends { starting_date?: string }
             markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
           );
         }}
-        markedDates={{
-          ...markedDatesList.reduce(
-            (acc, date) => ({
-              ...acc,
-              [date]: { marked: true, dotColor: colors.secondary.DEFAULT },
-            }),
-            {},
-          ),
-          ...(selected
-            ? { [selected]: { selected: true, disableTouchEvent: false, dotColor: 'transparent' } }
-            : {}),
-        }}
+        markedDates={markedDates}
       />
 
       {renderPopUp({
