@@ -4,7 +4,11 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { colors } from '@/constants/theme';
 import { useGetPublicationById } from '@/hooks/useGetPublicationById';
 import { useCheckEligibility } from '@/hooks/useCheckEligibility';
-import { mapPublicationToOfferDetail } from '@/utils/offerMapper';
+import { useApplyToPublication } from '@/hooks/useApplyToPublication';
+import {
+  mapPublicationToApplicationSummary,
+  mapPublicationToOfferDetail,
+} from '@/utils/offerMapper';
 
 // Components
 import { OfferHeader } from '@/components/offer/OfferHeader';
@@ -15,6 +19,7 @@ import { OfferGallery } from '@/components/offer/OfferGallery';
 import { OfferSkills } from '@/components/offer/OfferSkills';
 import { OfferRequirements } from '@/components/offer/OfferRequirements';
 import { EligibilityPopup } from '@/components/offer/EligibilityPopup';
+import { ApplicationBottomSheet } from '@/components/offer/ApplicationBottomSheet';
 
 export default function OfferDetailsPage() {
   const { id } = useLocalSearchParams();
@@ -23,7 +28,9 @@ export default function OfferDetailsPage() {
     useGetPublicationById();
   const { checkEligibility, eligibility, isCheckingEligibility, errorEligibility } =
     useCheckEligibility();
+  const { applyToPublication, isApplying, errorApply } = useApplyToPublication();
   const [showEligibilityPopup, setShowEligibilityPopup] = useState(false);
+  const [showApplicationSheet, setShowApplicationSheet] = useState(false);
 
   useEffect(() => {
     if (Number.isFinite(numericId)) {
@@ -33,6 +40,11 @@ export default function OfferDetailsPage() {
 
   const offer = useMemo(
     () => (publication ? mapPublicationToOfferDetail(publication) : null),
+    [publication],
+  );
+
+  const applicationSummary = useMemo(
+    () => (publication ? mapPublicationToApplicationSummary(publication) : null),
     [publication],
   );
 
@@ -66,7 +78,21 @@ export default function OfferDetailsPage() {
       setShowEligibilityPopup(true);
       return;
     }
-    // TODO: Open application message bottom sheet when canApply === true
+    setShowApplicationSheet(true);
+  };
+
+  const handleSubmitApplication = async (message: string) => {
+    const result = await applyToPublication({
+      publicationId: offer.id,
+      companyId: offer.companyId,
+      message,
+    });
+
+    setShowApplicationSheet(false);
+
+    if (!result) {
+      setShowEligibilityPopup(true);
+    }
   };
 
   return (
@@ -74,7 +100,7 @@ export default function OfferDetailsPage() {
       <EligibilityPopup
         visible={showEligibilityPopup}
         eligibility={eligibility}
-        errorMessage={errorEligibility}
+        errorMessage={errorApply || errorEligibility}
         onClose={() => setShowEligibilityPopup(false)}
         onCompleteProfile={() => {
           setShowEligibilityPopup(false);
@@ -82,6 +108,16 @@ export default function OfferDetailsPage() {
           router.push('/my-profile');
         }}
       />
+
+      {applicationSummary && (
+        <ApplicationBottomSheet
+          visible={showApplicationSheet}
+          summary={applicationSummary}
+          onClose={() => setShowApplicationSheet(false)}
+          onSubmit={handleSubmitApplication}
+          isSubmitting={isApplying}
+        />
+      )}
 
       <ScrollView
         className="flex-1 bg-white dark:bg-primary mb-6"

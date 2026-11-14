@@ -57,6 +57,20 @@ export interface WorkerOfferDetailData {
   requirements: RequirementItem[];
 }
 
+export interface WorkerApplicationSummaryData {
+  publicationId: number;
+  companyName: string;
+  companyLogo?: ImageSourcePropType;
+  location: string;
+  rating: number;
+  reviewCount: number;
+  title: string;
+  wage: number;
+  dateLabel: string;
+  startTime: string;
+  duration: string;
+}
+
 export function resolvePublicationStatus(rawStatus?: string | null): PublicationStatus {
   if (!rawStatus) return PublicationStatus.OPEN;
   const normalized = normalizeText(rawStatus.trim());
@@ -233,5 +247,30 @@ export function mapPublicationToOfferDetail(pub: IPublication): WorkerOfferDetai
     gallery,
     infoItems,
     requirements,
+  };
+}
+
+export function mapPublicationToApplicationSummary(
+  pub: IPublication,
+): WorkerApplicationSummaryData {
+  const address = pub.address ?? pub.company?.address ?? null;
+  const city = address?.city?.trim() || DEFAULT_CITY;
+  const zip = address?.zipCode?.trim() || DEFAULT_ZIP;
+
+  const parsedWage = Number(pub.hourly_rate);
+  const wage = Number.isFinite(parsedWage) && parsedWage > 0 ? parsedWage : DEFAULT_WAGE;
+
+  return {
+    publicationId: pub.id,
+    companyName: pub.company?.name?.trim() || DEFAULT_RESTAURANT_NAME,
+    companyLogo: pub.company?.logo ? { uri: pub.company.logo } : undefined,
+    location: zip ? `${city} (${zip})` : city,
+    rating: pub.company?.rating ?? DEFAULT_RATE,
+    reviewCount: pub.company?.reviewCount ?? DEFAULT_NUMBER_RATE,
+    title: pub.title?.trim() || DEFAULT_TITLE,
+    wage,
+    dateLabel: formatPublicationDateLabel(pub.starting_date),
+    startTime: formatPublicationStartTime(pub.starting_date, false),
+    duration: formatPublicationDuration(pub.starting_date, pub.ending_date, false),
   };
 }
