@@ -9,6 +9,7 @@ export const formatDayEvents = (
       if (!item.starting_date) return false;
       return item.starting_date.split('T')[0] === dateString;
     })
+    .sort((a, b) => new Date(a.starting_date).getTime() - new Date(b.starting_date).getTime())
     .map((item) => {
       const startDate = new Date(item.starting_date);
       const endDate = item.ending_date ? new Date(item.ending_date) : startDate;
@@ -22,6 +23,8 @@ export const formatDayEvents = (
         end: `${endDate.getHours().toString().padStart(2, '0')}h${endDate.getMinutes().toString().padStart(2, '0')}`,
         rate: parseFloat(String(item.workerRating)),
         number_rate: Number(item.workerRatingCount),
+        status: item.status,
+        pending_applications: item.pendingApplicationsCount,
         starting_date: item.starting_date,
         workerId: item.workerId,
       };

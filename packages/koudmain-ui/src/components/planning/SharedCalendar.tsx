@@ -1,11 +1,10 @@
-import React, { useCallback, useState } from 'react';
-import { Calendar } from 'react-native-calendars';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Calendar, DateData } from 'react-native-calendars';
 import { Dimensions, useColorScheme, View, ViewStyle } from 'react-native';
 import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 import { colors } from '../../constants/theme';
 import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
-import { PlanningEvent } from '../../types/planning';
 
 declare module 'react-native-calendars/src/types' {
   interface Theme {
@@ -31,10 +30,7 @@ export function getNumberOfWeeks(year: number, month: number): number {
   return Math.ceil((offset + daysInMonth) / 7);
 }
 
-interface SharedCalendarProps<
-  TEvent extends { starting_date?: string } = PlanningEvent,
-  TFormattedEvent = PlanningEvent,
-> {
+interface SharedCalendarProps<TEvent extends { starting_date?: string }, TFormattedEvent> {
   events: TEvent[];
   renderPopUp: (props: {
     isVisible: boolean;
@@ -45,10 +41,11 @@ interface SharedCalendarProps<
   formatDayEvents: (events: TEvent[], dateString: string) => TFormattedEvent[];
 }
 
-export default function SharedCalendar<
-  TEvent extends { starting_date?: string } = PlanningEvent,
-  TFormattedEvent = PlanningEvent,
->({ events, renderPopUp, formatDayEvents }: SharedCalendarProps<TEvent, TFormattedEvent>) {
+export default function SharedCalendar<TEvent extends { starting_date?: string }, TFormattedEvent>({
+  events,
+  renderPopUp,
+  formatDayEvents,
+}: SharedCalendarProps<TEvent, TFormattedEvent>) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [selected, setSelected] = useState('');
@@ -61,16 +58,36 @@ export default function SharedCalendar<
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [bottomSheetEvents, setBottomSheetEvents] = useState<TFormattedEvent[]>([]);
 
-  const markedDatesList = Array.from(
-    new Set(
-      events
-        .map((item) => {
-          const date = item.starting_date;
-          if (!date) return '';
-          return date.split('T')[0];
-        })
-        .filter((d) => d !== ''),
-    ),
+  const markedDatesList = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          events
+            .map((item) => {
+              const date = item.starting_date;
+              if (!date) return '';
+              return date.split('T')[0];
+            })
+            .filter((d) => d !== ''),
+        ),
+      ),
+    [events],
+  );
+
+  const markedDates = useMemo(
+    () => ({
+      ...markedDatesList.reduce(
+        (acc, date) => ({
+          ...acc,
+          [date]: { marked: true, dotColor: colors.secondary.DEFAULT },
+        }),
+        {},
+      ),
+      ...(selected
+        ? { [selected]: { selected: true, disableTouchEvent: false, dotColor: 'transparent' } }
+        : {}),
+    }),
+    [markedDatesList, selected],
   );
 
   const tabBarHeight = useBottomTabBarHeight();
@@ -84,6 +101,14 @@ export default function SharedCalendar<
     ),
     [cellHeight, isDark],
   );
+
+  const handleDayPress = (day: DateData) => {
+    setSelected(day.dateString);
+    setBottomSheetVisible(true);
+    setBottomSheetEvents(
+      markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
+    );
+  };
 
   const handleMonthChange = (nextMonth: () => void, monthDelta: number) => {
     let newMonth = currentMonth + monthDelta;
@@ -112,13 +137,13 @@ export default function SharedCalendar<
           height: calendarHeight,
           borderRadius: 22,
           paddingVertical: 16,
-          backgroundColor: isDark ? colors.background.dark : colors.background.light,
+          backgroundColor: isDark ? colors.primary.DEFAULT : colors.background.light,
         }}
         theme={{
-          calendarBackground: isDark ? colors.background.dark : colors.background.light,
-          dayTextColor: isDark ? colors.typography.white : colors.typography.black,
-          monthTextColor: isDark ? colors.typography.white : colors.typography.black,
-          textSectionTitleColor: isDark ? colors.typography.white : colors.typography.black,
+          calendarBackground: isDark ? colors.primary.DEFAULT : colors.background.light,
+          dayTextColor: isDark ? colors.primary[200] : colors.typography.black,
+          monthTextColor: isDark ? colors.primary[200] : colors.typography.black,
+          textSectionTitleColor: isDark ? colors.primary[400] : colors.typography.black,
           textDayFontSize: 18,
           textMonthFontWeight: 'bold',
           todayTextColor: colors.secondary.DEFAULT,
@@ -144,25 +169,9 @@ export default function SharedCalendar<
           setCurrentMonth(month.month);
         }}
         dayComponent={renderDay}
-        onDayPress={(day) => {
-          setSelected(day.dateString);
-          setBottomSheetVisible(true);
-          setBottomSheetEvents(
-            markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
-          );
-        }}
-        markedDates={{
-          ...markedDatesList.reduce(
-            (acc, date) => ({
-              ...acc,
-              [date]: { marked: true, dotColor: colors.secondary.DEFAULT },
-            }),
-            {},
-          ),
-          ...(selected
-            ? { [selected]: { selected: true, disableTouchEvent: false, dotColor: 'transparent' } }
-            : {}),
-        }}
+        onDayPress={handleDayPress}
+        onDayLongPress={handleDayPress}
+        markedDates={markedDates}
       />
 
       {renderPopUp({

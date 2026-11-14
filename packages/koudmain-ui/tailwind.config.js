@@ -234,6 +234,7 @@ module.exports = {
           950: 'rgb(var(--color-typography-950)/<alpha-value>)',
           white: '#FFFFFF',
           gray: '#D4D4D4',
+          darkGray: '#404041',
           black: '#181718',
         },
         outline: {

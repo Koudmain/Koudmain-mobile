@@ -38,7 +38,7 @@ export default function Offers() {
 
   return (
     <View className="bg-white dark:bg-primary flex-1">
-      <Text className="dark:text-white text-4xl font-bold mb-4 px-6">Offre d&apos;Emploi</Text>
+      <Text className="dark:text-white text-4xl font-bold mb-4 px-6 pt-4">Offre d&apos;Emploi</Text>
 
       <SearchBar
         value={searchText}

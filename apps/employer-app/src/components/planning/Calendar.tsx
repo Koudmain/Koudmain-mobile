@@ -4,8 +4,8 @@ import { useSession } from '@koudmain/ui/context/SessionContext';
 import { useCompany } from '@/context/CompanyContext';
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { formatDayEvents } from '@/utils/calendarUtils';
-import EventPopUp from '@koudmain/ui/components/modals/EventPopUp';
 import { router } from 'expo-router';
+import PlanningDayPopUp from '@/components/planning/PlanningDayPopUp';
 
 export default function CalendarComponent() {
   const { session } = useSession();
@@ -19,9 +19,13 @@ export default function CalendarComponent() {
       events={events}
       formatDayEvents={formatDayEvents}
       renderPopUp={(props) => (
-        <EventPopUp
+        <PlanningDayPopUp
           {...props}
-          onEventPress={(event) => {
+          onAnnoncePress={(event) => {
+            // props.onClose();
+            // router.push(`/publication/${event.id}`);
+          }}
+          onWorkerPress={(event) => {
             if (!event.workerId) return;
             props.onClose();
             router.push(`/worker/${event.workerId}`);
