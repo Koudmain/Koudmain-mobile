@@ -22,6 +22,8 @@ export const formatDayEvents = (
         end: `${endDate.getHours().toString().padStart(2, '0')}h${endDate.getMinutes().toString().padStart(2, '0')}`,
         rate: parseFloat(String(item.workerRating)),
         number_rate: Number(item.workerRatingCount),
+        status: item.status,
+        pending_applications: item.pendingApplicationsCount,
         starting_date: item.starting_date,
         workerId: item.workerId,
       };

@@ -1,32 +1,41 @@
+import { ReactNode } from 'react';
 import { ScrollView } from 'react-native';
-import { CalendarBottomSheet } from '@koudmain/ui';
-import PlanningCard from '../card/PlanningCard';
 import { Shadow } from 'react-native-shadow-2';
+import CalendarBottomSheet from './CalendarBottomSheet';
 import { colors } from '../../constants/theme';
-import { PlanningEvent } from '../../types/planning';
+import { formatDayLabel } from '../../utils/planningDate';
 
-interface EventPopUpProps {
+export interface PlanningDaySheetProps<TEvent> {
   isVisible: boolean;
   onClose: () => void;
   selectedDate: string;
-  events: PlanningEvent[];
-  onEventPress?: (event: PlanningEvent) => void;
+  events: TEvent[];
+  renderCard: (event: TEvent) => ReactNode;
+  keyExtractor: (event: TEvent, index: number) => string;
+  subtitle?: string;
+  renderEmpty?: () => ReactNode;
 }
 
-export default function EventPopUp({
+export default function PlanningDaySheet<TEvent>({
   isVisible,
   onClose,
   selectedDate,
   events,
-  onEventPress,
-}: EventPopUpProps) {
+  renderCard,
+  keyExtractor,
+  subtitle,
+  renderEmpty,
+}: PlanningDaySheetProps<TEvent>) {
   return (
-    <CalendarBottomSheet
+    <CalendarBottomSheet<TEvent>
       isVisible={isVisible}
       onClose={onClose}
       selectedDate={selectedDate}
       events={events}
-      renderContent={(items: PlanningEvent[], isDark: boolean) => (
+      title={formatDayLabel(selectedDate, { capitalizeMonth: true })}
+      subtitle={subtitle}
+      renderEmpty={renderEmpty}
+      renderContent={(items, isDark) => (
         <ScrollView
           className="p-6 pt-4"
           showsVerticalScrollIndicator={false}
@@ -34,7 +43,7 @@ export default function EventPopUp({
         >
           {items.map((event, index) => (
             <Shadow
-              key={`${event.id}-${event.starting_date}-${index}`}
+              key={keyExtractor(event, index)}
               startColor={isDark ? colors.shadow.dark : colors.shadow.light}
               style={{
                 borderRadius: 22,
@@ -43,18 +52,7 @@ export default function EventPopUp({
                 backgroundColor: isDark ? colors.background.dark : colors.background.light,
               }}
             >
-              <PlanningCard
-                id={event.id}
-                name={event.name}
-                imageProfile={event.image_profile}
-                rate={event.rate}
-                numberRate={event.number_rate}
-                title={event.title}
-                wage={event.wage}
-                begin={event.time}
-                end={event.end}
-                onPress={onEventPress && (() => onEventPress(event))}
-              />
+              {renderCard(event)}
             </Shadow>
           ))}
         </ScrollView>

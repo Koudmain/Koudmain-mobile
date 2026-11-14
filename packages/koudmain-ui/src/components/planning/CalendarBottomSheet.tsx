@@ -13,25 +13,30 @@ import {
 } from 'react-native';
 import { useIsFocused } from 'expo-router/react-navigation';
 import { LinearGradient } from 'expo-linear-gradient';
-import { PlanningEvent } from '../../types/planning';
 
 const { height: screenHeight } = Dimensions.get('window');
 
-interface CalendarBottomSheetProps {
+interface CalendarBottomSheetProps<TEvent> {
   isVisible: boolean;
   onClose: () => void;
   selectedDate: string;
-  events: PlanningEvent[];
-  renderContent: (events: PlanningEvent[], isDark: boolean) => React.ReactNode;
+  events: TEvent[];
+  renderContent: (events: TEvent[], isDark: boolean) => React.ReactNode;
+  title?: string;
+  subtitle?: string;
+  renderEmpty?: () => React.ReactNode;
 }
 
-export default function CalendarBottomSheet({
+export default function CalendarBottomSheet<TEvent>({
   isVisible,
   onClose,
   selectedDate,
   events,
   renderContent,
-}: CalendarBottomSheetProps) {
+  title,
+  subtitle,
+  renderEmpty,
+}: CalendarBottomSheetProps<TEvent>) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [shouldRenderModal, setShouldRenderModal] = useState(isVisible);
@@ -140,9 +145,16 @@ export default function CalendarBottomSheet({
           </View>
 
           <View className="flex-1">
-            <Text className="text-xl font-bold text-primary dark:text-typography-white px-6 pb-2">
-              Événements du {selectedDate}
-            </Text>
+            <View className="px-6 pb-2">
+              <Text className="text-xl font-bold text-primary dark:text-typography-white">
+                {title ?? `Événements du ${selectedDate}`}
+              </Text>
+              {subtitle ? (
+                <Text className="text-xs text-primary-500 dark:text-primary-300 mt-0.5">
+                  {subtitle}
+                </Text>
+              ) : null}
+            </View>
 
             <View className="flex-1 relative">
               {events.length > 0 ? (
@@ -182,6 +194,8 @@ export default function CalendarBottomSheet({
                     pointerEvents="none"
                   />
                 </>
+              ) : renderEmpty ? (
+                renderEmpty()
               ) : (
                 <View className="flex-1 justify-center items-center">
                   <Text className="text-center text-primary-disabled italic text-lg">

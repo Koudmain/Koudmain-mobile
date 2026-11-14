@@ -5,7 +5,6 @@ import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 import { colors } from '../../constants/theme';
 import CustomDay, { CalendarDayProps } from './CustomDay';
 import '../../constants/calendarLocale';
-import { PlanningEvent } from '../../types/planning';
 
 declare module 'react-native-calendars/src/types' {
   interface Theme {
@@ -31,10 +30,7 @@ export function getNumberOfWeeks(year: number, month: number): number {
   return Math.ceil((offset + daysInMonth) / 7);
 }
 
-interface SharedCalendarProps<
-  TEvent extends { starting_date?: string } = PlanningEvent,
-  TFormattedEvent = PlanningEvent,
-> {
+interface SharedCalendarProps<TEvent extends { starting_date?: string }, TFormattedEvent> {
   events: TEvent[];
   renderPopUp: (props: {
     isVisible: boolean;
@@ -45,10 +41,11 @@ interface SharedCalendarProps<
   formatDayEvents: (events: TEvent[], dateString: string) => TFormattedEvent[];
 }
 
-export default function SharedCalendar<
-  TEvent extends { starting_date?: string } = PlanningEvent,
-  TFormattedEvent = PlanningEvent,
->({ events, renderPopUp, formatDayEvents }: SharedCalendarProps<TEvent, TFormattedEvent>) {
+export default function SharedCalendar<TEvent extends { starting_date?: string }, TFormattedEvent>({
+  events,
+  renderPopUp,
+  formatDayEvents,
+}: SharedCalendarProps<TEvent, TFormattedEvent>) {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   const [selected, setSelected] = useState('');

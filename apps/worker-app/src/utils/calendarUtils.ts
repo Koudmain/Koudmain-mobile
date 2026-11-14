@@ -1,4 +1,7 @@
-import { PlanningApiEvent, PlanningEvent } from '@/types/planning';
+import { ApplicationStatus, PlanningApiEvent, PlanningEvent } from '@/types/planning';
+
+const toApplicationStatus = (status: PlanningApiEvent['application_status']): ApplicationStatus =>
+  status === 'Accepted' ? 'accepted' : 'pending';
 
 export const formatDayEvents = (
   events: PlanningApiEvent[],
@@ -14,13 +17,14 @@ export const formatDayEvents = (
       const endDate = item.ending_date ? new Date(item.ending_date) : startDate;
       return {
         id: item.publicationId,
-        name: item.company_name,
+        companyId: item.companyId,
+        name: item.company_name ?? 'Établissement',
         image_profile: item.company_logo,
         title: item.title,
         wage: parseFloat(item.salary),
         time: `${startDate.getHours().toString().padStart(2, '0')}h${startDate.getMinutes().toString().padStart(2, '0')}`,
         end: `${endDate.getHours().toString().padStart(2, '0')}h${endDate.getMinutes().toString().padStart(2, '0')}`,
-        status: item.application_status?.toLowerCase() === 'accepted' ? 'accepted' : 'pending',
+        status: toApplicationStatus(item.application_status),
         rate: parseFloat(String(item.companyRating)),
         number_rate: parseInt(String(item.companyRatingCount), 10),
         city: item.city || 'Unknown City',
