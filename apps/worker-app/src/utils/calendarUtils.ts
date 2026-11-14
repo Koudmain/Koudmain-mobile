@@ -12,6 +12,7 @@ export const formatDayEvents = (
       if (!item.starting_date) return false;
       return item.starting_date.split('T')[0] === dateString;
     })
+    .sort((a, b) => new Date(a.starting_date).getTime() - new Date(b.starting_date).getTime())
     .map((item) => {
       const startDate = new Date(item.starting_date);
       const endDate = item.ending_date ? new Date(item.ending_date) : startDate;
