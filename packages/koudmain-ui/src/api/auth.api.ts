@@ -1,6 +1,7 @@
 import { apiFetch } from '@koudmain/ui/utils/api';
+import { UserRole } from '@koudmain/ui/types/user';
 
-type LoginResponse = {
+export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
@@ -46,11 +47,32 @@ export type RegisterData = {
   };
 };
 
+export type GoogleRegistration = Omit<RegisterData, 'email' | 'password'>;
+
 export const authService = {
   login: async (email: string, password: string) => {
     return apiFetch<LoginResponse>('/auth/login', {
       method: 'POST',
       body: { email, password },
+    });
+  },
+
+  googleStart: async (redirect: string) => {
+    return apiFetch<{ url: string; verifier: string }>('/auth/google/start', {
+      method: 'POST',
+      body: { redirect },
+    });
+  },
+
+  google: async (
+    idToken: string,
+    verifier: string,
+    role?: UserRole,
+    registration?: GoogleRegistration,
+  ) => {
+    return apiFetch<LoginResponse>('/auth/google', {
+      method: 'POST',
+      body: { idToken, verifier, role, registration },
     });
   },
 
@@ -77,8 +99,8 @@ export const authService = {
         email: data.email,
         password: data.password,
         role: data.role,
-        phoneNumber: data.phoneNumber || '0600000000',
-        birthDate: data.birthDate || '1990-01-01',
+        phoneNumber: data.phoneNumber,
+        birthDate: data.birthDate,
         workerProfile: data.workerProfile,
         employerProfile: data.employerProfile,
       },
