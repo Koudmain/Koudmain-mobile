@@ -43,8 +43,11 @@ export function AutoDismissTimerBar({ durationMs = 5000, onExpire }: AutoDismiss
   }));
 
   return (
-    <View className="absolute bottom-0 left-0 right-0 h-1 bg-neutral-400/30 dark:bg-primary-600">
-      <Animated.View style={barStyle} className="h-full bg-secondary" />
+    <View className="absolute bottom-0 left-0 right-0 h-1.5 bg-primary-100 dark:bg-primary-active">
+      <Animated.View
+        style={barStyle}
+        className="h-full bg-secondary dark:bg-secondary-400 rounded-r-full"
+      />
     </View>
   );
 }
@@ -120,61 +123,72 @@ export function EligibilityPopup({
 
       <Animated.View
         style={animatedStyle}
-        className="mx-4 mt-4 bg-neutral-300 dark:bg-primary-hover rounded-[20] p-4 shadow-lg overflow-hidden"
+        className="mx-4 mt-4 bg-surface-card dark:bg-primary border border-secondary-200 dark:border-secondary-400/70 rounded-3xl px-5 pt-4 pb-5 shadow-hard-2 overflow-hidden"
       >
         {isKycIncomplete ? (
           <>
-            <Text className="text-xl font-extrabold text-primary dark:text-primary-content">
-              Profil à {percentage} % complété
+            <Text className="text-xl font-bold text-primary dark:text-primary-content">
+              Profil à{' '}
+              <Text className="text-secondary dark:text-secondary-400">{percentage} %</Text>{' '}
+              complété
             </Text>
 
             {/* Progress bar */}
-            <View className="w-full h-2.5 bg-neutral-400/40 dark:bg-primary-600 rounded-full mt-2.5 mb-3 overflow-hidden">
+            <View className="w-full h-2.5 bg-secondary-50 dark:bg-primary-active rounded-full mt-2.5 mb-3.5 overflow-hidden">
               <View
-                className="h-full bg-secondary rounded-full"
+                className="h-full bg-secondary dark:bg-secondary-400 rounded-full"
                 style={{ width: `${percentage}%` }}
               />
             </View>
 
-            <View className="flex-row items-end justify-between">
+            <View className="flex-row items-center justify-between">
               <View className="flex-1 pr-3">
-                <Text className="text-sm text-primary-700 dark:text-primary-200 mb-0.5">
-                  Manque :
+                <Text className="text-xs font-bold text-primary-600 dark:text-primary-100 mb-2">
+                  Documents manquants :
                 </Text>
-                {missingDocs.length > 0 ? (
-                  missingDocs.map((doc) => (
-                    <Text
-                      key={doc}
-                      className="text-sm text-primary-700 dark:text-primary-200 leading-5 pl-1"
-                    >
-                      • {KYC_DOCUMENT_LABELS[doc] ?? doc}
-                    </Text>
-                  ))
-                ) : (
-                  <Text className="text-sm text-primary-700 dark:text-primary-200 leading-5 pl-1">
-                    • Documents requis non validés
-                  </Text>
-                )}
+
+                <View className="gap-2">
+                  {missingDocs.length > 0 ? (
+                    missingDocs.map((doc) => (
+                      <View
+                        key={doc}
+                        className="self-start flex-row items-center bg-secondary-50 dark:bg-primary-active border border-secondary-200 dark:border-secondary-400/70 rounded-xl px-3.5 py-2"
+                      >
+                        <View className="w-2 h-2 rounded-full bg-secondary dark:bg-secondary-400 mr-2.5" />
+                        <Text className="text-xs font-bold text-primary dark:text-primary-content">
+                          {KYC_DOCUMENT_LABELS[doc] ?? doc}
+                        </Text>
+                      </View>
+                    ))
+                  ) : (
+                    <View className="self-start flex-row items-center bg-secondary-50 dark:bg-primary-active border border-secondary-200 dark:border-secondary-400/70 rounded-xl px-3.5 py-2">
+                      <View className="w-2 h-2 rounded-full bg-secondary dark:bg-secondary-400 mr-2.5" />
+                      <Text className="text-xs font-bold text-primary dark:text-primary-content">
+                        Documents requis non validés
+                      </Text>
+                    </View>
+                  )}
+                </View>
               </View>
 
               {/* TODO: Once the administrative section for uploading KYC documents is ready,
                   this button should redirect there instead of the general profile page. */}
               <Pressable
                 onPress={onCompleteProfile}
-                className="bg-secondary active:bg-secondary-active px-4 py-2 rounded-xl flex-row items-center"
+                className="bg-secondary active:bg-secondary-active px-5 py-3 rounded-2xl flex-row items-center self-end mb-0.5"
               >
-                <Text className="text-secondary-content font-bold text-sm mr-1">Compléter</Text>
-                <Feather name="chevron-right" size={16} color={colors.secondary.content} />
+                <Text className="text-secondary-content font-bold text-sm mr-2.5">Compléter</Text>
+                <Feather name="chevron-right" size={18} color={colors.secondary.content} />
               </Pressable>
             </View>
           </>
         ) : (
           <View className="flex-row items-center justify-between">
             <View className="flex-1 pr-3">
-              <Text className="text-lg font-extrabold text-primary dark:text-primary-content mb-1">
+              <Text className="text-lg font-bold text-primary dark:text-primary-content mb-1">
                 Candidature impossible
               </Text>
-              <Text className="text-sm text-primary-700 dark:text-primary-200 leading-5">
+              <Text className="text-sm text-primary-600 dark:text-primary-100 leading-5">
                 {displayErrorMessage}
               </Text>
             </View>
