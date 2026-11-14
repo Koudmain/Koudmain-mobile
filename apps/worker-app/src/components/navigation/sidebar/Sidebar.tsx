@@ -59,7 +59,7 @@ export function Sidebar() {
     { label: 'Mon porte-monnaie', path: '/YourOffers' },
     { label: 'Mes candidatures', path: '/applications' },
     { label: 'Paramètre du Compte', path: '/Settings' }, // Pertinance à revoir
-    { label: 'Mes documents', path: '/contracts' },
+    { label: 'Mes documents', path: '/Documents' },
     { label: 'Notifications', path: '/notifications' },
     { label: 'Mes favoris', path: '/YourOffers' },
   ];

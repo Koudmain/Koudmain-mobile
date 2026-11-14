@@ -32,6 +32,7 @@ function RootNavigator() {
       <Stack.Protected guard={!!session} redirectTo="/auth/Connection">
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(menu)/Settings" />
+        <Stack.Screen name="(menu)/Documents" />
         <Stack.Screen name="offer/[id]" />
         <Stack.Screen name="worker/[id]" />
         <Stack.Screen name="my-company/index" />
