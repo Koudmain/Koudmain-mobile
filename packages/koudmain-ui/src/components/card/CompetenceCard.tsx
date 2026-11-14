@@ -20,7 +20,7 @@ const SIZE_STYLES = {
 
 export default function CompetenceCard({
   comp,
-  backgroundColor = '#F5D2C8',
+  backgroundColor = '#F7DBD3',
   accentColor = '#D84A22',
   size = 'md',
   deletable = false,
@@ -40,7 +40,9 @@ export default function CompetenceCard({
           paddingVertical: sizeStyle.paddingVertical,
         }}
       >
-        <Text style={{ color: accentColor, fontSize: sizeStyle.fontSize }}>{comp}</Text>
+        <Text style={{ color: accentColor, fontSize: sizeStyle.fontSize, fontWeight: 'bold' }}>
+          {comp}
+        </Text>
         {deletable && (
           <TouchableOpacity onPress={onDelete} style={{ marginLeft: 8 }}>
             <FontAwesomeIcon name="times" size={sizeStyle.fontSize} color={accentColor} />
