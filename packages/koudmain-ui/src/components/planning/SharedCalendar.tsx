@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Calendar } from 'react-native-calendars';
+import { Calendar, DateData } from 'react-native-calendars';
 import { Dimensions, useColorScheme, View, ViewStyle } from 'react-native';
 import { useBottomTabBarHeight } from 'expo-router/js-tabs';
 import { colors } from '../../constants/theme';
@@ -102,6 +102,14 @@ export default function SharedCalendar<TEvent extends { starting_date?: string }
     [cellHeight, isDark],
   );
 
+  const handleDayPress = (day: DateData) => {
+    setSelected(day.dateString);
+    setBottomSheetVisible(true);
+    setBottomSheetEvents(
+      markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
+    );
+  };
+
   const handleMonthChange = (nextMonth: () => void, monthDelta: number) => {
     let newMonth = currentMonth + monthDelta;
     let newYear = currentYear;
@@ -161,13 +169,8 @@ export default function SharedCalendar<TEvent extends { starting_date?: string }
           setCurrentMonth(month.month);
         }}
         dayComponent={renderDay}
-        onDayPress={(day) => {
-          setSelected(day.dateString);
-          setBottomSheetVisible(true);
-          setBottomSheetEvents(
-            markedDatesList.includes(day.dateString) ? formatDayEvents(events, day.dateString) : [],
-          );
-        }}
+        onDayPress={handleDayPress}
+        onDayLongPress={handleDayPress}
         markedDates={markedDates}
       />
 
