@@ -4,7 +4,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import { Input, InputField } from '../../ui/input';
 import { colors } from '../../../constants/theme';
 
-interface MessageInputProps {
+export interface MessageInputProps {
   onSend: (text: string) => Promise<void>;
   placeholder?: string;
 }
@@ -14,20 +14,24 @@ export function MessageInput({ onSend, placeholder = 'Votre message...' }: Messa
   const [isSending, setIsSending] = useState(false);
 
   const handleSend = async () => {
-    if (value.trim().length > 0 && !isSending) {
-      setIsSending(true);
-      try {
-        await onSend(value);
-        setValue('');
-      } catch (error) {
-        console.error("Erreur d'envoi:", error);
-      } finally {
-        setIsSending(false);
-      }
+    const textToSend = value.trim();
+    if (!textToSend || isSending) return;
+
+    // Vider immédiatement le champ texte pour l'envoi optimiste
+    setValue('');
+    setIsSending(true);
+
+    try {
+      await onSend(textToSend);
+    } catch (error) {
+      console.error("Erreur d'envoi:", error);
+      setValue((current) => (current === '' ? textToSend : current));
+    } finally {
+      setIsSending(false);
     }
   };
 
-  const isTyping = value.length > 0;
+  const isTyping = value.trim().length > 0;
 
   return (
     <View className="flex-row items-end justify-center px-3 w-[95%] rounded-full bg-neutral-200 dark:bg-primary-hover border-t border-neutral-100 dark:border-neutral-800">
@@ -40,7 +44,6 @@ export function MessageInput({ onSend, placeholder = 'Votre message...' }: Messa
             value={value}
             onChangeText={setValue}
             multiline={true}
-            editable={!isSending}
           />
         </Input>
       </View>
@@ -61,13 +64,13 @@ export function MessageInput({ onSend, placeholder = 'Votre message...' }: Messa
         ) : (
           <TouchableOpacity
             onPress={handleSend}
-            disabled={isSending || !isTyping}
+            disabled={!isTyping && !isSending}
             className="bg-secondary w-12 h-8 rounded-[15] items-center justify-center shadow-sm"
           >
-            {isSending ? (
+            {isSending && !isTyping ? (
               <ActivityIndicator size="small" color={colors.primary.content} />
             ) : (
-              <Feather name="send" size={22} color={colors.primary.content} />
+              <Feather name="send" size={20} color={colors.primary.content} />
             )}
           </TouchableOpacity>
         )}
@@ -75,3 +78,5 @@ export function MessageInput({ onSend, placeholder = 'Votre message...' }: Messa
     </View>
   );
 }
+
+export default MessageInput;

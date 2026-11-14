@@ -1,4 +1,5 @@
 import '@/global.css';
+import React, { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { GluestackUIProvider } from '@koudmain/ui/gluestack';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -9,9 +10,21 @@ import { StatusBar } from 'expo-status-bar';
 import { useTheme, ThemeProvider } from '@koudmain/ui/context/ThemeContext';
 import { SessionProvider, useSession } from '@koudmain/ui/context/SessionContext';
 import { SplashScreenController } from '@/Splash';
+import { socketService } from '@/services/socket.service';
 
 function RootNavigator() {
   const { session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      socketService.connect(session);
+    } else {
+      socketService.disconnect();
+    }
+    return () => {
+      socketService.disconnect();
+    };
+  }, [session]);
 
   return (
     <Stack screenOptions={{ headerShown: false }}>
@@ -22,6 +35,7 @@ function RootNavigator() {
         <Stack.Screen name="company/[id]" />
         <Stack.Screen name="my-profile/index" />
         <Stack.Screen name="my-profile/Edit" />
+        <Stack.Screen name="chat" />
       </Stack.Protected>
 
       <Stack.Protected guard={!session}>

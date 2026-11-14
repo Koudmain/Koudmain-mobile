@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, TouchableOpacity, useColorScheme } from 'react-native';
 import Swipeable, { SwipeableMethods } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { cnFusion } from '@koudmain/ui/utils/cnFusion';
@@ -16,6 +16,34 @@ interface ConversationItemProps {
   className?: string;
 }
 
+const formatLastMessageDate = (dateStr?: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return '';
+  const now = new Date();
+  const isSameDay =
+    d.getDate() === now.getDate() &&
+    d.getMonth() === now.getMonth() &&
+    d.getFullYear() === now.getFullYear();
+
+  if (isSameDay) {
+    return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const isYesterday =
+    d.getDate() === yesterday.getDate() &&
+    d.getMonth() === yesterday.getMonth() &&
+    d.getFullYear() === yesterday.getFullYear();
+
+  if (isYesterday) {
+    return 'Hier';
+  }
+
+  return d.toLocaleDateString([], { day: '2-digit', month: '2-digit' });
+};
+
 function ConversationItem({
   conversation,
   isOpen,
@@ -31,9 +59,15 @@ function ConversationItem({
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
-  const urlImg =
-    conversation.worker.user.profile_picture_url ||
-    'https://www.cuisine-essentiel.fr/images/2020/10/avatar-neutre.png';
+  const workerUser = conversation.worker?.user;
+  const workerFullName =
+    [workerUser?.first_name, workerUser?.last_name].filter(Boolean).join(' ') || 'Candidat';
+
+  const [imageError, setImageError] = useState(false);
+  const initial = (workerFullName || 'C').trim().charAt(0).toUpperCase();
+
+  const lastMessage = conversation.last_message?.[0];
+  const lastMessageTime = formatLastMessageDate(lastMessage?.created_at);
 
   useEffect(() => {
     if (!isOpen) {
@@ -77,12 +111,21 @@ function ConversationItem({
         )}
       >
         <View className="relative">
-          <Image
-            source={{
-              uri: urlImg,
-            }}
-            className="w-14 h-14 rounded-full bg-neutral-200"
-          />
+          {workerUser?.profile_picture_url && !imageError ? (
+            <Image
+              source={{
+                uri: workerUser.profile_picture_url,
+              }}
+              className="w-14 h-14 rounded-full bg-neutral-200"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View className="w-14 h-14 rounded-full bg-primary-100 dark:bg-primary-hover items-center justify-center">
+              <Text className="text-primary-600 dark:text-primary-content font-bold text-lg">
+                {initial}
+              </Text>
+            </View>
+          )}
         </View>
 
         <View className="flex-1 ml-4">
@@ -94,16 +137,18 @@ function ConversationItem({
               )}
               numberOfLines={1}
             >
-              {conversation.worker.user.first_name} {conversation.worker.user.last_name}
+              {workerFullName}
             </Text>
-            <Text
-              className={cnFusion(
-                'text-xs',
-                hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
-              )}
-            >
-              {conversation.last_message[0]?.created_at}
-            </Text>
+            {lastMessageTime ? (
+              <Text
+                className={cnFusion(
+                  'text-xs',
+                  hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
+                )}
+              >
+                {lastMessageTime}
+              </Text>
+            ) : null}
           </View>
 
           <View className="flex-row items-center">
@@ -114,7 +159,7 @@ function ConversationItem({
               )}
               numberOfLines={1}
             >
-              {conversation.last_message[0]?.content_text}
+              {lastMessage?.content_text || ''}
             </Text>
             {hasUnread && (
               <View className="bg-primary-500 min-w-[20px] h-5 px-1.5 rounded-full items-center justify-center">

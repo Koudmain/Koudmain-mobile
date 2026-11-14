@@ -4,16 +4,25 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { colors } from '../../../constants/theme';
 
-interface HeaderChatProps {
-  userName: string;
-  publicationTitle: string;
-  userImage?: string;
+export interface HeaderChatProps {
+  userName?: string;
+  publicationTitle?: string;
+  userImage?: string | null;
+  companyId?: number;
 }
 
-export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChatProps) => {
+export const HeaderChat = ({
+  userName = '',
+  publicationTitle = '',
+  userImage,
+  companyId,
+}: HeaderChatProps) => {
   const router = useRouter();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+
+  const initial =
+    userName && userName.trim().length > 0 ? userName.trim().charAt(0).toUpperCase() : '?';
 
   return (
     <View className="bg-white dark:bg-primary flex-row items-center justify-between w-full px-2">
@@ -26,29 +35,41 @@ export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChat
           />
         </TouchableOpacity>
 
-        <View className="w-10 h-10 rounded-full bg-neutral-200 overflow-hidden mr-3">
-          {userImage ? (
-            <Image source={{ uri: userImage }} className="flex-1" />
-          ) : (
-            <View className="flex-1 items-center justify-center bg-primary-100">
-              <Text className="text-primary-600 font-bold">{userName.charAt(0)}</Text>
-            </View>
-          )}
-        </View>
+        <TouchableOpacity
+          className="flex-row items-center flex-1"
+          activeOpacity={companyId ? 0.7 : 1}
+          disabled={!companyId}
+          onPress={() => companyId && router.push(`/company/${companyId}` as never)}
+        >
+          <View className="w-10 h-10 rounded-full bg-neutral-200 overflow-hidden mr-3">
+            {userImage ? (
+              <Image source={{ uri: userImage }} className="flex-1" />
+            ) : (
+              <View className="flex-1 items-center justify-center bg-primary-100">
+                <Text className="text-primary-600 font-bold">{initial}</Text>
+              </View>
+            )}
+          </View>
 
-        <View className="flex-1">
-          <Text className="font-bold text-[16px] dark:text-white" numberOfLines={1}>
-            {userName}
-          </Text>
-          <View className="flex-row items-center">
+          <View className="flex-1">
             <Text
-              className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
+              className="font-bold text-[16px] text-neutral-900 dark:text-white"
               numberOfLines={1}
             >
-              {publicationTitle}
+              {userName || 'Entreprise'}
             </Text>
+            {publicationTitle ? (
+              <View className="flex-row items-center">
+                <Text
+                  className="text-[10px] text-primary-disabled uppercase font-bold tracking-tight"
+                  numberOfLines={1}
+                >
+                  {publicationTitle}
+                </Text>
+              </View>
+            ) : null}
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
 
       <TouchableOpacity className="p-2">
@@ -57,3 +78,5 @@ export const HeaderChat = ({ userName, publicationTitle, userImage }: HeaderChat
     </View>
   );
 };
+
+export default HeaderChat;
