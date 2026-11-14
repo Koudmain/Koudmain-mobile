@@ -63,9 +63,9 @@ export default function PlanningProfileRow({
           <MaterialIcons
             name="star"
             size={16}
-            color={isDark ? colors.primary[200] : colors.primary.DEFAULT}
+            color={isDark ? colors.primary[400] : colors.primary.DEFAULT}
           />
-          <Text className="text-2xs font-bold text-primary-500 dark:text-primary-300 ml-1">
+          <Text className="text-2xs font-bold text-primary-500 dark:text-primary-400 ml-1">
             {formatRating(rating)} ({ratingCount})
           </Text>
         </View>

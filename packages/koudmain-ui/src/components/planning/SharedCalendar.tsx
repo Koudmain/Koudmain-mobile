@@ -109,13 +109,13 @@ export default function SharedCalendar<TEvent extends { starting_date?: string }
           height: calendarHeight,
           borderRadius: 22,
           paddingVertical: 16,
-          backgroundColor: isDark ? colors.background.dark : colors.background.light,
+          backgroundColor: isDark ? colors.primary.DEFAULT : colors.background.light,
         }}
         theme={{
-          calendarBackground: isDark ? colors.background.dark : colors.background.light,
-          dayTextColor: isDark ? colors.typography.white : colors.typography.black,
-          monthTextColor: isDark ? colors.typography.white : colors.typography.black,
-          textSectionTitleColor: isDark ? colors.typography.white : colors.typography.black,
+          calendarBackground: isDark ? colors.primary.DEFAULT : colors.background.light,
+          dayTextColor: isDark ? colors.primary[200] : colors.typography.black,
+          monthTextColor: isDark ? colors.primary[200] : colors.typography.black,
+          textSectionTitleColor: isDark ? colors.primary[400] : colors.typography.black,
           textDayFontSize: 18,
           textMonthFontWeight: 'bold',
           todayTextColor: colors.secondary.DEFAULT,

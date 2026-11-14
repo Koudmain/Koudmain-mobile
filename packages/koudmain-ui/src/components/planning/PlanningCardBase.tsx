@@ -44,7 +44,7 @@ export default function PlanningCardBase({
       accessibilityLabel={accessibilityLabel ?? title}
       className="active:opacity-80"
     >
-      <Card className="w-full p-4 rounded-[20] border border-primary/[0.12] dark:border-white/[0.14] bg-background-light dark:bg-background-dark">
+      <Card className="w-full p-4 rounded-[20] border border-primary/[0.12] dark:border-white/[0.14] bg-background-light dark:bg-primary">
         {header ? <View className="mb-3">{header}</View> : null}
         <View className="flex-row items-center justify-between">
           <Heading

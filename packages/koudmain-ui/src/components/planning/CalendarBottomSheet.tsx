@@ -136,7 +136,7 @@ export default function CalendarBottomSheet<TEvent>({
         </Animated.View>
 
         <Animated.View
-          className="absolute left-0 right-0 top-0 rounded-t-[30px] z-20 shadow-lg bg-background-light dark:bg-background-dark"
+          className="absolute left-0 right-0 top-0 rounded-t-[30px] z-20 shadow-lg bg-background-light dark:bg-primary"
           style={[{ height: bottomSheetHeight, transform: [{ translateY }] }]}
           {...panResponder.panHandlers}
         >
@@ -146,11 +146,11 @@ export default function CalendarBottomSheet<TEvent>({
 
           <View className="flex-1">
             <View className="px-6 pb-2">
-              <Text className="text-xl font-bold text-primary dark:text-typography-white">
+              <Text className="text-xl font-bold text-primary dark:text-primary-200">
                 {title ?? `Événements du ${selectedDate}`}
               </Text>
               {subtitle ? (
-                <Text className="text-xs text-primary-500 dark:text-primary-300 mt-0.5">
+                <Text className="text-xs text-primary-500 dark:text-primary-400 mt-0.5">
                   {subtitle}
                 </Text>
               ) : null}

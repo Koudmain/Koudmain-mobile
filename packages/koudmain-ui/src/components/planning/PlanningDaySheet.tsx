@@ -49,7 +49,7 @@ export default function PlanningDaySheet<TEvent>({
                 borderRadius: 22,
                 width: '100%',
                 marginBottom: 16,
-                backgroundColor: isDark ? colors.background.dark : colors.background.light,
+                backgroundColor: isDark ? colors.primary.DEFAULT : colors.background.light,
               }}
             >
               {renderCard(event)}

@@ -24,7 +24,7 @@ export default function CustomDay({ props, cellHeight, isDark }: CustomDayProps)
 
   return (
     <View
-      className={`w-full ${isWeekend ? 'bg-background-50' : 'bg-background-light dark:bg-background-dark'} justify-center items-center`}
+      className={`w-full ${isWeekend ? 'bg-background-50' : 'bg-background-light dark:bg-primary'} justify-center items-center`}
       style={{ height: cellHeight }}
     >
       <BasicDay
@@ -36,7 +36,7 @@ export default function CustomDay({ props, cellHeight, isDark }: CustomDayProps)
         onLongPress={props.onLongPress ?? (() => {})}
         theme={{
           ...rest.theme,
-          dayTextColor: isDark ? colors.typography.white : colors.typography.black,
+          dayTextColor: isDark ? colors.primary[200] : colors.typography.black,
           textDisabledColor: isDark ? colors.typography.darkGray : colors.typography.gray,
         }}
       />
