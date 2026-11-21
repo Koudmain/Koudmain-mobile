@@ -110,7 +110,7 @@ export default function CreatePost() {
 
     const payload = {
       companyId: Number(activeCompanyId),
-      createdByUserId: user?.id,
+      createdBy: user?.id,
       title: title,
       description: description,
       hourly_rate: rate,

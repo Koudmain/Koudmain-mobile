@@ -1,7 +1,7 @@
 export interface IPublication {
   id: number;
   companyId: number | null;
-  createdByUserId: number | null;
+  createdBy: number | null;
   address_id: number | null;
   title: string;
   description: string;

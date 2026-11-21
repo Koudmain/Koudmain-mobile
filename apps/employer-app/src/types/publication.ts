@@ -9,7 +9,7 @@ export enum PublicationStatus {
 export interface IPublication {
   id: number;
   companyId: number | null;
-  createdByUserId: number | null;
+  createdBy: number | null;
   address_id: number | null;
   title: string;
   description: string;
@@ -26,7 +26,7 @@ export interface IPublication {
 
 export interface PublicationsDto {
   companyId?: number;
-  createdByUserId?: number;
+  createdBy?: number;
   address_id?: number;
   title: string;
   description: string;
