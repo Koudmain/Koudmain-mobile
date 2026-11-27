@@ -102,7 +102,7 @@ function ConversationItem({
                 hasUnread ? 'text-primary dark:text-neutral-200 font-bold' : 'text-neutral-500',
               )}
             >
-              {conversation.last_message[0]?.created_at}
+              {conversation.last_message[0]?.createdAt}
             </Text>
           </View>
 

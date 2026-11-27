@@ -17,7 +17,7 @@ function MessageBubble({ message, isMe }: { message: IMessage; isMe?: boolean })
         <View>
           <Text className="text-white">{message.content_text}</Text>
           <Text className="text-[10px] mt-1 text-white">
-            {new Date(message.created_at).toLocaleTimeString([], {
+            {new Date(message.createdAt).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             })}
@@ -29,7 +29,7 @@ function MessageBubble({ message, isMe }: { message: IMessage; isMe?: boolean })
           <Text
             className={`text-[10px] mt-1 ${isDark ? 'text-primary-disabled' : 'text-neutral-500'}`}
           >
-            {new Date(message.created_at).toLocaleTimeString([], {
+            {new Date(message.createdAt).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             })}
