@@ -3,7 +3,7 @@ export interface Message {
   conversationId: number;
   sender_id: number;
   text: string;
-  created_at: string;
+  createdAt: string;
   status: 'sent' | 'delivered' | 'read';
 }
 
@@ -12,7 +12,7 @@ export interface IMessage {
   conversationId: number;
   content_text: string;
   sender_id: number;
-  created_at: string;
+  createdAt: string;
   message_type?: string;
   type: string;
   isOptimistic?: boolean;

@@ -6,7 +6,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 99,
     content_text: 'Super, à demain alors ! 😊',
-    created_at: '2026-03-25T14:15:00Z',
+    createdAt: '2026-03-25T14:15:00Z',
     type: 'MESSAGE',
   },
   {
@@ -14,7 +14,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 1,
     content_text: 'Pas de souci, 12h pile devant le resto.',
-    created_at: '2026-03-25T14:12:00Z',
+    createdAt: '2026-03-25T14:12:00Z',
     type: 'MESSAGE',
   },
   {
@@ -22,7 +22,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 99,
     content_text: 'Ça marche pour moi. On se rejoint sur place ?',
-    created_at: '2026-03-25T14:10:00Z',
+    createdAt: '2026-03-25T14:10:00Z',
     type: 'MESSAGE',
   },
   {
@@ -30,7 +30,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 1,
     content_text: "Je pense qu'on aura besoin de toi pour le rush de midi principalement.",
-    created_at: '2026-03-25T10:05:00Z',
+    createdAt: '2026-03-25T10:05:00Z',
     type: 'MESSAGE',
   },
   {
@@ -38,7 +38,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 1,
     content_text: 'Salut ! Pour la mission de demain, tu peux venir 15min avant ?',
-    created_at: '2026-03-25T10:00:00Z',
+    createdAt: '2026-03-25T10:00:00Z',
     type: 'MESSAGE',
   },
   {
@@ -46,7 +46,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 99,
     content_text: 'Bonjour, je suis très intéressé par votre annonce de plongeur.',
-    created_at: '2026-03-24T18:30:00Z',
+    createdAt: '2026-03-24T18:30:00Z',
     type: 'MESSAGE',
   },
   {
@@ -54,7 +54,7 @@ export const MOCK_MESSAGES: IMessage[] = [
     conversationId: 1,
     sender_id: 1,
     content_text: "L'annonce est toujours disponible",
-    created_at: '2026-03-24T18:00:00Z',
+    createdAt: '2026-03-24T18:00:00Z',
     type: 'MESSAGE',
   },
 ];

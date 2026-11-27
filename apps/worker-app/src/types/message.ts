@@ -3,6 +3,6 @@ export interface Message {
   conversationId: number;
   sender_id: number;
   text: string;
-  created_at: string;
+  createdAt: string;
   status: 'sent' | 'delivered' | 'read';
 }

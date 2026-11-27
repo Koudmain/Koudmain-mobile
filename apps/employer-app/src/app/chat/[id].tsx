@@ -27,7 +27,7 @@ export default function ChatScreen() {
   const isDark = colorScheme === 'dark';
   const currentChatMessages = messages
     .filter((m) => m.conversationId === conversationId)
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   useEffect(() => {
     if (session && conversationId) {
@@ -55,7 +55,7 @@ export default function ChatScreen() {
       conversationId: conversationId,
       sender_id: Number(activeCompanyId),
       content_text: text,
-      created_at: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       message_type: 'text',
       type: 'MESSAGE',
       isOptimistic: true,
