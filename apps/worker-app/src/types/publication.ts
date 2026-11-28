@@ -1,3 +1,5 @@
+export * from '@koudmain/ui/types/publication';
+
 export interface Publication {
   id: string;
   title: string;

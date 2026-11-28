@@ -36,3 +36,9 @@ export interface IConversationSettings {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateConversationDto {
+  publicationId: number;
+  workerId: number;
+  companyId: number;
+}

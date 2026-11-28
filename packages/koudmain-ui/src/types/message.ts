@@ -17,3 +17,8 @@ export interface IMessage {
   type: string;
   isOptimistic?: boolean;
 }
+
+export interface SendMessageDto {
+  conversationId: number;
+  content: string;
+}
