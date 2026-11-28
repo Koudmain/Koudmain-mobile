@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Animated,
-  Dimensions,
-  Easing,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -17,6 +16,7 @@ import Svg, { Circle } from 'react-native-svg';
 import { Feather, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { colors } from '@/constants/theme';
 import { WorkerApplicationSummaryData } from '@/utils/offerMapper';
+import { useBottomSheetDrag } from '@/hooks/useBottomSheetDrag';
 
 // Matches the `maxLength` of `ApplyDto.message` in the backend OpenAPI schema
 export const APPLICATION_MESSAGE_MAX_LENGTH = 150;
@@ -77,40 +77,34 @@ export function ApplicationBottomSheet({
   isSubmitting = false,
 }: ApplicationBottomSheetProps) {
   const isDark = useColorScheme() === 'dark';
-  const [isMounted, setIsMounted] = useState(visible);
   const [message, setMessage] = useState('');
-  const progress = useRef(new Animated.Value(0)).current;
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const { isMounted, translateY, backdropOpacity, panHandlers } = useBottomSheetDrag({
+    visible,
+    onClose,
+  });
 
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => setIsKeyboardVisible(true));
+    const hideSubscription = Keyboard.addListener(hideEvent, () => setIsKeyboardVisible(false));
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
+  // Reset the draft message and keyboard state each time the sheet opens or closes
   useEffect(() => {
     if (visible) {
-      setIsMounted(true);
-      Animated.timing(progress, {
-        toValue: 1,
-        duration: 320,
-        easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
-      }).start();
+      setMessage('');
     } else {
-      Animated.timing(progress, {
-        toValue: 0,
-        duration: 220,
-        easing: Easing.in(Easing.cubic),
-        useNativeDriver: true,
-      }).start(({ finished }) => {
-        if (finished) setIsMounted(false);
-      });
+      setIsKeyboardVisible(false);
     }
-  }, [visible, progress]);
-
-  // Reset the draft message each time the sheet is opened
-  useEffect(() => {
-    if (visible) setMessage('');
   }, [visible]);
-
-  const translateY = progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [Dimensions.get('window').height, 0],
-  });
 
   const iconColor = isDark ? colors.primary.content : colors.primary.DEFAULT;
   const accentIconColor = isDark ? colors.secondary[400] : colors.secondary.DEFAULT;
@@ -125,16 +119,25 @@ export function ApplicationBottomSheet({
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         {/* Dimmed backdrop, tapping it closes the sheet */}
-        <Animated.View className="absolute inset-0 bg-black/40" style={{ opacity: progress }}>
+        <Animated.View
+          className="absolute inset-0 bg-black/40"
+          style={{ opacity: backdropOpacity }}
+        >
           <Pressable className="flex-1" onPress={onClose} />
         </Animated.View>
 
         <Animated.View
-          className="px-5 pt-3 pb-10 rounded-t-3xl border-t border-primary-100 dark:border-primary-700 bg-white dark:bg-primary"
+          className={`px-5 pb-20 -mb-10 bg-white dark:bg-primary ${
+            isKeyboardVisible
+              ? 'rounded-t-none border-t-0'
+              : 'rounded-t-3xl border-t border-primary-100 dark:border-primary-700'
+          }`}
           style={{ transform: [{ translateY }] }}
         >
-          {/* Drag handle */}
-          <View className="self-center w-12 h-1.5 mb-4 rounded-full bg-neutral-300 dark:bg-primary-600" />
+          {/* Interactive drag handle area */}
+          <View {...panHandlers} className="pt-3 pb-4 -mx-5 px-5 items-center">
+            <View className="w-12 h-1.5 rounded-full bg-neutral-300 dark:bg-primary-600" />
+          </View>
 
           {/* Header */}
           <View className="flex-row items-center justify-between mb-4">

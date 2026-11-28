@@ -18,7 +18,7 @@ import { OfferDescription } from '@/components/offer/OfferDescription';
 import { OfferGallery } from '@/components/offer/OfferGallery';
 import { OfferSkills } from '@/components/offer/OfferSkills';
 import { OfferRequirements } from '@/components/offer/OfferRequirements';
-import { EligibilityPopup } from '@/components/offer/EligibilityPopup';
+import { EligibilityBottomSheet } from '@/components/offer/EligibilityBottomSheet';
 import { ApplicationBottomSheet } from '@/components/offer/ApplicationBottomSheet';
 
 export default function OfferDetailsPage() {
@@ -29,7 +29,7 @@ export default function OfferDetailsPage() {
   const { checkEligibility, eligibility, isCheckingEligibility, errorEligibility } =
     useCheckEligibility();
   const { applyToPublication, isApplying, errorApply } = useApplyToPublication();
-  const [showEligibilityPopup, setShowEligibilityPopup] = useState(false);
+  const [showEligibilitySheet, setShowEligibilitySheet] = useState(false);
   const [showApplicationSheet, setShowApplicationSheet] = useState(false);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function OfferDetailsPage() {
     if (!offer.isAvailable || isCheckingEligibility) return;
     const result = await checkEligibility(offer.id);
     if (!result || !result.canApply) {
-      setShowEligibilityPopup(true);
+      setShowEligibilitySheet(true);
       return;
     }
     setShowApplicationSheet(true);
@@ -91,21 +91,21 @@ export default function OfferDetailsPage() {
     setShowApplicationSheet(false);
 
     if (!result) {
-      setShowEligibilityPopup(true);
+      setShowEligibilitySheet(true);
     }
   };
 
   return (
     <View className="flex-1 bg-white dark:bg-primary">
-      <EligibilityPopup
-        visible={showEligibilityPopup}
+      <EligibilityBottomSheet
+        visible={showEligibilitySheet}
         eligibility={eligibility}
         errorMessage={errorApply || errorEligibility}
-        onClose={() => setShowEligibilityPopup(false)}
+        onClose={() => setShowEligibilitySheet(false)}
         onCompleteProfile={() => {
-          setShowEligibilityPopup(false);
-          // TODO: Redirect to the administrative documents section instead of the profile page once it is ready
-          router.push('/my-profile');
+          setShowEligibilitySheet(false);
+          // TODO: Redirect to the dedicated administrative documents section once that route exists
+          router.push('/my-profile/Edit');
         }}
       />
 
